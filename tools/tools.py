@@ -207,7 +207,7 @@ def modif_table(dict, memory, sce):
 
 
 
-def introduce_flag_impl(input_file, dict, func_dict, mortality = False):
+def introduce_flag_impl(input_file, dict, func_dict):
     file_read = open(input_file, "r")
     content = file_read.read()
     file_read.close()
@@ -221,11 +221,7 @@ def introduce_flag_impl(input_file, dict, func_dict, mortality = False):
             final_doc += content[flag_pos[f-1][1]:flag_pos[f][0]]
 
         flag_type = content[flag_pos[f][0]:flag_pos[f][1]]
-
-        if flag_type == "flag_solve":
-            string = func_dict[flag_type](dict, mortality  = mortality)
-        else :
-            string = func_dict[flag_type](dict)
+        string = func_dict[flag_type](dict)
 
         final_doc += string
 

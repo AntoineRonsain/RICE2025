@@ -15,7 +15,7 @@ def flag_table_inputs(dict):
 
 
 
-def flag_solve(dict, mortality = False):
+def flag_solve(dict):
 
     scenarios = list(dict.keys())
     regions = list(dict[scenarios[0]].keys())
@@ -27,12 +27,7 @@ def flag_solve(dict, mortality = False):
             string_table += modif_table(dict, memory, sce)
         memory = sce
 
-
-
-
-
         string_table += '$include S-NegishiOptimal.gms\n'
-        string_table += f'put /"SCENARIO: {sce}"\n'
 
         for r in regions :
             string_table += f'put / "REGION: {r}"\n'
@@ -62,15 +57,8 @@ def flag_solve(dict, mortality = False):
             string_table += f'scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"{r}"));\n'
             string_table += f'scc("1","{r}") = scc("2","{r}") * .85;\n'
             string_table += f'Loop(T, put scc(t,"{r}"));\n'
-
-            if mortality :
-                string_table += 'put / "Population" ;\n'
-                string_table += f'Loop (T, put L.l(T,"{r}"));\n'
-                string_table += 'put / "Mortality" ;\n'
-                string_table += f'Loop (T, put mort.l(T,"{r}"));\n'
-            else :
-                string_table += 'put / "Population (exogenous)" ;\n'
-                string_table += f'Loop (T, put L(T,"{r}"));\n'
+            string_table += 'put / "Population (exogenous)" ;\n'
+            string_table += f'Loop (T, put L(T,"{r}"));\n'
 
 
         string_table += 'put /"REGION: World"\n'
@@ -89,23 +77,18 @@ def flag_solve(dict, mortality = False):
 
 
 
-def introduce_flag(input_file, dict, mortality = False):
-    return introduce_flag_impl(input_file, dict, globals(), mortality = mortality)
+def introduce_flag(input_file, dict):
+    return introduce_flag_impl(input_file, dict, globals())
 
 
 
 def get_optim_file(repo,data):
 
-    nordhaus = 1
-    if nordhaus:
-        optim_file_init = repo + "gams_code/type_files/rice2023_nordhaus_negishi_type_file.gms"
-        rice_code = repo+"gams_code/optim_files/rice2023_nordhaus_negishi.gms"
-    else:
-        optim_file_init = repo + "gams_code/type_files/rice2023_negishi_type_file.gms"
-        rice_code = repo+"gams_code/optim_files/rice2023_negishi.gms"
+    optim_file_init = repo + "gams_code/type_files/rice2023_negishi_tf.gms"
+    rice_code = repo+"gams_code/optim_files/rice2023_negishi.gms"
 
     rice2023_code = introduce_flag(optim_file_init, data)
-    optim_file_init = "tools/solver/S-NegishiOptimal_type_file.gms"
+    optim_file_init = "tools/solver/S-NegishiOptimal_tf.gms"
 
     solver_code = introduce_flag(optim_file_init, data)
     text = solver_intro_model(rice2023_code, solver_code)

@@ -159,18 +159,14 @@ def introduce_flag(input_file, dict):
 
 def get_optim_file(repo,data):
 
-    nordhaus = 1
-    if nordhaus:
-        optim_file_init = repo +"gams_code/type_files/rice2023_nordhaus_nash_type_file.gms"
-        rice_code = repo +"gams_code/optim_files/rice2023_nordhaus_nash.gms"
-    else:
-        optim_file_init = repo +"gams_code/type_files/rice2023_nash_type_file.gms"
-        rice_code = repo +"gams_code/optim_files/rice2023_nash.gms"
+
+    optim_file_init = repo +"gams_code/type_files/rice2023_nash_tf.gms"
+    rice_code = repo +"gams_code/optim_files/rice2023_nash.gms"
 
 
     rice2023_code = introduce_flag(optim_file_init, data)
 
-    optim_file_init = "tools/solver/S-Nash-FX1_type_file.gms"
+    optim_file_init = "tools/solver/S-Nash-FX1_tf.gms"
     solver_code = introduce_flag(optim_file_init, data)
     text = solver_intro_model(rice2023_code, solver_code)
     write_gams_self_contained(rice_code, text)

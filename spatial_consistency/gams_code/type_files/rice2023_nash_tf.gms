@@ -10,7 +10,8 @@ set
     t  Time periods (5 years per period)                     /1*101/
     ISER    Weight searching interation index  /1*5 /
     ITER    Nash loop                          /1*5 /
-    SIT     Nash loop for region1-15           /1*20/
+    SIT     Nash loop for region1-15           /1*25/
+
 flag_def_regions
 ;
 
@@ -42,7 +43,10 @@ PARAMETERS
 
 * Climate damage parameters
 
+        qdam      Equal to 1 when damage are quadratic                /  1  /
         a2        Coeff for quadratic damage                          / 0.00284 /
+        a3        Coeff for higest power term damage                  / 0 /
+        n3        Higest power for damage function                    / 3     /
 
 ** Abatement cost
         expcost2  Exponent of control cost function                   / 2.6  /
@@ -81,6 +85,11 @@ flag_table_inputs
 
 
 PARAMETERS
+
+        EIE(ITER,SIT,t,n)
+        MIE(ITER,SIT,t,n)
+        marginal_miu(T,n)
+
         L(t,n)           Level of population and labor
         LB(T,N)          Nation welfare weight
         aL(t,n)          Level of total factor productivity
@@ -103,6 +112,7 @@ PARAMETERS
         abaterat(t,n)    Abatement cost per net output
         miuup(t,n)       Upper bound on miu
         gbacktime(t)   Decline rate of backstop price
+flag_nash_utility
 ;
 ** Dynamic parameter values
         L("1",n) = ECO("pop0",n);
@@ -131,8 +141,9 @@ PARAMETERS
         miuup(t,n)$(t.val > 8) = 0.85+.05*(t.val-8);
         miuup(t,n)$(t.val > 11) = limmiu2070;
         miuup(t,n)$(t.val > 20) = limmiu2120;
-** Include file for non-CO2 GHGs
-* Include: Include/Nonco2-b-3-17.gms
+**provide an initial value for proxy nash utility in Linda Scenario
+flag_nash_utility_init
+
 * nonco2 Parameters
 Parameters
         CO2E_GHGabateB(t)         Abateable non-CO2 GHG emissions base
@@ -188,6 +199,7 @@ Equations
         tlast(t)  = yes$(t.val eq card(t));
 
 VARIABLES
+
         MIU(t,n)          Emission control rate GHGs
         MIU_GLOBAL(t)      Global emission control rate GHGs
         C(t,n)            Consumption (trillions 2019 US dollars per year)
@@ -209,8 +221,7 @@ VARIABLES
         CPRICE(t,n)       Carbon price (2019$ per ton of CO2)
         CEMUTOTPER(t,n)   Period utility
         UTILITY          Social welfare function
-        UTILITY1         Social welfare function
-        UTILITY2         Social welfare function
+flag_nash_welfare
 ;
 NONNEGATIVE VARIABLES  MIU, TATM, MAT, MU, ML, Y, YNET, YGROSS, C, K, I;
 EQUATIONS
@@ -234,9 +245,7 @@ EQUATIONS
         PERIODUEQ(t,n)     Instantaneous utility function equation
         CEMUTOTPEREQ(t,n)  Period utility
 **  Objective functions (to be scaled properly)
-        OBJ              Objective function
-        OBJJ             Objective function
-        OBJJJ            Objective function;
+        OBJ              Objective function;
 
 ** Include file for DFAIR model and climate equations
 * Include: Include/FAIR-beta-3-17c.gms
@@ -362,13 +371,13 @@ option limcol = 0;
 
 ** Equations of the model
 **Emissions and Damages
- eindeq(t,n)..          EIND(t,n)         =E= sigma(t,n) * YGROSS(t,n) * (1 - MIU(t,n));
+ eindeq(t,n)..        EIND(t,n)         =E= sigma(t,n) * YGROSS(t,n) * (1 - MIU(t,n));
  MIU_GLOBALeq(t)..    MIU_GLOBAL(t)         =E= 1 - sum(n,EIND(t,n)) / (sum(n,sigma(t,n) * YGROSS(t,n)) + 1);
  eco2eq(t)..          ECO2(t)         =E= sum(n,EIND(t,n)) + eland(t) * (1 - MIU_GLOBAL(t));
  eco2Eeq(t)..         ECO2E(t)        =E= ECO2(t) + CO2E_GHGabateB(t) * (1-MIU_GLOBAL(t)) ;
  F_GHGabateEQ(t+1)..  F_GHGabate(t+1) =E= Fcoef2*F_GHGabate(t)+ Fcoef1*CO2E_GHGabateB(t)*(1-MIU_GLOBAL(t) );
  ccatoteq(t+1)..      CCATOT(t+1)     =E= CCATOT(t) +  ECO2(T)*(5/3.666) ;
- damfraceq(t,n) ..      DAMFRAC(t,n)      =E= a2 * TATM(t)**2;
+ damfraceq(t,n) ..      DAMFRAC(t,n)      =E= qdam * a2*TATM(t)**2 + (1-qdam)* (1 - 1 / (1 + a2*TATM(t)**2 +  a3*TATM(t)**n3));
  dameq(t,n)..           DAMAGES(t,n)      =E= YGROSS(t,n) * DAMFRAC(t,n);
  abatefraceq(T,n)..     ABATECOSTFRAC(T,n) =E= COST1TOT(T,n)  * (MIU(T,n)**EXPCOST2);
  abateeq(T,n)..         ABATECOST(T,n)   =E= YGROSS(T,n) * ABATECOSTFRAC(T,n);
@@ -385,10 +394,9 @@ option limcol = 0;
 **Utility and objective function
  cemutotpereq(t,n)..    CEMUTOTPER(t,n)  =E= PERIODU(t,n) * L(t,n) * RR(t);
  periodueq(t,n)..       PERIODU(t,n)     =E= ((C(T,n)*1000/L(T,n))**(1-elasmu)-1)/(1-elasmu)-1;
- OBJ..                   UTILITY  =E= Q* SUM((t,n), LB(T,N)*CEMUTOTPER(t,n));
- OBJJ..                  UTILITY1 =E= Q1*SUM((t,n), LB(T,N)*CEMUTOTPER(t,n));
- OBJJJ..                 UTILITY2 =E= Q2*SUM((t,n), LB(T,N)*CEMUTOTPER(t,n));
+ OBJ..                  UTILITY =E= Q2*SUM((t,n), CEMUTOTPER(t,n));
 
+flag_nash_welfare_func
 
 
 *///////////////////////////////////////////////////////////////////////////////
@@ -425,41 +433,31 @@ model  RICE /all/;
 
 
 ********************************************************************************
-*****///////////     Equal Weight Solve  --  Negishi weight     ///////////*****
+*****///////////                 Nash Equilibrium               ///////////*****
 ********************************************************************************
-PARAMETERS
 
-    CINTEN(t,n)
-    KP(t,n)
-    EIE(ITER,SIT,N,T)
-    MIE(ITER,SIT,N,T)
-
-** Negishi parameters
-    FNKM(t,n)             first round national KK.M
-    FWKM(T)               first round world KK.M
-    NKM(ISER,T,N)         National marginal Capital
-    WKM(ISER,T)           World average marginal K
-    NWEI(ISER,T,N)        National adjusted weight
-    SNWEI(ISER,T)         Total National adjusted weight
-    WWEI(ISER,T)          World adjusted weight
-    GAP(ISER,T,N)         Gap between nation weight and world average
-    AVG(N)                Average 20 weight
-    SM(ISER,T)
-
-    NGDP(ISER,T,N)        Negishi adjusting GDP
-    NSIG(ISER,T,N)        Negishi adjusting SIGMA
-    NKP(ISER,T,N)         Negishi adjusting KK.M
-    NE(ISER,T,N)          Negishi adjusting Emission
-    NES(ISER,T)           Negishi adjusting World Emission
-    NTE(ISER,T)           Negishi adjusting World Temperature
-;
+**release the bounds
+*M.LO(T)    = 0.5*M0;
+*M.UP(T)    = 15000;
 
 
-file resLARGE2022 /rice2023_negishi.csv/; resLARGE2022.nd = 10 ; resLARGE2022.nw = 0 ; resLARGE2022.pw=20000; resLARGE2022.pc=5;
+
+file resLARGE2022 /rice2023_nash.csv/; resLARGE2022.nd = 10 ; resLARGE2022.nw = 0 ; resLARGE2022.pw=20000; resLARGE2022.pc=5;
 put resLARGE2022;
-put /"Results of rice2023_negishi.csv with final results: July 19, 2023";
 
-
-
-
+put /"SCENARIO: Low damage";
 flag_solve
+
+
+
+put /"SCENARIO: Medium damage";
+qdam = 0;
+flag_solve
+
+
+put /"SCENARIO: Strong damage";
+qdam = 0;
+a3 = 1.570397e-05;
+n3 = 7.315027067;
+flag_solve
+
