@@ -439,7 +439,7 @@ model  RICE /all/;
 
 
 
-file resLARGE2022 /rice2023_nash.csv/; resLARGE2022.nd = 10 ; resLARGE2022.nw = 0 ; resLARGE2022.pw=20000; resLARGE2022.pc=5;
+file resLARGE2022 /rice2023_nash_quad.csv/; resLARGE2022.nd = 10 ; resLARGE2022.nw = 0 ; resLARGE2022.pw=20000; resLARGE2022.pc=5;
 put resLARGE2022;
 put /"Results of rice2023_nash_quad.csv with final results: July 19, 2023";
 
