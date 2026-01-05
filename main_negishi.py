@@ -6,8 +6,8 @@ from tools.negishi_files import *
 if __name__ == '__main__':
 
     repo = "spatial_consistency/"
-    data = automatic_multiscenarios(repo)
-    data = multiscenarios({"Nordhaus": repo + 'inputs/inputs.csv'
+    data = multiscenarios({"Medium Damage": repo + 'inputs/medium_dam.csv',
+                           "High Damage": repo + 'inputs/high_dam.csv',
                            })
     get_optim_file(repo, data)
 

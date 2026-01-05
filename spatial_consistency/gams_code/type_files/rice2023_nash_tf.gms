@@ -43,10 +43,7 @@ PARAMETERS
 
 * Climate damage parameters
 
-        qdam      Equal to 1 when damage are quadratic                /  1  /
-        a2        Coeff for quadratic damage                          / 0.00284 /
-        a3        Coeff for higest power term damage                  / 0 /
-        n3        Higest power for damage function                    / 3     /
+        quad      Quadratic damage                        / 1 /
 
 ** Abatement cost
         expcost2  Exponent of control cost function                   / 2.6  /
@@ -206,7 +203,7 @@ VARIABLES
         K(t,n)            Capital stock (trillions 2019 US dollars)
         CPC(t,n)          Per capita consumption (thousands 2019 USD per year)
         I(t,n)            Investment (trillions 2019 USD per year)
-        S(t)            Gross savings rate as fraction of gross world product
+        S(t,n)            Gross savings rate as fraction of gross world product
         RI(t,n)           Real interest rate (per annum)
         Y(t,n)            Gross world product net of abatement and damages (trillions 2019 USD per year)
         YGROSS(t,n)       Gross world product GROSS of abatement and damages (trillions 2019 USD per year)
@@ -377,7 +374,7 @@ option limcol = 0;
  eco2Eeq(t)..         ECO2E(t)        =E= ECO2(t) + CO2E_GHGabateB(t) * (1-MIU_GLOBAL(t)) ;
  F_GHGabateEQ(t+1)..  F_GHGabate(t+1) =E= Fcoef2*F_GHGabate(t)+ Fcoef1*CO2E_GHGabateB(t)*(1-MIU_GLOBAL(t) );
  ccatoteq(t+1)..      CCATOT(t+1)     =E= CCATOT(t) +  ECO2(T)*(5/3.666) ;
- damfraceq(t,n) ..      DAMFRAC(t,n)      =E= qdam * a2*TATM(t)**2 + (1-qdam)* (1 - 1 / (1 + a2*TATM(t)**2 +  a3*TATM(t)**n3));
+ damfraceq(t,n) ..      DAMFRAC(t,n)      =E= ECO("quad",n) * ECO("a2",n)*TATM(t)**2 + (1-ECO("quad",n)) * (1 - 1 / (1 + ECO("a2",n)*TATM(t)**2 +  ECO("a3",n)*TATM(t)**ECO("n3",n)));
  dameq(t,n)..           DAMAGES(t,n)      =E= YGROSS(t,n) * DAMFRAC(t,n);
  abatefraceq(T,n)..     ABATECOSTFRAC(T,n) =E= COST1TOT(T,n)  * (MIU(T,n)**EXPCOST2);
  abateeq(T,n)..         ABATECOST(T,n)   =E= YGROSS(T,n) * ABATECOSTFRAC(T,n);
@@ -387,7 +384,7 @@ option limcol = 0;
  ygrosseq(t,n)..        YGROSS(t,n)      =E= aL(t,n) * (L(t,n)/1000)**(1-gama) * K(t,n)**gama;
  yneteq(t,n)..          YNET(t,n)        =E= YGROSS(t,n) * (1-damfrac(t,n));
  yy(t,n)..              Y(t,n)           =E= YNET(t,n) * (1-ABATECOSTFRAC(t,n));
- ss(t,n)..              I(t,n)           =E= S(t) * Y(t,n);
+ ss(t,n)..              I(t,n)           =E= S(t,n) * Y(t,n);
  cc(t,n)..              C(t,n)           =E= Y(t,n) - I(t,n);
  cpce(t,n)..            CPC(t,n)         =E= 1000 * C(t,n) / L(t,n);
  kk(t+1,n)..            K(t+1,n)         =E= (1-dk)**tstep * K(t,n) + tstep * I(t,n);
@@ -405,8 +402,8 @@ flag_nash_welfare_func
 
 * Ccntrol rate limits
 miu.up(t,n) = miuup(t,n);
-S.fx(t)         = optlrsav;
-*S.UP(t)         = 1;
+S.fx(t,n)         = optlrsav;
+*S.UP(t,n)         = 1;
 K.LO(t,n)         = 1;
 C.LO(t,n)         = 0.05;
 CPC.LO(t,n)       = .001;
@@ -444,20 +441,7 @@ model  RICE /all/;
 
 file resLARGE2022 /rice2023_nash.csv/; resLARGE2022.nd = 10 ; resLARGE2022.nw = 0 ; resLARGE2022.pw=20000; resLARGE2022.pc=5;
 put resLARGE2022;
+put /"Results of rice2023_nash.csv with final results: July 19, 2023";
 
-put /"SCENARIO: Low damage";
-flag_solve
-
-
-
-put /"SCENARIO: Medium damage";
-qdam = 0;
-flag_solve
-
-
-put /"SCENARIO: Strong damage";
-qdam = 0;
-a3 = 1.570397e-05;
-n3 = 7.315027067;
 flag_solve
 

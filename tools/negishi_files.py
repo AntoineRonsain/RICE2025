@@ -28,6 +28,7 @@ def flag_solve(dict):
         memory = sce
 
         string_table += '$include S-NegishiOptimal.gms\n'
+        string_table += f'put /"SCENARIO: {sce}"\n'
 
         for r in regions :
             string_table += f'put / "REGION: {r}"\n'
@@ -59,6 +60,8 @@ def flag_solve(dict):
             string_table += f'Loop(T, put scc(t,"{r}"));\n'
             string_table += 'put / "Population (exogenous)" ;\n'
             string_table += f'Loop (T, put L(T,"{r}"));\n'
+            string_table += 'put / "Saving rate";\n'
+            string_table += f'Loop(T, put S.l(T,"{r}"));\n'
 
 
         string_table += 'put /"REGION: World"\n'
@@ -68,8 +71,6 @@ def flag_solve(dict):
         string_table += 'Loop (T, put F_GHGabate.L(t) );\n'
         string_table += 'put / "Atmospheric temperature (deg c above preind)";\n'
         string_table += 'Loop(T, put TATM.l(T));\n'
-        string_table += 'put / "Saving rate";\n'
-        string_table += 'Loop(T, put S.l(T));\n'
         string_table += 'put / "MIU global";\n'
         string_table += 'Loop(T, put MIU_GLOBAL.l(T));\n'
     return string_table
@@ -88,7 +89,7 @@ def get_optim_file(repo,data):
     rice_code = repo+"gams_code/optim_files/rice2023_negishi.gms"
 
     rice2023_code = introduce_flag(optim_file_init, data)
-    optim_file_init = "tools/solver/S-NegishiOptimal_tf.gms"
+    optim_file_init = "tools/solver/s-negishi.gms"
 
     solver_code = introduce_flag(optim_file_init, data)
     text = solver_intro_model(rice2023_code, solver_code)

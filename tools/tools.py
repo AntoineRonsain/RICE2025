@@ -24,23 +24,6 @@ def multiscenarios(filename_dict):
         data_dict[i] = input_to_dict(filename_dict[i])
     return data_dict
 
-def automatic_multiscenarios(repo):
-
-    repo += 'inputs/'
-    files = os.listdir(repo)
-    scenarios = {}
-    for f in files :
-        csv_file = f.split('.')
-        if csv_file[-1]=='csv':
-            csv_file= csv_file[0].split('_')
-            if len(csv_file) ==1:
-                scenarios["medium"] = repo + f
-            elif len(csv_file) ==2:
-                scenarios[csv_file[1]] = repo + f
-            else :
-                scenarios[str(tuple(csv_file[1:]))] = repo + f
-    return multiscenarios(scenarios)
-
 
 def read_results(filename):
     "from a csv result file give the data under dictionary form"
