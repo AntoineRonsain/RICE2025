@@ -83,10 +83,14 @@ def introduce_flag(input_file, dict):
 
 
 
-def get_optim_file(repo,data):
+def get_optim_file(repo,data, dam = "S-curve"):
 
-    optim_file_init = repo + "gams_code/type_files/rice2023_negishi_tf.gms"
-    rice_code = repo+"gams_code/optim_files/rice2023_negishi.gms"
+    if dam == "S-curve":
+        optim_file_init = repo + "gams_code/type_files/rice2023_negishi_tf.gms"
+        rice_code = repo+"gams_code/optim_files/rice2023_negishi.gms"
+    else :
+        optim_file_init = repo + "gams_code/type_files/rice2023_negishi_quad_tf.gms"
+        rice_code = repo+"gams_code/optim_files/rice2023_negishi_quad.gms"
 
     rice2023_code = introduce_flag(optim_file_init, data)
     optim_file_init = "tools/solver/s-negishi.gms"

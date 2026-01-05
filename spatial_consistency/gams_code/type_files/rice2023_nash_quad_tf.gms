@@ -374,7 +374,7 @@ option limcol = 0;
  eco2Eeq(t)..         ECO2E(t)        =E= ECO2(t) + CO2E_GHGabateB(t) * (1-MIU_GLOBAL(t)) ;
  F_GHGabateEQ(t+1)..  F_GHGabate(t+1) =E= Fcoef2*F_GHGabate(t)+ Fcoef1*CO2E_GHGabateB(t)*(1-MIU_GLOBAL(t) );
  ccatoteq(t+1)..      CCATOT(t+1)     =E= CCATOT(t) +  ECO2(T)*(5/3.666) ;
- damfraceq(t,n) ..      DAMFRAC(t,n)      =E= (1 - 1 / (1 + ECO("a2",n)*TATM(t)**2 +  ECO("a3",n)*TATM(t)**ECO("n3",n)));
+ damfraceq(t,n) ..      DAMFRAC(t,n)      =E= ECO("a2",n)*TATM(t)**2;
  dameq(t,n)..           DAMAGES(t,n)      =E= YGROSS(t,n) * DAMFRAC(t,n);
  abatefraceq(T,n)..     ABATECOSTFRAC(T,n) =E= COST1TOT(T,n)  * (MIU(T,n)**EXPCOST2);
  abateeq(T,n)..         ABATECOST(T,n)   =E= YGROSS(T,n) * ABATECOSTFRAC(T,n);
@@ -441,7 +441,7 @@ model  RICE /all/;
 
 file resLARGE2022 /rice2023_nash.csv/; resLARGE2022.nd = 10 ; resLARGE2022.nw = 0 ; resLARGE2022.pw=20000; resLARGE2022.pc=5;
 put resLARGE2022;
-put /"Results of rice2023_nash.csv with final results: July 19, 2023";
+put /"Results of rice2023_nash_quad.csv with final results: July 19, 2023";
 
 flag_solve
 

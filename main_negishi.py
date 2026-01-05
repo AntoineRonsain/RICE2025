@@ -11,3 +11,7 @@ if __name__ == '__main__':
                            })
     get_optim_file(repo, data)
 
+    data = multiscenarios({"Low Damage": repo + 'inputs/low_dam.csv'
+                           })
+    get_optim_file(repo, data, dam ="Quadratic")
+

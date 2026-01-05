@@ -97,7 +97,9 @@ def flag_solve(dict):
             string_table += modif_table(dict, memory, sce)
         memory = sce
 
+
         string_table += '$include S-Nash-FX1.gms\n'
+        string_table += f'put /"SCENARIO: {sce}"\n'
 
         for r in regions :
             string_table += f'put /"REGION: {r}"\n'
@@ -157,11 +159,14 @@ def introduce_flag(input_file, dict):
 
 
 
-def get_optim_file(repo,data):
+def get_optim_file(repo,data, dam = "S-curve"):
 
-
-    optim_file_init = repo +"gams_code/type_files/rice2023_nash_tf.gms"
-    rice_code = repo +"gams_code/optim_files/rice2023_nash.gms"
+    if dam == "S-curve":
+        optim_file_init = repo + "gams_code/type_files/rice2023_nash_tf.gms"
+        rice_code = repo+"gams_code/optim_files/rice2023_negishi.gms"
+    else :
+        optim_file_init = repo +"gams_code/type_files/rice2023_nash_quad_tf.gms"
+        rice_code = repo +"gams_code/optim_files/rice2023_nash.gms"
 
 
     rice2023_code = introduce_flag(optim_file_init, data)
