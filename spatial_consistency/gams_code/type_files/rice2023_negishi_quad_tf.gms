@@ -60,8 +60,8 @@ PARAMETERS
 ** Preferences and timing
 
         Q       Utility derivative scaling factor                   /1E4 /
-        Q1                                                          /1E5 /
-        Q2                                                          /1E6 /
+        Q1                                                          /1E3 /
+        Q2                                                          /1E3 /
         betaclim                                                    / 0.6  /
         elasmu    Elasticity of marginal utility of consumption     / 0.9  /
         rhof      Riskfree real rate per year                       / .001 /
@@ -405,6 +405,11 @@ K.LO(t,n)         = 1;
 C.LO(t,n)         = 0.05;
 CPC.LO(t,n)       = .001;
 
+RES0LOM.SCALE(t) = 1.0E+6;
+RES0.SCALE(t) = 100;
+MAT.SCALE(t)  = 100;
+
+
 *Control for terminal savings rate
 *set lag10(t) ;
 *lag10(t) =  yes$(t.val gt card(t)-10);
@@ -425,6 +430,7 @@ option limcol = 0;
 
 model  RICE /all/;
 
+RICE.scaleopt = 1;
 
 ********************************************************************************
 *****///////////     Equal Weight Solve  --  Negishi weight     ///////////*****

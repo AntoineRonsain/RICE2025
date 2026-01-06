@@ -7,7 +7,7 @@ $offtext
 $title        July 19, 2023 (dice2023.gms)
 
 set
-    t  Time periods (5 years per period)                     /1*101/
+    t  Time periods (5 years per period)                     /1*81/
     ISER    Weight searching interation index  /1*5 /
     ITER    Nash loop                          /1*5 /
     SIT     Nash loop for region1-15           /1*25/
@@ -60,7 +60,7 @@ PARAMETERS
 
         Q       Utility derivative scaling factor                   /1E4 /
         Q1                                                          /1E5 /
-        Q2                                                          /1E6 /
+        Q2                                                          /1E8 /
         betaclim                                                    / 0.6  /
         elasmu    Elasticity of marginal utility of consumption     / 0.9  /
         rhof      Riskfree real rate per year                       / .001 /
@@ -407,6 +407,7 @@ S.fx(t,n)         = optlrsav;
 K.LO(t,n)         = 1;
 C.LO(t,n)         = 0.05;
 CPC.LO(t,n)       = .001;
+
 
 *Control for terminal savings rate
 *set lag10(t) ;

@@ -7,8 +7,8 @@ from tools.compute_st_dev import *
 if __name__ == "__main__":
 
     path = os.path.dirname(os.path.dirname(__file__))
-    data = read_results(os.path.join(path, "spatial_consistency/outputs/rice2023_negishi.csv"))
-    data = data['High Damage']
+    data = read_results(os.path.join(path, "spatial_consistency/outputs/rice2023_negishi_quad.csv"))
+    data = data['Low Damage']
 
 
     regions = list(data.keys())

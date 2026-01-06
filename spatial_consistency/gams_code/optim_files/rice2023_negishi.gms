@@ -575,6 +575,8 @@ scc("1","USA") = scc("2","USA") * .85;
 Loop(T, put scc(t,"USA"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"USA"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"USA"));
 put / "Saving rate";
 Loop(T, put S.l(T,"USA"));
 put / "REGION: RUS"
@@ -606,6 +608,8 @@ scc("1","RUS") = scc("2","RUS") * .85;
 Loop(T, put scc(t,"RUS"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"RUS"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"RUS"));
 put / "Saving rate";
 Loop(T, put S.l(T,"RUS"));
 put / "REGION: JAP"
@@ -637,6 +641,8 @@ scc("1","JAP") = scc("2","JAP") * .85;
 Loop(T, put scc(t,"JAP"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"JAP"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"JAP"));
 put / "Saving rate";
 Loop(T, put S.l(T,"JAP"));
 put / "REGION: CAN"
@@ -668,6 +674,8 @@ scc("1","CAN") = scc("2","CAN") * .85;
 Loop(T, put scc(t,"CAN"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"CAN"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"CAN"));
 put / "Saving rate";
 Loop(T, put S.l(T,"CAN"));
 put / "REGION: OAB"
@@ -699,6 +707,8 @@ scc("1","OAB") = scc("2","OAB") * .85;
 Loop(T, put scc(t,"OAB"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"OAB"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"OAB"));
 put / "Saving rate";
 Loop(T, put S.l(T,"OAB"));
 put / "REGION: EU"
@@ -730,6 +740,8 @@ scc("1","EU") = scc("2","EU") * .85;
 Loop(T, put scc(t,"EU"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"EU"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"EU"));
 put / "Saving rate";
 Loop(T, put S.l(T,"EU"));
 put / "REGION: CHN"
@@ -761,6 +773,8 @@ scc("1","CHN") = scc("2","CHN") * .85;
 Loop(T, put scc(t,"CHN"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"CHN"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"CHN"));
 put / "Saving rate";
 Loop(T, put S.l(T,"CHN"));
 put / "REGION: IND"
@@ -792,6 +806,8 @@ scc("1","IND") = scc("2","IND") * .85;
 Loop(T, put scc(t,"IND"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"IND"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"IND"));
 put / "Saving rate";
 Loop(T, put S.l(T,"IND"));
 put / "REGION: BRZ"
@@ -823,6 +839,8 @@ scc("1","BRZ") = scc("2","BRZ") * .85;
 Loop(T, put scc(t,"BRZ"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"BRZ"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"BRZ"));
 put / "Saving rate";
 Loop(T, put S.l(T,"BRZ"));
 put / "REGION: SAF"
@@ -854,6 +872,8 @@ scc("1","SAF") = scc("2","SAF") * .85;
 Loop(T, put scc(t,"SAF"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"SAF"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"SAF"));
 put / "Saving rate";
 Loop(T, put S.l(T,"SAF"));
 put / "REGION: OEU"
@@ -885,6 +905,8 @@ scc("1","OEU") = scc("2","OEU") * .85;
 Loop(T, put scc(t,"OEU"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"OEU"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"OEU"));
 put / "Saving rate";
 Loop(T, put S.l(T,"OEU"));
 put / "REGION: REF"
@@ -916,6 +938,8 @@ scc("1","REF") = scc("2","REF") * .85;
 Loop(T, put scc(t,"REF"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"REF"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"REF"));
 put / "Saving rate";
 Loop(T, put S.l(T,"REF"));
 put / "REGION: ASIA"
@@ -947,6 +971,8 @@ scc("1","ASIA") = scc("2","ASIA") * .85;
 Loop(T, put scc(t,"ASIA"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"ASIA"));
 put / "Saving rate";
 Loop(T, put S.l(T,"ASIA"));
 put / "REGION: MAF"
@@ -978,6 +1004,8 @@ scc("1","MAF") = scc("2","MAF") * .85;
 Loop(T, put scc(t,"MAF"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"MAF"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF"));
 put / "Saving rate";
 Loop(T, put S.l(T,"MAF"));
 put / "REGION: LAM"
@@ -1009,6 +1037,8 @@ scc("1","LAM") = scc("2","LAM") * .85;
 Loop(T, put scc(t,"LAM"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"LAM"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"LAM"));
 put / "Saving rate";
 Loop(T, put S.l(T,"LAM"));
 put /"REGION: World"
@@ -1153,6 +1183,8 @@ scc("1","USA") = scc("2","USA") * .85;
 Loop(T, put scc(t,"USA"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"USA"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"USA"));
 put / "Saving rate";
 Loop(T, put S.l(T,"USA"));
 put / "REGION: RUS"
@@ -1184,6 +1216,8 @@ scc("1","RUS") = scc("2","RUS") * .85;
 Loop(T, put scc(t,"RUS"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"RUS"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"RUS"));
 put / "Saving rate";
 Loop(T, put S.l(T,"RUS"));
 put / "REGION: JAP"
@@ -1215,6 +1249,8 @@ scc("1","JAP") = scc("2","JAP") * .85;
 Loop(T, put scc(t,"JAP"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"JAP"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"JAP"));
 put / "Saving rate";
 Loop(T, put S.l(T,"JAP"));
 put / "REGION: CAN"
@@ -1246,6 +1282,8 @@ scc("1","CAN") = scc("2","CAN") * .85;
 Loop(T, put scc(t,"CAN"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"CAN"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"CAN"));
 put / "Saving rate";
 Loop(T, put S.l(T,"CAN"));
 put / "REGION: OAB"
@@ -1277,6 +1315,8 @@ scc("1","OAB") = scc("2","OAB") * .85;
 Loop(T, put scc(t,"OAB"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"OAB"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"OAB"));
 put / "Saving rate";
 Loop(T, put S.l(T,"OAB"));
 put / "REGION: EU"
@@ -1308,6 +1348,8 @@ scc("1","EU") = scc("2","EU") * .85;
 Loop(T, put scc(t,"EU"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"EU"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"EU"));
 put / "Saving rate";
 Loop(T, put S.l(T,"EU"));
 put / "REGION: CHN"
@@ -1339,6 +1381,8 @@ scc("1","CHN") = scc("2","CHN") * .85;
 Loop(T, put scc(t,"CHN"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"CHN"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"CHN"));
 put / "Saving rate";
 Loop(T, put S.l(T,"CHN"));
 put / "REGION: IND"
@@ -1370,6 +1414,8 @@ scc("1","IND") = scc("2","IND") * .85;
 Loop(T, put scc(t,"IND"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"IND"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"IND"));
 put / "Saving rate";
 Loop(T, put S.l(T,"IND"));
 put / "REGION: BRZ"
@@ -1401,6 +1447,8 @@ scc("1","BRZ") = scc("2","BRZ") * .85;
 Loop(T, put scc(t,"BRZ"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"BRZ"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"BRZ"));
 put / "Saving rate";
 Loop(T, put S.l(T,"BRZ"));
 put / "REGION: SAF"
@@ -1432,6 +1480,8 @@ scc("1","SAF") = scc("2","SAF") * .85;
 Loop(T, put scc(t,"SAF"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"SAF"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"SAF"));
 put / "Saving rate";
 Loop(T, put S.l(T,"SAF"));
 put / "REGION: OEU"
@@ -1463,6 +1513,8 @@ scc("1","OEU") = scc("2","OEU") * .85;
 Loop(T, put scc(t,"OEU"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"OEU"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"OEU"));
 put / "Saving rate";
 Loop(T, put S.l(T,"OEU"));
 put / "REGION: REF"
@@ -1494,6 +1546,8 @@ scc("1","REF") = scc("2","REF") * .85;
 Loop(T, put scc(t,"REF"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"REF"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"REF"));
 put / "Saving rate";
 Loop(T, put S.l(T,"REF"));
 put / "REGION: ASIA"
@@ -1525,6 +1579,8 @@ scc("1","ASIA") = scc("2","ASIA") * .85;
 Loop(T, put scc(t,"ASIA"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"ASIA"));
 put / "Saving rate";
 Loop(T, put S.l(T,"ASIA"));
 put / "REGION: MAF"
@@ -1556,6 +1612,8 @@ scc("1","MAF") = scc("2","MAF") * .85;
 Loop(T, put scc(t,"MAF"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"MAF"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF"));
 put / "Saving rate";
 Loop(T, put S.l(T,"MAF"));
 put / "REGION: LAM"
@@ -1587,6 +1645,8 @@ scc("1","LAM") = scc("2","LAM") * .85;
 Loop(T, put scc(t,"LAM"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"LAM"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"LAM"));
 put / "Saving rate";
 Loop(T, put S.l(T,"LAM"));
 put /"REGION: World"
