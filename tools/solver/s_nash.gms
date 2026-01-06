@@ -1,4 +1,4 @@
-MIU.LO(t,n)   = 0;
+miu.lo(t,n) = 1E-6;
 MIU.UP(t,n)   = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
 

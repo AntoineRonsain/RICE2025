@@ -3,7 +3,7 @@
 *******/////////////////////////////////////////initial weight
 *$ontext
 
-miu.lo(t,n) = 0;
+miu.lo(t,n) = 1E-6;
 miu.up(t,n) = miuup(t,n);
 
 
@@ -20,7 +20,7 @@ LB(T,N)     = (1/FNKM(t,n))/FWKM(T);
 LOOP(ISER,
 **   solve the first round optimal (equal weight)
 
-     MIU.LO(t,n) = 0;
+     miu.lo(t,n) = 1E-6;
      MIU.UP(t,n) = 1;
 
      SOLVE RICE MAXIMIZING UTILITY2 USING NLP;
@@ -49,7 +49,7 @@ LOOP(ISER,
 *//////////////////////////////////////////////////////////////////////////////
 **Optimal Case
 
-miu.lo(t,n) = 0;
+miu.lo(t,n) = 1E-6;
 miu.up(t,n) = miuup(t,n);
 
 

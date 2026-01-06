@@ -81,7 +81,7 @@ sets     tfirst(t), tsecond(t), tlast(t);
 
 
 SETS ECOT
-/pop0, popasym, popadj, a0, gA0, dela, sig0, gsigma1, delgsig, asymgsig, q0, K0, miu0, a2, a3, n3, quad/
+/pop0, popasym, popadj, a0, gA0, dela, sig0, gsigma1, delgsig, asymgsig, q0, K0, miu0, a2, a3, n3/
 
 TABLE ECO(ECOT,N)
           USA         RUS         JAP          CAN         OAB         EU          CHN         IND         BRZ           SAF         OEU          REF         ASIA         LAM          MAF0          MAF1          MAF2          MAF3          MAF4          MAF5          MAF6          MAF7          MAF8          MAF9
@@ -100,8 +100,7 @@ K0        43.6249     7.43774     16.9125      4.35539     6.51907     53.9706  
 miu0      0.0486596   0.0157365   0.0139357    0.0115777   0.0120244   0.0330613   0.0309619   0.0222417   0.0150853     0.00639427  0.00800447   0.0101568   0.0285936    0.0172459    0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258
 a2        0.003467    0.003467    0.003467     0.003467    0.003467    0.003467    0.003467    0.003467    0.003467      0.003467    0.003467     0.003467    0.003467     0.003467     0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467
 a3        0           0           0            0           0           0           0           0           0             0           0            0           0            0            0             0             0             0             0             0             0             0             0             0
-n3        0           0           0            0           0           0           0           0           0             0           0            0           0            0            0             0             0             0             0             0             0             0             0             0
-quad      1           1           1            1           1           1           1           1           1             1           1            1           1            1            1             1             1             1             1             1             1             1             1             1;
+n3        0           0           0            0           0           0           0           0           0             0           0            0           0            0            0             0             0             0             0             0             0             0             0             0;
 
 
 
@@ -493,7 +492,7 @@ put /"Results of rice2023_negishi_quad.csv with final results: July 19, 2023";
 *******/////////////////////////////////////////initial weight
 *$ontext
 
-miu.lo(t,n) = 0;
+miu.lo(t,n) = 1E-6;
 miu.up(t,n) = miuup(t,n);
 
 
@@ -510,7 +509,7 @@ LB(T,N)     = (1/FNKM(t,n))/FWKM(T);
 LOOP(ISER,
 **   solve the first round optimal (equal weight)
 
-     MIU.LO(t,n) = 0;
+     miu.lo(t,n) = 1E-6;
      MIU.UP(t,n) = 1;
 
      SOLVE RICE MAXIMIZING UTILITY2 USING NLP;
@@ -539,7 +538,7 @@ LOOP(ISER,
 *//////////////////////////////////////////////////////////////////////////////
 **Optimal Case
 
-miu.lo(t,n) = 0;
+miu.lo(t,n) = 1E-6;
 miu.up(t,n) = miuup(t,n);
 
 

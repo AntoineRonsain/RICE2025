@@ -8,13 +8,13 @@ if __name__ == "__main__":
 
     path = os.path.dirname(os.path.dirname(__file__))
     data = read_results(os.path.join(path, "spatial_consistency/outputs/rice2023_negishi.csv"))
-    data_n = read_results(os.path.join(path, "spatial_consistency/outputs/rice2023_nordhaus_negishi.csv"))
+    data_n = read_results(os.path.join(path, "spatial_consistency/outputs/rice2023_negishi_quad_10Asia.csv"))
 
-    data["Nordhaus"] = data_n["Nordhaus"]
+    data["Low Damage"] = data_n["Low Damage"]
 
-    corr = {"Nordhaus": "Low Damage",
-            "Middle-Damage": "Middle Damage",
-            "Standard": "High Damage",
+    corr = {"Low Damage": "Low Damage",
+            "Medium Damage": "Middle Damage",
+            "High Damage": "High Damage",
             }
 
     sce = list(corr.keys())
