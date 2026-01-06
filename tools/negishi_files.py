@@ -60,6 +60,8 @@ def flag_solve(dict):
             string_table += f'Loop(T, put scc(t,"{r}"));\n'
             string_table += 'put / "Population (exogenous)" ;\n'
             string_table += f'Loop (T, put L(T,"{r}"));\n'
+            string_table += 'put / "Carbon price";\n'
+            string_table += f'Loop(T, put cprice.l(T,"{r}"));\n'
             string_table += 'put / "Saving rate";\n'
             string_table += f'Loop(T, put S.l(T,"{r}"));\n'
 
