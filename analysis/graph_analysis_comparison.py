@@ -1,206 +1,253 @@
-import matplotlib.pyplot as plt
+import os
 import numpy as np
-from tools.tools import *
-from tools.analysis_tools import *
+import pandas as pd
 import seaborn as sns
+import matplotlib.pyplot as plt
+from pathlib import Path
 
-path = os.path.dirname(os.path.dirname(__file__))
-data_negishi = read_uncerainties_results(os.path.join(path,"spatial_consistency/outputs/rice2023_negishi.csv"))
-data10_negishi = read_uncerainties_results(os.path.join(path,"spatial_consistency/outputs/rice2023_negishi_10asia.csv"))
+# Assuming these exist in your project structure
+from tools.tools import read_uncerainties_results
 
-data_nash = read_uncerainties_results(os.path.join(path,"spatial_consistency/outputs/rice2023_nash.csv"))
-data10_nash = read_uncerainties_results(os.path.join(path,"spatial_consistency/outputs/rice2023_nash_10asia.csv"))
-
-data_dict = {
-    'Nash + Low Damage': {
-        '1Asia': data_nash['Nordhaus'],
-        '10Asia': data10_nash['Nordhaus']},
-    'Nash + Middle Damage': {
-        '1Asia': data_nash['Middle-Damage'],
-        '10Asia': data10_nash['Middle-Damage']},
-    'Nash + Strong Damage': {
-        '1Asia': data_nash['Standard'],
-        '10Asia': data10_nash['Standard']},
-    'Negishi + Low Damage': {
-        '1Asia': data_negishi['Nordhaus'],
-        '10Asia': data10_negishi['Nordhaus']},
-    'Negishi + Middle Damage': {
-        '1Asia': data_negishi['Middle-Damage'],
-        '10Asia': data10_negishi['Middle-Damage']},
-    'Negishi + Strong Damage': {
-        '1Asia': data_negishi['Standard'],
-        '10Asia': data10_negishi['Standard']},
+# --- CONFIGURATION ---
+# Plot styling parameters for publication quality
+STYLE_CONFIG = {
+    'font_scale': 1.5,
+    'title_size': 35,
+    'axis_label_size': 25,
+    'tick_size': 25,
+    'legend_size': 20,
+    'line_width': 2.5
 }
 
-for m in data_dict.keys():
-    for asia in data_dict[m].keys():
-        for r in data_dict[m][asia].keys():
-            for p in data_dict[m][asia][r].keys():
-                data_dict[m][asia][r][p] = data_dict[m][asia][r][p][:90]
+
+def load_scenario_data(base_path):
+    """
+    Loads all RICE results files and structures them into a dictionary.
+
+    Args:
+        base_path (Path): Path to the project root.
+
+    Returns:
+        dict: Structured dictionary containing all scenarios.
+    """
+    output_dir = base_path / "spatial_consistency/outputs"
+
+    def read_file(filename):
+        return read_uncerainties_results(os.path.join(output_dir, filename))
+
+    # Load raw data
+    d_negishi = read_file("rice2023_negishi.csv")
+    d10_negishi = read_file("rice2023_negishi_10asia.csv")
+    d_nash = read_file("rice2023_nash.csv")
+    d10_nash = read_file("rice2023_nash_10asia.csv")
+
+    # Map readable names to data sources
+    # Structure: {Scenario Name: {'1Asia': data, '10Asia': data}}
+    full_data = {
+        'Nash + Low Damage': {
+            '1Asia': d_nash['Nordhaus'], '10Asia': d10_nash['Nordhaus']},
+        'Nash + Middle Damage': {
+            '1Asia': d_nash['Middle-Damage'], '10Asia': d10_nash['Middle-Damage']},
+        'Nash + Strong Damage': {
+            '1Asia': d_nash['Standard'], '10Asia': d10_nash['Standard']},
+        'Negishi + Low Damage': {
+            '1Asia': d_negishi['Nordhaus'], '10Asia': d10_negishi['Nordhaus']},
+        'Negishi + Middle Damage': {
+            '1Asia': d_negishi['Middle-Damage'], '10Asia': d10_negishi['Middle-Damage']},
+        'Negishi + Strong Damage': {
+            '1Asia': d_negishi['Standard'], '10Asia': d10_negishi['Standard']},
+    }
+
+    # Slice data to the first 90 time steps to ensure consistency
+    for model in full_data:
+        for resolution in full_data[model]:
+            for region in full_data[model][resolution]:
+                for param in full_data[model][resolution][region]:
+                    full_data[model][resolution][region][param] = \
+                        full_data[model][resolution][region][param][:90]
+
+    return full_data
 
 
-data = {
-    'region' :[],
-    'value' : [],
-    'model' : []
-}
+def create_boxplot(df, x_col, y_col, hue_col, title, ylabel="", xlabel="", legend_loc='upper left'):
+    """
+    Generic function to create a standardized boxplot using Seaborn.
 
-for m in data_dict.keys() :
-    for r in data_dict[m]['1Asia'].keys():
-        if r != "World" and r != "ASIA":
-            emission_control = (np.array(data_dict[m]['10Asia'][r]["Emissions control rate"][:90])\
-                               - np.array(data_dict[m]['1Asia'][r]["Emissions control rate"][:90]))
-            for t in emission_control:
-                data['region'].append(r)
-                data['value'].append(t)
-                data['model'].append(m)
+    Args:
+        df (pd.DataFrame): Data source.
+        x_col (str): Column for x-axis.
+        y_col (str): Column for y-axis.
+        hue_col (str): Column for grouping (color).
+        title (str): Chart title.
+        ylabel (str, optional): Y-axis label.
+        xlabel (str, optional): X-axis label.
+        legend_loc (str, optional): Location of the legend.
+    """
+    plt.figure(figsize=(16, 10))
+    sns.set_style("whitegrid")
 
+    ax = sns.boxplot(x=x_col, y=y_col, data=df, hue=hue_col, palette="Set2", linewidth=STYLE_CONFIG['line_width'])
 
-df = pd.DataFrame(data)
-# Create additional grouping data
-# Plots graph
-sns.boxplot(x='region', y='value', data=df, hue='model')
-plt.title('Change in Emission control',fontsize= 35)
-plt.legend(bbox_to_anchor=(1.05, 1),fontsize= 20,loc='upper left')
-plt.xlabel('', fontsize="25")
-plt.ylabel('', fontsize="25")
-for tickLabel in plt.gca().get_xticklabels() + plt.gca().get_yticklabels():
-    tickLabel.set_fontsize(25)
-plt.show()
+    ax.set_title(title, fontsize=STYLE_CONFIG['title_size'], pad=20)
+    ax.set_xlabel(xlabel, fontsize=STYLE_CONFIG['axis_label_size'])
+    ax.set_ylabel(ylabel, fontsize=STYLE_CONFIG['axis_label_size'])
 
-data = {
-    'region' :[],
-    'value' : [],
-    'model' : []
-}
+    ax.tick_params(axis='both', which='major', labelsize=STYLE_CONFIG['tick_size'])
 
-for m in data_dict.keys() :
-        emission_control = (np.array(data_dict[m]['10Asia']['ASIA0']["Emissions control rate"][:90])\
-                           - np.array(data_dict[m]['10Asia']['ASIA2']["Emissions control rate"][:90]))
-        for t in emission_control:
-            data['region'].append('"Sub-Asia n°1" / "Sub-Asia  n°3"')
-            data['value'].append(t)
-            data['model'].append(m)
+    # Legend handling
+    if legend_loc == 'outside':
+        plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0, fontsize=STYLE_CONFIG['legend_size'])
+    else:
+        plt.legend(loc=legend_loc, fontsize=STYLE_CONFIG['legend_size'], frameon=True, framealpha=0.9)
 
-        emission_control = (np.array(data_dict[m]['10Asia']['ASIA0']["Emissions control rate"][:90])\
-                           - np.array(data_dict[m]['1Asia']['ASIA']["Emissions control rate"][:90]))
-        for t in emission_control:
-            data['region'].append('"Sub-Asia n°X" / Asia')
-            data['value'].append(t)
-            data['model'].append(m)
+    plt.tight_layout()
+    plt.show()
 
 
+# --- DATA PROCESSING FUNCTIONS ---
+
+def prep_emission_control_diff(data_dict):
+    """Prepares data for regional emission control differences."""
+    records = []
+    for m in data_dict:
+        # Iterate over regions, excluding aggregates
+        for r in data_dict[m]['1Asia']:
+            if r not in ["World", "ASIA"]:
+                # Difference: 10Asia (Disaggregated) - 1Asia (Global)
+                diff = (np.array(data_dict[m]['10Asia'][r]["Emissions control rate"]) -
+                        np.array(data_dict[m]['1Asia'][r]["Emissions control rate"]))
+
+                for val in diff:
+                    records.append({'region': r, 'value': val, 'model': m})
+    return pd.DataFrame(records)
 
 
+def prep_asia_subregion_diff(data_dict):
+    """Prepares data for specific sub-Asian region comparisons."""
+    records = []
+    for m in data_dict:
+        d10 = data_dict[m]['10Asia']
+        d1 = data_dict[m]['1Asia']
 
-df = pd.DataFrame(data)
-# Create additional grouping data
-# Plots graph
-sns.boxplot(x='region', y='value', data=df, hue='model')
-plt.title('Change in Emission control',fontsize= 35)
-plt.legend(bbox_to_anchor=(1.05, 1),fontsize= 20,loc='upper left')
-plt.xlabel('', fontsize="25")
-plt.ylabel('', fontsize="25")
-for tickLabel in plt.gca().get_xticklabels() + plt.gca().get_yticklabels():
-    tickLabel.set_fontsize(25)
-plt.show()
+        diff_intra = np.array(d10['ASIA0']["Emissions control rate"]) - np.array(d10['ASIA2']["Emissions control rate"])
+        for val in diff_intra:
+            records.append({'comparison': '"Sub-Asia n°1" / "Sub-Asia n°3"', 'value': val, 'model': m})
 
 
+        diff_inter = np.array(d10['ASIA0']["Emissions control rate"]) - np.array(d1['ASIA']["Emissions control rate"])
+        for val in diff_inter:
+            records.append({'comparison': '"Sub-Asia n°X" / Asia', 'value': val, 'model': m})
 
-data = {
-    'param' :[],
-    'value' : [],
-    'model' : []
-}
-for m in data_dict.keys() :
-    delta_tatm = np.array(data_dict[m]['10Asia']['World']["Atmospheric temperature (deg c above preind)"]) \
-                    - np.array(data_dict[m]['1Asia']['World']["Atmospheric temperature (deg c above preind)"])
-    delta_eco2 = np.array(data_dict[m]['10Asia']['World']["Total CO2 Emissions, GTCO2/year"]) \
-                    - np.array(data_dict[m]['1Asia']['World']["Total CO2 Emissions, GTCO2/year"])
-    for t in range(len(delta_tatm)):
-        data['param'].append('T')
-        data['value'].append(delta_tatm[t])
-        data['model'].append(m)
-
-        data['param'].append('CO2')
-        data['value'].append(delta_eco2[t])
-        data['model'].append(m)
+    return pd.DataFrame(records)
 
 
-df = pd.DataFrame(data)
-# Create additional grouping data
-# Plots graph
-sns.boxplot(x='param', y='value', data=df[df['param']=='T'], hue='model')
-plt.title('Change in temperature (°C)',fontsize= 35)
-plt.legend(fontsize= 35,loc='upper right')
-for tickLabel in plt.gca().get_xticklabels() + plt.gca().get_yticklabels():
-    tickLabel.set_fontsize(25)
-plt.show()
+def prep_global_params_diff(data_dict):
+    """Prepares data for global Temperature and CO2 differences."""
+    records = []
+    for m in data_dict:
+        # Temperature
+        delta_t = (np.array(data_dict[m]['10Asia']['World']["Atmospheric temperature (deg c above preind)"]) -
+                   np.array(data_dict[m]['1Asia']['World']["Atmospheric temperature (deg c above preind)"]))
+
+        # CO2 Emissions
+        delta_co2 = (np.array(data_dict[m]['10Asia']['World']["Total CO2 Emissions, GTCO2/year"]) -
+                     np.array(data_dict[m]['1Asia']['World']["Total CO2 Emissions, GTCO2/year"]))
+
+        for t_val, co2_val in zip(delta_t, delta_co2):
+            records.append({'param': 'Temperature', 'value': t_val, 'model': m})
+            records.append({'param': 'CO2 Emissions', 'value': co2_val, 'model': m})
+
+    return pd.DataFrame(records)
 
 
-sns.boxplot(x='param', y='value', data=df[df['param']=='CO2'], hue='model')
-plt.title('Change in co2 emissions')
-plt.show()
+def prep_gdp_diff(data_dict):
+    """Prepares data for global GDP differences (sum of regions)."""
+    records = []
+    for m in data_dict:
+        # Sum GDP across all regions (excluding World) for both models
+        gdp_1 = sum(np.array(data_dict[m]['1Asia'][r]["Output, net net trill 2019$"])
+                    for r in data_dict[m]['1Asia'] if r != "World")
+
+        gdp_10 = sum(np.array(data_dict[m]['10Asia'][r]["Output, net net trill 2019$"])
+                     for r in data_dict[m]['10Asia'] if r != "World")
+
+        delta_y = gdp_10 - gdp_1
+        for val in delta_y:
+            records.append({'param': 'Change in GDP', 'value': val, 'model': m})
+    return pd.DataFrame(records)
 
 
+def prep_gdp_per_capita_diff(data_dict):
+    """Prepares data for GDP per capita differences."""
+    records = []
+    for m in data_dict:
+        # Sum GDP and Population
+        gdp_1 = sum(np.array(data_dict[m]['1Asia'][r]["Output, net net trill 2019$"])
+                    for r in data_dict[m]['1Asia'] if r != "World")
+        pop_1 = sum(np.array(data_dict[m]['1Asia'][r]["Population (exogenous)"])
+                    for r in data_dict[m]['1Asia'] if r != "World")
+
+        gdp_10 = sum(np.array(data_dict[m]['10Asia'][r]["Output, net net trill 2019$"])
+                     for r in data_dict[m]['10Asia'] if r != "World")
+
+        # Note: Population is exogenous and should be identical, using pop_1 for normalization
+        # Formula: (Delta GDP / Total Pop) * 1000 to get $/capita
+        delta_y_capita = ((gdp_10 - gdp_1) / pop_1) * 1000
+
+        for val in delta_y_capita:
+            records.append({'param': 'Change in GDP per capita', 'value': val, 'model': m})
+    return pd.DataFrame(records)
 
 
-data = {
-    'param' :[],
-    'value' : [],
-    'model' : []
-}
+if __name__ == "__main__":
 
-for m in data_dict.keys() :
-    yy = 0
-    yy10 = 0
-    for r in data_dict[m]['1Asia'].keys():
-        if r != "World" :
-            yy += np.array(data_dict[m]['1Asia'][r]["Output, net net trill 2019$"])
-    for r in data_dict[m]['10Asia'].keys():
-        if r != "World" :
-            yy10 += np.array(data_dict[m]['10Asia'][r]["Output, net net trill 2019$"])
-    delta_y = yy10 - yy
-    for t in delta_y:
-        data['param'].append('Change in GDP')
-        data['value'].append(t)
-        data['model'].append(m)
+    base_dir = Path(__file__).resolve().parents[2]  # Adjust parent level if needed
 
-df = pd.DataFrame(data)
-# Create additional grouping data
-# Plots graph
-sns.boxplot(x='param', y='value', data=df[df['param']=='Change in GDP'], hue='model')
-plt.title('Change in GDP')
-plt.show()
+    data_dict = load_scenario_data(base_dir)
 
-data = {
-    'param' :[],
-    'value' : [],
-    'model' : []
-}
-for m in data_dict.keys() :
-    yy = 0
-    yy10 = 0
-    pop = 0
-    for r in data_dict[m]['1Asia'].keys():
-        if r != "World" :
-            yy += np.array(data_dict[m]['1Asia'][r]["Output, net net trill 2019$"])
-            pop += np.array(data_dict[m]['1Asia'][r]["Population (exogenous)"])
-    for r in data_dict[m]['10Asia'].keys():
-        if r != "World" :
-            yy10 += np.array(data_dict[m]['10Asia'][r]["Output, net net trill 2019$"])
-    delta_y = (yy10 - yy) / pop * 1000
-    for t in delta_y:
-        data['param'].append('Change in GDP per capita')
-        data['value'].append(t)
-        data['model'].append(m)
+    df_emissions = prep_emission_control_diff(data_dict)
+    create_boxplot(
+        df_emissions, x_col='region', y_col='value', hue_col='model',
+        title='Change in Emission Control (Regional)',
+        legend_loc='outside'
+    )
 
-df = pd.DataFrame(data)
-# Create additional grouping data
-# Plots graph
-sns.boxplot(x='param', y='value', data=df[df['param']=='Change in GDP per capita'], hue='model')
-plt.title('Change in GDP per capita (000 $/hab)',fontsize= 35)
-for tickLabel in plt.gca().get_xticklabels() + plt.gca().get_yticklabels():
-    tickLabel.set_fontsize(25)
-plt.legend(fontsize= 35,loc='lower right')
-plt.show()
+    df_asia = prep_asia_subregion_diff(data_dict)
+    create_boxplot(
+        df_asia, x_col='comparison', y_col='value', hue_col='model',
+        title='Asian Sub-regional Differences',
+        legend_loc='outside'
+    )
+
+    df_global = prep_global_params_diff(data_dict)
+    create_boxplot(
+        df_global[df_global['param'] == 'Temperature'],
+        x_col='param', y_col='value', hue_col='model',
+        title='Change in Temperature (°C)',
+        ylabel='Delta °C',
+        legend_loc='upper right'
+    )
+
+    create_boxplot(
+        df_global[df_global['param'] == 'CO2 Emissions'],
+        x_col='param', y_col='value', hue_col='model',
+        title='Change in CO2 Emissions',
+        ylabel='Gt CO2',
+        legend_loc='upper right'
+    )
+
+    df_gdp = prep_gdp_diff(data_dict)
+    create_boxplot(
+        df_gdp, x_col='param', y_col='value', hue_col='model',
+        title='Change in Total GDP',
+        ylabel='Trillion 2019$',
+        legend_loc='upper right'
+    )
+
+    df_gdp_capita = prep_gdp_per_capita_diff(data_dict)
+    create_boxplot(
+        df_gdp_capita, x_col='param', y_col='value', hue_col='model',
+        title='Change in GDP per Capita',
+        ylabel='000 $/hab',
+        legend_loc='lower right'
+    )

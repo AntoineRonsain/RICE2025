@@ -1,129 +1,190 @@
+import os
 import matplotlib.pyplot as plt
-from tools.analysis_tools import *
-from tools.tools import *
 import matplotlib as mpl
-from tools.compute_st_dev import *
+import numpy as np
+from pathlib import Path
 
-if __name__ == "__main__":
+# Assuming these exist in your project structure
+from tools.analysis_tools import plot_param_for_region
+from tools.tools import read_results
+from tools.compute_st_dev import compute_dispersion
 
-    path = os.path.dirname(os.path.dirname(__file__))
-    data = read_results(os.path.join(path, "spatial_consistency/outputs/rice2023_negishi.csv"))
-    data_n = read_results(os.path.join(path, "spatial_consistency/outputs/rice2023_negishi_quad_10Asia.csv"))
+# --- CONFIGURATION ---
+START_YEAR = 2020
+N_STEPS = 101
+PLOT_STEPS = 37  # Plot only up to this index (approx year 2200)
 
-    data["Low Damage"] = data_n["Low Damage"]
+STYLE = {
+    'font_size_title': 20,
+    'font_size_label': 25,
+    'font_size_tick': 15,
+    'font_size_legend': 20,
+    'line_width': 2,
+}
 
-    corr = {"Low Damage": "Low Damage",
-            "Medium Damage": "Middle Damage",
-            "High Damage": "High Damage",
-            }
 
-    sce = list(corr.keys())
-    regions = list(data[sce[0]].keys())
-    regions.remove('World')
-    plot_param = plot_param_for_region(regions)
+def get_miu_limit_curve(n_steps):
+    """
+    Computes the physical upper limit curve for emission control rates.
+    """
+    miuup = np.ones(n_steps) * 0.05
+    miuup[1] = 0.10
 
-    N = 101
-    year = [2020 + i * 5 for i in range(N)]
-    limmiu2070 = 1
+    limmiu2070 = 1.0
     limmiu2120 = 1.1
     delmiumax = 0.12
-    miuup0 = .05
-    miuup = np.ones(N) * miuup0
-    miuup[1] = .10
-    for t in range(2, N):
+
+    for t in range(2, n_steps):
         if t <= 7:
             miuup[t] = delmiumax * t
         elif t <= 10:
-            miuup[t] = 0.85 + .05 * (t - 7)
+            miuup[t] = 0.85 + 0.05 * (t - 7)
         elif t <= 19:
             miuup[t] = limmiu2070
         else:
             miuup[t] = limmiu2120
+    return miuup
 
-    mu_dict= {}
-    for s in sce:
-        mu_dict[s] = {}
+
+def plot_emissions_grid(data, scenarios, regions, plot_params, miu_limit, scenario_labels):
+    """
+    Plots the Emissions Control Rate for each scenario in a grid.
+
+    Args:
+        data (dict): The main data structure.
+        scenarios (list): List of scenario keys to plot.
+        regions (list): List of regions to plot.
+        plot_params (dict): Color and style params for regions.
+        miu_limit (np.array): The upper limit curve.
+        scenario_labels (dict): Mapping from internal keys to display names.
+    """
+    years = [START_YEAR + i * 5 for i in range(N_STEPS)]
+
+    # Setup grid
+    nb_cols = 2
+    nb_rows = int(np.ceil(len(scenarios) / nb_cols))
+
+    mpl.rc('xtick', labelsize=STYLE['font_size_tick'])
+    mpl.rc('ytick', labelsize=STYLE['font_size_tick'])
+
+    fig, axs = plt.subplots(nb_rows, nb_cols, figsize=(16, 12))
+    axes_flat = axs.flatten()
+
+    for i, ax in enumerate(axes_flat):
+        if i < len(scenarios):
+            sce = scenarios[i]
+
+            # Compute dispersion (Epsilon)
+            # Reconstruct dict for compute_dispersion expecting {region: series}
+            mu_dict = {r: data[sce][r]["Emissions control rate"][:90] for r in regions}
+            epsilon = compute_dispersion(mu_dict)
+
+            # Plot Limit
+            ax.plot(years[:PLOT_STEPS], miu_limit[:PLOT_STEPS],
+                    linewidth=2, color='black', label="Maximum")
+
+            # Plot Regions
+            for r in regions:
+                series = data[sce][r]["Emissions control rate"][:PLOT_STEPS]
+                ax.plot(years[:PLOT_STEPS], series,
+                        color=plot_params[r]['color'],
+                        linestyle=plot_params[r]["style"],
+                        label=r, linewidth=1)
+
+            # Title
+            title_text = f"{scenario_labels[sce]} ($\epsilon = {np.round(epsilon, 3)}$)"
+            ax.set_title(title_text, fontsize=STYLE['font_size_title'])
+            ax.set_ylim(0, 1.2)  # Optional: fix y-scale for consistency
+
+        else:
+            # Hide unused subplots
+            ax.set_axis_off()
+
+    # Shared Legend (placed outside the last valid plot)
+    # taking handles/labels from the last plotted axis
+    handles, labels = axes_flat[len(scenarios) - 1].get_legend_handles_labels()
+    fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(1.15, 0.9),
+               fontsize=STYLE['font_size_legend'], ncol=1)
+
+    plt.tight_layout()
+    plt.show()
+
+
+def plot_global_indicators(data, scenarios, regions, scenario_labels):
+    """
+    Plots GDP per Capita and Atmospheric Temperature side-by-side.
+    """
+    years = [START_YEAR + i * 5 for i in range(N_STEPS)]
+
+    fig, (ax_gdp, ax_temp) = plt.subplots(1, 2, figsize=(18, 8))
+
+    for sce in scenarios:
+        # Aggregation
+        gdp_total = np.zeros(N_STEPS)
+        pop_total = np.zeros(N_STEPS)
+
         for r in regions:
-            mu_dict[s][r] = data[s][r]["Emissions control rate"][:90]
+            gdp_total += np.array(data[sce][r]["Output, net net trill 2019$"])
+            pop_total += np.array(data[sce][r]["Population (exogenous)"])
 
-    nb_rows = 2
-    nb_cols = 2
-    mpl.rc('xtick', labelsize=15)
-    mpl.rc('ytick', labelsize=15)
-    fig, axs = plt.subplots(nb_rows, nb_cols)
-    for i in range(nb_rows):
-        for j in range(nb_cols):
-            key = j * nb_cols + i
-            if key < len(sce):
-                dispersion = compute_dispersion(mu_dict[sce[key]])
-                axs[j, i].plot(year[:37], miuup[:37], linewidth=2, color='black', label="Maximum")
-                for r in regions:
-                    axs[j, i].plot(year[:37], data[sce[key]][r]["Emissions control rate"][:37],
-                                   color=plot_param[r]['color'], linestyle=plot_param[r]["style"], label=r, linewidth=1)
-                axs[j, i].set_title(
-                    f'$\epsilon = {np.round(dispersion, 3)}$',
-                    fontsize=35)
-    axs[j, i].remove()
-    axs[j, i - 1].legend(ncol=2, bbox_to_anchor=(2, 1), fontsize=20)
+        gdp_capita = (gdp_total / pop_total) * 1000  # Convert to k$
+        temp_world = data[sce]['World']["Atmospheric temperature (deg c above preind)"]
+
+        # Plotting
+        label = scenario_labels[sce]
+        ax_gdp.plot(years[:PLOT_STEPS], gdp_capita[:PLOT_STEPS], label=label, linewidth=3)
+        ax_temp.plot(years[:PLOT_STEPS], temp_world[:PLOT_STEPS], label=label, linewidth=3)
+
+    # Formatting GDP Plot
+    ax_gdp.set_xlabel('Time', fontsize=STYLE['font_size_label'])
+    ax_gdp.set_ylabel('GDP per capita (000$ /hab)', fontsize=STYLE['font_size_label'])
+    ax_gdp.legend(fontsize=STYLE['font_size_legend'])
+
+    # Formatting Temp Plot
+    ax_temp.set_xlabel('Time', fontsize=STYLE['font_size_label'])
+    ax_temp.set_ylabel('Atmospheric Temp Increase (°C)', fontsize=STYLE['font_size_label'])
+
+    # Tick sizing
+    for ax in [ax_gdp, ax_temp]:
+        ax.tick_params(axis='both', which='major', labelsize=STYLE['font_size_label'])
+        ax.grid(True, linestyle='--', alpha=0.5)
+
+    plt.tight_layout()
     plt.show()
 
-    nb_rows = 1
-    nb_cols = 2
-    fig, (axs1, axs2) = plt.subplots(nb_rows, nb_cols)
-    for s in sce:
-        gdp = 0
-        pop = 0
-        for r in regions:
-            gdp += np.array(data[s][r]["Output, net net trill 2019$"])
-            pop += np.array(data[s][r]["Population (exogenous)"])
-        axs1.plot(year[:37], gdp[:37] * 1000 / pop[:37], label=corr[s])
-    axs1.set_xlabel('Time', fontsize="25")
-    axs1.set_ylabel('GDP per capita (in 000 $ /hab)', fontsize="25")
-    for s in sce:
-        axs2.plot(year[:37], data[s]['World']["Atmospheric temperature (deg c above preind)"][:37], label=corr[s])
-    axs2.set_xlabel('Time', fontsize="25")
-    axs2.set_ylabel('Increase in atmospheric temperature (in °C)', fontsize="25")
-    axs1.legend(fontsize=25)
-    for ax in fig.get_axes():
-        for tickLabel in ax.get_xticklabels() + ax.get_yticklabels():
-            tickLabel.set_fontsize(25)
-    plt.show()
 
-    nb_rows = 2
-    nb_cols = 2
-    mpl.rc('xtick', labelsize=15)
-    mpl.rc('ytick', labelsize=15)
-    fig, axs = plt.subplots(nb_rows, nb_cols)
-    for i in range(nb_rows):
-        for j in range(nb_cols):
-            key = j * nb_cols + i
-            if key < len(sce):
-                dispersion = compute_dispersion(mu_dict[sce[key]])
-                axs[j, i].plot(year[:37], miuup[:37], linewidth=2,color = 'black', label = "Maximum")
-                for r in regions:
-                    axs[j, i].plot(year[:37], data[sce[key]][r]["Emissions control rate"][:37],
-                                   color = plot_param[r]['color'],linestyle = plot_param[r]["style"], label = r, linewidth=1)
-                axs[j, i].set_title(f'Emissions control rate with {corr[sce[key]]} ($\epsilon = {np.round(dispersion,3)}$)',fontsize = 20)
-    axs[j, i].remove()
-    axs[j, i-1].legend(ncol=2,bbox_to_anchor=(2, 1), fontsize=20)
-    plt.show()
+if __name__ == "__main__":
+    # 1. Load Data
+    path = Path(__file__).resolve().parents[2]
+    outputs_dir = path / "spatial_consistency/outputs"
 
-    nb_rows = 1
-    nb_cols = 2
-    fig, (axs1, axs2) = plt.subplots(nb_rows, nb_cols)
-    for s in sce :
-        gdp = 0
-        pop = 0
-        for r in regions:
-            gdp += np.array(data[s][r]["Output, net net trill 2019$"])
-            pop += np.array(data[s][r]["Population (exogenous)"])
-        axs1.plot(year[:37] , gdp[:37] * 1000 / pop[:37], label = corr[s])
-    axs1.set_xlabel('Time', fontsize="25")
-    axs1.set_ylabel('GDP per capita (in 000 $ /hab)', fontsize="25")
-    for s in sce :
-        axs2.plot(year[:37] , data[s]['World']["Atmospheric temperature (deg c above preind)"][:37] , label = corr[s])
-    axs2.set_xlabel('Time', fontsize="25")
-    axs2.set_ylabel('Increase in atmospheric temperature (in °C)', fontsize="25")
-    axs1.legend(fontsize=20)
-    plt.show()
+    data = read_results(os.path.join(outputs_dir, "rice2023_negishi.csv"))
+    data_quad = read_results(os.path.join(outputs_dir, "rice2023_negishi_quad_10Asia.csv"))
 
+    # Merge/Patch Data (Replacing Low Damage with Quad data as per original script)
+    data["Low Damage"] = data_quad["Low Damage"]
+
+    # 2. Setup Meta-data
+    scenario_mapping = {
+        "Low Damage": "Low Damage",
+        "Medium Damage": "Middle Damage",
+        "High Damage": "High Damage",
+    }
+
+    # Order scenarios based on the dictionary keys
+    active_scenarios = list(scenario_mapping.keys())
+
+    # Extract regions (excluding World)
+    region_list = list(data[active_scenarios[0]].keys())
+    if 'World' in region_list:
+        region_list.remove('World')
+
+    # Get graphic parameters
+    region_plot_params = plot_param_for_region(region_list)
+    miu_limit_curve = get_miu_limit_curve(N_STEPS)
+
+    # 3. Plots
+    plot_emissions_grid(data, active_scenarios, region_list, region_plot_params,
+                        miu_limit_curve, scenario_mapping)
+
+    plot_global_indicators(data, active_scenarios, region_list, scenario_mapping)

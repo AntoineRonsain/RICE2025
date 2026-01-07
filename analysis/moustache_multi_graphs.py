@@ -1,224 +1,241 @@
-import matplotlib.pyplot as plt
+import os
 import numpy as np
-from tools.tools import *
-from tools.analysis_tools import *
-from tools.compute_st_dev import *
+import pandas as pd
 import seaborn as sns
+import matplotlib.pyplot as plt
+from pathlib import Path
+from tools.tools import read_uncerainties_results
+
+# --- CONFIGURATION ---
+STEPS = 90
+STYLE = {
+    'title_size': 25,
+    'label_size': 20,
+    'tick_size': 16,
+    'legend_size': 16,
+}
 
 
-if __name__ == "__main__":
+def load_simulation_data(base_path):
+    """
+    Loads all simulation results and structures them into a standardized dictionary.
 
-    path = os.path.dirname(os.path.dirname(__file__))
-    data_negishi = read_uncerainties_results(os.path.join(path,"spatial_consistency/outputs/rice2023_negishi.csv"))
-    data10_negishi = read_uncerainties_results(os.path.join(path,"spatial_consistency/outputs/rice2023_negishi_10asia.csv"))
+    Args:
+        base_path (Path): Path to the project root.
 
-    data_nash = read_uncerainties_results(os.path.join(path,"spatial_consistency/outputs/rice2023_nash.csv"))
-    data10_nash = read_uncerainties_results(os.path.join(path,"spatial_consistency/outputs/rice2023_nash_10asia.csv"))
+    Returns:
+        dict: A dictionary containing all scenarios structured by 'Solver + Damage'.
+    """
+    outputs_dir = base_path / "spatial_consistency/outputs"
 
-    data_n_negishi = read_uncerainties_results(os.path.join(path,"spatial_consistency/outputs/rice2023_nordhaus_negishi.csv"))
-    data10_n_negishi = read_uncerainties_results(os.path.join(path,"spatial_consistency/outputs/rice2023_nordhaus_negishi_10asia.csv"))
+    def read(filename):
+        return read_uncerainties_results(os.path.join(outputs_dir, filename))
 
+    # Load raw files
+    d_negishi = read("rice2023_negishi.csv")
+    d10_negishi = read("rice2023_negishi_10asia.csv")
+    d_nash = read("rice2023_nash.csv")
+    d10_nash = read("rice2023_nash_10asia.csv")
 
-    data_n_nash = read_uncerainties_results(
-        os.path.join(path, "spatial_consistency/outputs/rice2023_nordhaus_nash.csv"))
-    data10_n_nash = read_uncerainties_results(
-        os.path.join(path, "spatial_consistency/outputs/rice2023_nordhaus_nash_10asia.csv"))
+    d_n_negishi = read("rice2023_nordhaus_negishi.csv")
+    d10_n_negishi = read("rice2023_nordhaus_negishi_10asia.csv")
+    d_n_nash = read("rice2023_nordhaus_nash.csv")
+    d10_n_nash = read("rice2023_nordhaus_nash_10asia.csv")
 
+    # Structure data with keys matching 'Solver + Damage' format
     data_dict = {
         'Negishi + Low Damage': {
-            '1Asia': data_n_negishi['Nordhaus'],
-            '10Asia': data10_n_negishi['Nordhaus']},
+            '1Asia': d_n_negishi['Nordhaus'], '10Asia': d10_n_negishi['Nordhaus']},
         'Negishi + Middle Damage': {
-            '1Asia': data_negishi['Middle-Damage'],
-            '10Asia': data10_negishi['Middle-Damage']},
+            '1Asia': d_negishi['Middle-Damage'], '10Asia': d10_negishi['Middle-Damage']},
         'Negishi + Strong Damage': {
-            '1Asia': data_negishi['Standard'],
-            '10Asia': data10_negishi['Standard']},
+            '1Asia': d_negishi['Standard'], '10Asia': d10_negishi['Standard']},
         'Nash + Low Damage': {
-            '1Asia': data_n_nash['Nordhaus'],
-            '10Asia': data10_n_nash['Nordhaus']},
+            '1Asia': d_n_nash['Nordhaus'], '10Asia': d10_n_nash['Nordhaus']},
         'Nash + Middle Damage': {
-            '1Asia': data_nash['Middle-Damage'],
-            '10Asia': data10_nash['Middle-Damage']},
+            '1Asia': d_nash['Middle-Damage'], '10Asia': d10_nash['Middle-Damage']},
         'Nash + Strong Damage': {
-            '1Asia': data_nash['Standard'],
-            '10Asia': data10_nash['Standard']}
+            '1Asia': d_nash['Standard'], '10Asia': d10_nash['Standard']}
     }
 
-    for m in data_dict.keys():
-        for asia in data_dict[m].keys():
-            for r in data_dict[m][asia].keys():
-                for p in data_dict[m][asia][r].keys():
-                    data_dict[m][asia][r][p] = data_dict[m][asia][r][p][:90]
+    return data_dict
 
 
-    data = {
-        'region' :[],
-        'value' : [],
-        'solver': [],
-        'damage' : [],
-    }
+def process_regional_emissions(data_dict):
+    """
+    Calculates the difference in emission control rates for non-Asian regions.
+    """
+    records = []
+    for key, content in data_dict.items():
+        solver, damage = key.split(' + ')
+
+        for region in content['1Asia']:
+            if region not in ["World", "ASIA"]:
+                # Calculate difference: Disaggregated - Aggregated
+                diff = (np.array(content['10Asia'][region]["Emissions control rate"][:STEPS]) -
+                        np.array(content['1Asia'][region]["Emissions control rate"][:STEPS]))
+
+                for val in diff:
+                    records.append({
+                        'region': region,
+                        'value': val,
+                        'solver': solver,
+                        'damage': damage
+                    })
+    return pd.DataFrame(records)
 
 
-    for m in data_dict.keys() :
-        for r in data_dict[m]['1Asia'].keys():
-            if r != "World" and r != "ASIA":
-                emission_control = (np.array(data_dict[m]['10Asia'][r]["Emissions control rate"][:90])\
-                                   - np.array(data_dict[m]['1Asia'][r]["Emissions control rate"][:90]))
-                for t in emission_control:
-                    data['region'].append(r)
-                    data['value'].append(t)
-                    solver, damage = m.split(' + ')
-                    data['solver'].append(solver)
-                    data['damage'].append(damage)
+def process_asia_comparison(data_dict):
+    """
+    Calculates the difference between the mean Sub-Asian region (ASIA0) and the global Asia region.
+    """
+    records = []
+    for key, content in data_dict.items():
+        solver, damage = key.split(' + ')
 
-    df = pd.DataFrame(data)
-    sns.boxplot(x='region', y='value', data=df[df['solver'] == 'Negishi'], hue='damage')
-    plt.title('Change in Emission control for other regions (Cooperative)',fontsize= 35)
-    plt.legend(bbox_to_anchor=(1.05, 1),fontsize= 20,loc='upper left')
-    plt.xlabel('', fontsize="25")
-    plt.ylabel('', fontsize="25")
-    for tickLabel in plt.gca().get_xticklabels() + plt.gca().get_yticklabels():
-        tickLabel.set_fontsize(25)
+        # specific comparison: ASIA0 (from 10Asia) vs ASIA (from 1Asia)
+        diff = (np.array(content['10Asia']['ASIA0']["Emissions control rate"][:STEPS]) -
+                np.array(content['1Asia']['ASIA']["Emissions control rate"][:STEPS]))
+
+        for val in diff:
+            records.append({
+                'region': 'Mean Sub-Asia vs Asia',
+                'value': val,
+                'solver': solver,
+                'damage': damage
+            })
+    return pd.DataFrame(records)
+
+
+def process_global_indicators(data_dict):
+    """
+    Calculates global differences for Temperature, CO2, and GDP (relative).
+    """
+    records = []
+    for key, content in data_dict.items():
+        solver_raw, damage = key.split(' + ')
+        solver_label = 'Cooperative' if solver_raw == 'Negishi' else 'Non-cooperative'
+
+        # 1. Temperature Difference
+        delta_t = (np.array(content['10Asia']['World']["Atmospheric temperature (deg c above preind)"][:STEPS]) -
+                   np.array(content['1Asia']['World']["Atmospheric temperature (deg c above preind)"][:STEPS]))
+
+        # 2. CO2 Emissions Difference
+        delta_co2 = (np.array(content['10Asia']['World']["Total CO2 Emissions, GTCO2/year"][:STEPS]) -
+                     np.array(content['1Asia']['World']["Total CO2 Emissions, GTCO2/year"][:STEPS]))
+
+        # 3. Relative GDP Difference
+        # Summing regional GDPs (excluding World)
+        gdp_1 = sum(np.array(content['1Asia'][r]["Output, net net trill 2019$"][:STEPS])
+                    for r in content['1Asia'] if r != "World")
+        gdp_10 = sum(np.array(content['10Asia'][r]["Output, net net trill 2019$"][:STEPS])
+                     for r in content['10Asia'] if r != "World")
+
+        # Relative change: (New - Old) / Old
+        delta_gdp_rel = (gdp_10 - gdp_1) / gdp_1
+
+        for i in range(STEPS):
+            records.append({'metric': 'Temperature', 'value': delta_t[i], 'solver': solver_label, 'damage': damage})
+            records.append({'metric': 'CO2', 'value': delta_co2[i], 'solver': solver_label, 'damage': damage})
+            records.append(
+                {'metric': 'GDP (Relative)', 'value': delta_gdp_rel[i], 'solver': solver_label, 'damage': damage})
+
+    return pd.DataFrame(records)
+
+
+# --- PLOTTING FUNCTIONS ---
+
+def plot_regional_boxplot(df, solver_name, title):
+    """Generic boxplot for regional emissions."""
+    plt.figure(figsize=(12, 8))
+    sns.boxplot(x='region', y='value', data=df[df['solver'] == solver_name], hue='damage', palette="Set2")
+
+    plt.title(title, fontsize=STYLE['title_size'], pad=20)
+    plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', fontsize=STYLE['legend_size'])
+    plt.xlabel('Region', fontsize=STYLE['label_size'])
+    plt.ylabel('Change in Emission Control', fontsize=STYLE['label_size'])
+    plt.tick_params(axis='both', labelsize=STYLE['tick_size'])
+    plt.grid(axis='y', linestyle='--', alpha=0.5)
+    plt.tight_layout()
     plt.show()
 
 
-    df = pd.DataFrame(data)
-    sns.boxplot(x='region', y='value', data=df[df['solver'] == 'Nash'], hue='damage')
-    plt.title('Change in Emission control for other regions (Non-cooperative)',fontsize= 35)
-    plt.legend(bbox_to_anchor=(1.05, 1),fontsize= 20,loc='upper left')
-    plt.xlabel('', fontsize="25")
-    plt.ylabel('', fontsize="25")
-    for tickLabel in plt.gca().get_xticklabels() + plt.gca().get_yticklabels():
-        tickLabel.set_fontsize(25)
-    plt.show()
+def plot_asia_comparison_side_by_side(df):
+    """Side-by-side boxplot for Cooperative vs Non-Cooperative Asia comparison."""
+    fig, axes = plt.subplots(1, 2, figsize=(14, 8), sharey=True)
 
-    data = {
-        'region' :[],
-        'value' : [],
-        'solver': [],
-        'damage' : [],
-    }
+    scenarios = [('Negishi', 'Cooperative'), ('Nash', 'Non-cooperative')]
 
-    for m in data_dict.keys() :
+    for i, (solver_key, title) in enumerate(scenarios):
+        sns.boxplot(
+            data=df[df['solver'] == solver_key],
+            x='region', y='value', hue='damage',
+            ax=axes[i], palette="Set2"
+        )
+        axes[i].set_title(title, fontsize=STYLE['title_size'])
+        axes[i].set_xlabel('')
+        axes[i].set_ylabel('Diff. Emission Control', fontsize=STYLE['label_size'])
+        axes[i].tick_params(axis='both', labelsize=STYLE['tick_size'])
 
-            emission_control = (np.array(data_dict[m]['10Asia']['ASIA0']["Emissions control rate"][:90])\
-                               - np.array(data_dict[m]['1Asia']['ASIA']["Emissions control rate"][:90]))
-            for t in emission_control:
-                data['region'].append('mean Sub-Asia / Asia')
-                data['value'].append(t)
-                solver, damage = m.split(' + ')
-                data['solver'].append(solver)
-                data['damage'].append(damage)
+        # Handle legends: remove from first, keep in second
+        if i == 0:
+            axes[i].get_legend().remove()
+        else:
+            axes[i].set_ylabel('')
+            axes[i].legend(fontsize=STYLE['legend_size'])
 
-
-    df = pd.DataFrame(data)
-    fig, axes = plt.subplots(nrows=1, ncols=2,sharey=True)
-    sns.boxplot(
-        data=df[df['solver'] == 'Negishi'],
-        x='region',
-        y='value',
-        hue = 'damage',
-        ax=axes[0]
-    )
-    axes[0].set_title('Cooperative',fontsize=20 )
-    axes[0].set_ylabel('')
-    axes[0].set_xlabel('')
-
-
-    sns.boxplot(
-        data=df[df['solver'] == 'Nash'],
-        x='region',
-        y='value',
-        hue = 'damage',
-        ax=axes[1]
-    )
-    axes[1].set_title('Non-cooperative',fontsize=20 )
-    axes[1].set_ylabel('')
-    axes[1].set_xlabel('')
-    axes[1].set_xlabel('')
-    axes[1].get_legend().remove()
-    axes[0].legend(fontsize= 15)
-
-    for ax in axes:
-        ax.tick_params(axis='both', which='major', labelsize=14)
-        ax.tick_params(axis='x')
-        # ax.set_xlabel('Région', fontsize=16)
+    plt.tight_layout()
     plt.show()
 
 
+def plot_global_impacts(df):
+    """Side-by-side boxplot for Global GDP and Temperature."""
+    fig, axes = plt.subplots(1, 2, figsize=(16, 8))
 
-    data = {
-        'T' :[],
-        'co2' : [],
-        'gpdc' : [],
-        'damage' : [],
-        'solver' : []
-    }
-    for m in data_dict.keys() :
-        delta_tatm = np.array(data_dict[m]['10Asia']['World']["Atmospheric temperature (deg c above preind)"]) \
-                        - np.array(data_dict[m]['1Asia']['World']["Atmospheric temperature (deg c above preind)"])
-        delta_eco2 = np.array(data_dict[m]['10Asia']['World']["Total CO2 Emissions, GTCO2/year"]) \
-                        - np.array(data_dict[m]['1Asia']['World']["Total CO2 Emissions, GTCO2/year"])
-
-        yy = 0
-        yy10 = 0
-        pop = 0
-        for r in data_dict[m]['1Asia'].keys():
-            if r != "World":
-                yy += np.array(data_dict[m]['1Asia'][r]["Output, net net trill 2019$"])
-                pop += np.array(data_dict[m]['1Asia'][r]["Population (exogenous)"])
-        for r in data_dict[m]['10Asia'].keys():
-            if r != "World":
-                yy10 += np.array(data_dict[m]['10Asia'][r]["Output, net net trill 2019$"])
-        delta_y = (yy10 - yy) / yy
-
-
-        for t in range(len(delta_tatm)):
-            data['T'].append(delta_tatm[t])
-            data['co2'].append(delta_eco2[t])
-            data['gpdc'].append(delta_y[t])
-            solver, damage = m.split(' + ')
-            if solver == 'Negishi':
-                data['solver'].append('Cooperative')
-            else:
-                data['solver'].append('Non-cooperative')
-            data['damage'].append(damage)
-
-
-    df = pd.DataFrame(data)
-    fig, axes = plt.subplots(nrows=1, ncols=2)
+    # 1. GDP Plot
     sns.boxplot(
-        data=df,
-        x='solver',
-        y='gpdc',
-        hue = 'damage',
-        ax=axes[0]
+        data=df[df['metric'] == 'GDP (Relative)'],
+        x='solver', y='value', hue='damage',
+        ax=axes[0], palette="Set2"
     )
-    axes[0].set_title('GDP (relative change)',fontsize=20)
-    axes[0].set_ylabel('')
+    axes[0].set_title('GDP (Relative Change)', fontsize=STYLE['title_size'])
+    axes[0].set_ylabel('Fraction of GDP', fontsize=STYLE['label_size'])
     axes[0].set_xlabel('')
     axes[0].get_legend().remove()
 
-
+    # 2. Temperature Plot
     sns.boxplot(
-        data=df,
-        x='solver',
-        y='T',
-        hue = 'damage',
-        ax=axes[1]
+        data=df[df['metric'] == 'Temperature'],
+        x='solver', y='value', hue='damage',
+        ax=axes[1], palette="Set2"
     )
-    axes[1].set_title('Increase in temperature (in °C)',fontsize=20 )
-    axes[1].set_ylabel('')
+    axes[1].set_title('Temperature Increase (°C)', fontsize=STYLE['title_size'])
+    axes[1].set_ylabel('Change in °C', fontsize=STYLE['label_size'])
     axes[1].set_xlabel('')
-    axes[1].set_xlabel('')
-    axes[1].legend(fontsize= 15)
+    axes[1].legend(fontsize=STYLE['legend_size'])
 
     for ax in axes:
-        # Augmente la taille des graduations sur les deux axes
-        ax.tick_params(axis='both', which='major', labelsize=14)
+        ax.tick_params(axis='both', labelsize=STYLE['tick_size'])
+        ax.grid(axis='y', linestyle='--', alpha=0.5)
 
-        # Fait pivoter les étiquettes de l'axe X de 90 degrés pour éviter la superposition
-        ax.tick_params(axis='x')
-
+    plt.tight_layout()
     plt.show()
+
+
+if __name__ == "__main__":
+    # 1. Setup
+    base_dir = Path(__file__).resolve().parents[2]
+    data_dict = load_simulation_data(base_dir)
+
+    # 2. Regional Emissions Analysis
+    df_regions = process_regional_emissions(data_dict)
+    plot_regional_boxplot(df_regions, 'Negishi', 'Regional Emissions Change (Cooperative)')
+    plot_regional_boxplot(df_regions, 'Nash', 'Regional Emissions Change (Non-cooperative)')
+
+    # 3. Asia Specific Comparison
+    df_asia = process_asia_comparison(data_dict)
+    plot_asia_comparison_side_by_side(df_asia)
+
+    # 4. Global Indicators (GDP & Temp)
+    df_global = process_global_indicators(data_dict)
+    plot_global_impacts(df_global)

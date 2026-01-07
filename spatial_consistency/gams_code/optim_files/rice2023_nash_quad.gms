@@ -7,7 +7,7 @@ $offtext
 $title        July 19, 2023 (dice2023.gms)
 
 set
-    t  Time periods (5 years per period)                     /1*101/
+    t  Time periods (5 years per period)                     /1*81/
     ISER    Weight searching interation index  /1*5 /
     ITER    Nash loop                          /1*5 /
     SIT     Nash loop for region1-15           /1*25/
@@ -61,7 +61,7 @@ PARAMETERS
 
         Q       Utility derivative scaling factor                   /1E4 /
         Q1                                                          /1E5 /
-        Q2                                                          /1E6 /
+        Q2                                                          /1E8 /
         betaclim                                                    / 0.6  /
         elasmu    Elasticity of marginal utility of consumption     / 0.9  /
         rhof      Riskfree real rate per year                       / .001 /
@@ -80,7 +80,7 @@ sets     tfirst(t), tsecond(t), tlast(t);
 
 
 SETS ECOT
-/pop0, popasym, popadj, a0, gA0, dela, sig0, gsigma1, delgsig, asymgsig, q0, K0, miu0, a2, a3, n3, quad/
+/pop0, popasym, popadj, a0, gA0, dela, sig0, gsigma1, delgsig, asymgsig, q0, K0, miu0, a2, a3, n3/
 
 TABLE ECO(ECOT,N)
           USA         RUS         JAP          CAN         OAB         EU          CHN         IND         BRZ           SAF         OEU          REF         ASIA         MAF           LAM
@@ -99,8 +99,7 @@ K0        43.6249     7.43774     16.9125      4.35539     6.51907     53.9706  
 miu0      0.0486596   0.0157365   0.0139357    0.0115777   0.0120244   0.0330613   0.0309619   0.0222417   0.0150853     0.00639427  0.00800447   0.0101568   0.0285936    0.0539258     0.0172459
 a2        0.003467    0.003467    0.003467     0.003467    0.003467    0.003467    0.003467    0.003467    0.003467      0.003467    0.003467     0.003467    0.003467     0.003467      0.003467
 a3        0           0           0            0           0           0           0           0           0             0           0            0           0            0             0
-n3        0           0           0            0           0           0           0           0           0             0           0            0           0            0             0
-quad      1           1           1            1           1           1           1           1           1             1           1            1           1            1             1;
+n3        0           0           0            0           0           0           0           0           0             0           0            0           0            0             0;
 
 
 
@@ -598,6 +597,7 @@ K.LO(t,n)         = 1;
 C.LO(t,n)         = 0.05;
 CPC.LO(t,n)       = .001;
 
+
 *Control for terminal savings rate
 *set lag10(t) ;
 *lag10(t) =  yes$(t.val gt card(t)-10);
@@ -634,7 +634,7 @@ put resLARGE2022;
 put /"Results of rice2023_nash_quad.csv with final results: July 19, 2023";
 
 
-MIU.LO(t,n)   = 0;
+miu.lo(t,n) = 1E-6;
 MIU.UP(t,n)   = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
 
@@ -841,6 +841,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"USA"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"USA"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"USA"));
 put / "Saving rate";
 Loop(T, put S.l(T,"USA"));
 put /"REGION: RUS"
@@ -872,6 +874,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"RUS"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"RUS"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"RUS"));
 put / "Saving rate";
 Loop(T, put S.l(T,"RUS"));
 put /"REGION: JAP"
@@ -903,6 +907,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"JAP"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"JAP"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"JAP"));
 put / "Saving rate";
 Loop(T, put S.l(T,"JAP"));
 put /"REGION: CAN"
@@ -934,6 +940,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"CAN"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"CAN"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"CAN"));
 put / "Saving rate";
 Loop(T, put S.l(T,"CAN"));
 put /"REGION: OAB"
@@ -965,6 +973,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"OAB"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"OAB"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"OAB"));
 put / "Saving rate";
 Loop(T, put S.l(T,"OAB"));
 put /"REGION: EU"
@@ -996,6 +1006,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"EU"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"EU"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"EU"));
 put / "Saving rate";
 Loop(T, put S.l(T,"EU"));
 put /"REGION: CHN"
@@ -1027,6 +1039,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"CHN"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"CHN"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"CHN"));
 put / "Saving rate";
 Loop(T, put S.l(T,"CHN"));
 put /"REGION: IND"
@@ -1058,6 +1072,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"IND"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"IND"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"IND"));
 put / "Saving rate";
 Loop(T, put S.l(T,"IND"));
 put /"REGION: BRZ"
@@ -1089,6 +1105,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"BRZ"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"BRZ"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"BRZ"));
 put / "Saving rate";
 Loop(T, put S.l(T,"BRZ"));
 put /"REGION: SAF"
@@ -1120,6 +1138,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"SAF"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"SAF"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"SAF"));
 put / "Saving rate";
 Loop(T, put S.l(T,"SAF"));
 put /"REGION: OEU"
@@ -1151,6 +1171,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"OEU"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"OEU"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"OEU"));
 put / "Saving rate";
 Loop(T, put S.l(T,"OEU"));
 put /"REGION: REF"
@@ -1182,6 +1204,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"REF"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"REF"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"REF"));
 put / "Saving rate";
 Loop(T, put S.l(T,"REF"));
 put /"REGION: ASIA"
@@ -1213,6 +1237,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"ASIA"));
 put / "Saving rate";
 Loop(T, put S.l(T,"ASIA"));
 put /"REGION: MAF"
@@ -1244,6 +1270,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"MAF"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"MAF"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF"));
 put / "Saving rate";
 Loop(T, put S.l(T,"MAF"));
 put /"REGION: LAM"
@@ -1275,6 +1303,8 @@ put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"LAM"));
 put / "Population (exogenous)" ;
 Loop (T, put L(T,"LAM"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"LAM"));
 put / "Saving rate";
 Loop(T, put S.l(T,"LAM"));
 put /"REGION: World"
