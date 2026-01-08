@@ -11,7 +11,7 @@ set
     ISER    Weight searching interation index  /1*5 /
     ITER    Nash loop                          /1*5 /
     SIT     Nash loop for region1-15           /1*20/
-N /USA, RUS, JAP, CAN, OAB, EU, CHN, IND, BRZ, SAF, OEU, REF, ASIA, LAM, MAF0, MAF1, MAF2, MAF3, MAF4, MAF5, MAF6, MAF7, MAF8, MAF9/
+N /USA, RUS, JAP, CAN, OAB, EU, CHN, IND, BRZ, SAF, OEU, REF, ASIA, MAF, LAM/
 
 ;
 
@@ -62,7 +62,7 @@ PARAMETERS
 
         Q       Utility derivative scaling factor                   /1E4 /
         Q1                                                          /1E5 /
-        Q2                                                          /1E6 /
+        Q2                                                          /1E3 /
         betaclim                                                    / 0.6  /
         elasmu    Elasticity of marginal utility of consumption     / 0.9  /
         rhof      Riskfree real rate per year                       / .001 /
@@ -84,23 +84,23 @@ SETS ECOT
 /pop0, popasym, popadj, a0, gA0, dela, sig0, gsigma1, delgsig, asymgsig, q0, K0, miu0, a2, a3, n3/
 
 TABLE ECO(ECOT,N)
-          USA         RUS         JAP          CAN         OAB         EU          CHN         IND         BRZ           SAF         OEU          REF         ASIA         LAM          MAF0          MAF1          MAF2          MAF3          MAF4          MAF5          MAF6          MAF7          MAF8          MAF9
-pop0      331.432     143.787     126.496      37.6032     88.2753     510.945     1424.55     1383.2      213.863       58.7212     101.697      98.16       1177.43      420.939      179.367       179.367       179.367       179.367       179.367       179.367       179.367       179.367       179.367       179.367
-popasym   489.012     143.787     126.496      56.7038     98.3873     512.515     1441.18     1678.57     232.724       77.5934     111.315      118.112     1475.59      526.507      365.755       365.755       365.755       365.755       365.755       365.755       365.755       365.755       365.755       365.755
-popadj    0.0948651   0.145       0.145        0.095758    0.0836356   0.845329    0.864755    0.311317    0.423562      0.203888    0.328072     0.266731    0.262046     0.272184     0.152873      0.152873      0.152873      0.152873      0.152873      0.152873      0.152873      0.152873      0.152873      0.152873
-a0        13.3999     8.1927      9.2269       11.4356     8.54114     9.93393     5.68029     3.40244     5.36764       4.83754     6.90522      6.68749     4.41482      5.58724      3.694         3.694         3.694         3.694         3.694         3.694         3.694         3.694         3.694         3.694
-gA0       0.0297618   0.0573968   0.0471163    0.0400154   0.0500945   0.0475897   0.109478    0.170205    0.0832742     0.0821519   0.0731599    0.0662272   0.104503     0.0774209    0.0953594     0.0953594     0.0953594     0.0953594     0.0953594     0.0953594     0.0953594     0.0953594     0.0953594     0.0953594
-dela      0.00276194  0.00544409  0.00435665   0.00412869  0.00449444  0.0047987   0.0103848   0.0137549   0.00697187    0.00640958  0.00686484   0.00578246  0.00849175   0.00644025   0.00681257    0.00681257    0.00681257    0.00681257    0.00681257    0.00681257    0.00681257    0.00681257    0.00681257    0.00681257
-sig0      0.280922    0.479159    0.254381     0.260517    0.259556    0.165847    0.527972    0.281054    0.170522      0.657903    0.249117     0.358589    0.238792     0.215192     0.290092      0.290092      0.290092      0.290092      0.290092      0.290092      0.290092      0.290092      0.290092      0.290092
-gsigma1   -0.0240468  -0.0191403  -0.00655657  -0.0302755  -0.032377   -0.0278566  -0.0174615  -0.0133732  -0.000656878  -0.0112051  -0.00958924  -0.041946   -0.00911635  -0.00881594  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845
-delgsig   0.941915    0.990365    0.993352     0.959565    0.935345    0.971375    0.957398    0.997355    0.998825      0.996289    0.990639     0.935723    0.994484     0.994804     0.999648      0.999648      0.999648      0.999648      0.999648      0.999648      0.999648      0.999648      0.999648      0.999648
-asymgsig  -0.005      -0.005      -0.005       -0.005      -0.005      -0.005      -0.005      -0.005      -0.005        -0.005      -0.005       -0.005      -0.005       -0.005       -0.005        -0.005        -0.005        -0.005        -0.005        -0.005        -0.005        -0.005        -0.005        -0.005
-q0        21.6153     4.29061     5.82879      1.96194     3.10118     23.0363     23.3937     9.81744     3.81842       0.847688    2.15806      1.51893     13.8835      7.38158      1.30466       1.30466       1.30466       1.30466       1.30466       1.30466       1.30466       1.30466       1.30466       1.30466
-K0        43.6249     7.43774     16.9125      4.35539     6.51907     53.9706     65.485      18.7344     9.48238       1.79211     3.76203      1.48676     29.9892      14.5124      2.39355       2.39355       2.39355       2.39355       2.39355       2.39355       2.39355       2.39355       2.39355       2.39355
-miu0      0.0486596   0.0157365   0.0139357    0.0115777   0.0120244   0.0330613   0.0309619   0.0222417   0.0150853     0.00639427  0.00800447   0.0101568   0.0285936    0.0172459    0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258
-a2        0.003467    0.003467    0.003467     0.003467    0.003467    0.003467    0.003467    0.003467    0.003467      0.003467    0.003467     0.003467    0.003467     0.003467     0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467
-a3        4.7935e-06  4.7935e-06  4.7935e-06   4.7935e-06  4.7935e-06  4.7935e-06  4.7935e-06  4.7935e-06  4.7935e-06    4.7935e-06  4.7935e-06   4.7935e-06  4.7935e-06   4.7935e-06   4.7935e-06    4.7935e-06    4.7935e-06    4.7935e-06    4.7935e-06    4.7935e-06    4.7935e-06    4.7935e-06    4.7935e-06    4.7935e-06
-n3        6.21735     6.21735     6.21735      6.21735     6.21735     6.21735     6.21735     6.21735     6.21735       6.21735     6.21735      6.21735     6.21735      6.21735      6.21735       6.21735       6.21735       6.21735       6.21735       6.21735       6.21735       6.21735       6.21735       6.21735;
+          USA         RUS         JAP          CAN         OAB         EU          CHN         IND         BRZ           SAF         OEU          REF         ASIA         MAF           LAM
+pop0      331.432     143.787     126.496      37.6032     88.2753     510.945     1424.55     1383.2      213.863       58.7212     101.697      98.16       1177.43      1793.67       420.939
+popasym   489.012     143.787     126.496      56.7038     98.3873     512.515     1441.18     1678.57     232.724       77.5934     111.315      118.112     1475.59      3657.55       526.507
+popadj    0.0948651   0.145       0.145        0.095758    0.0836356   0.845329    0.864755    0.311317    0.423562      0.203888    0.328072     0.266731    0.262046     0.152873      0.272184
+a0        13.3999     8.1927      9.2269       11.4356     8.54114     9.93393     5.68029     3.40244     5.36764       4.83754     6.90522      6.68749     4.41482      3.694         5.58724
+gA0       0.0297618   0.0573968   0.0471163    0.0400154   0.0500945   0.0475897   0.109478    0.170205    0.0832742     0.0821519   0.0731599    0.0662272   0.104503     0.0953594     0.0774209
+dela      0.00276194  0.00544409  0.00435665   0.00412869  0.00449444  0.0047987   0.0103848   0.0137549   0.00697187    0.00640958  0.00686484   0.00578246  0.00849175   0.00681257    0.00644025
+sig0      0.280922    0.479159    0.254381     0.260517    0.259556    0.165847    0.527972    0.281054    0.170522      0.657903    0.249117     0.358589    0.238792     0.290092      0.215192
+gsigma1   -0.0240468  -0.0191403  -0.00655657  -0.0302755  -0.032377   -0.0278566  -0.0174615  -0.0133732  -0.000656878  -0.0112051  -0.00958924  -0.041946   -0.00911635  -0.000927845  -0.00881594
+delgsig   0.941915    0.990365    0.993352     0.959565    0.935345    0.971375    0.957398    0.997355    0.998825      0.996289    0.990639     0.935723    0.994484     0.999648      0.994804
+asymgsig  -0.005      -0.005      -0.005       -0.005      -0.005      -0.005      -0.005      -0.005      -0.005        -0.005      -0.005       -0.005      -0.005       -0.005        -0.005
+q0        21.6153     4.29061     5.82879      1.96194     3.10118     23.0363     23.3937     9.81744     3.81842       0.847688    2.15806      1.51893     13.8835      13.0466       7.38158
+K0        43.6249     7.43774     16.9125      4.35539     6.51907     53.9706     65.485      18.7344     9.48238       1.79211     3.76203      1.48676     29.9892      23.9355       14.5124
+miu0      0.0486596   0.0157365   0.0139357    0.0115777   0.0120244   0.0330613   0.0309619   0.0222417   0.0150853     0.00639427  0.00800447   0.0101568   0.0285936    0.0539258     0.0172459
+a2        0.003467    0.003467    0.003467     0.003467    0.003467    0.003467    0.003467    0.003467    0.003467      0.003467    0.003467     0.003467    0.003467     0.003467      0.003467
+a3        4.7935e-06  4.7935e-06  4.7935e-06   4.7935e-06  4.7935e-06  4.7935e-06  4.7935e-06  4.7935e-06  4.7935e-06    4.7935e-06  4.7935e-06   4.7935e-06  4.7935e-06   4.7935e-06    4.7935e-06
+n3        6.21735     6.21735     6.21735      6.21735     6.21735     6.21735     6.21735     6.21735     6.21735       6.21735     6.21735      6.21735     6.21735      6.21735       6.21735;
 
 
 
@@ -421,8 +421,7 @@ option limcol = 0;
 
 * Ccntrol rate limits
 miu.up(t,n) = miuup(t,n);
-S.fx(t,n)         = optlrsav;
-*S.UP(t,n)         = 1;
+S.UP(t,n)         = 1;
 K.LO(t,n)         = 1;
 C.LO(t,n)         = 0.05;
 CPC.LO(t,n)       = .001;
@@ -502,7 +501,7 @@ SOLVE RICE MAXIMIZING UTILITY2 USING NLP;
 FNKM(t,n)   = KK.M(t,n);
 FNKM("1",N) = FNKM("2",N);
 
-FWKM(T)     = SUM(N,1/FNKM(t,n))/  24  ;
+FWKM(T)     = SUM(N,1/FNKM(t,n))/  15  ;
 LB(T,N)     = (1/FNKM(t,n))/FWKM(T);
 
 
@@ -523,14 +522,14 @@ LOOP(ISER,
      NKM(ISER,"1",N)  = KK.M("2",N);
 
 *world average marginal capital
-     WKM(ISER,T)      = SUM(N,NKM(ISER,T,N))/  24  ;
+     WKM(ISER,T)      = SUM(N,NKM(ISER,T,N))/  15  ;
 *calculate the gap between nation and the world
      GAP(ISER,T,N)    = NKM(ISER,T,N)-WKM(ISER,T);
 *adjust the weight
      NWEI("1",T,N)   = LB(T,N);
      NWEI(ISER+1,T,N) = NWEI(ISER,T,N)*(1-0.10*GAP(ISER,T,N)/WKM(ISER,T));
      SNWEI(ISER,T)  = SUM(N,NWEI(ISER,T,N));
-     LB(T,N)            =  24  * NWEI(ISER,T,N)/SNWEI(ISER,T);
+     LB(T,N)            =  15  * NWEI(ISER,T,N)/SNWEI(ISER,T);
      LB("1",N)         = LB("2",N);
      SM(ISER,T)        = SUM(N,LB(T,N));
 );
@@ -975,6 +974,39 @@ put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA"));
 put / "Saving rate";
 Loop(T, put S.l(T,"ASIA"));
+put / "REGION: MAF"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF"));
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF"));
+put / "Weight";
+Loop(T, put LB(T,"MAF"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF"));
+put / "Social cost of carbon $/tCO2";
+scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF"));
+scc("1","MAF") = scc("2","MAF") * .85;
+Loop(T, put scc(t,"MAF"));
+put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF"));
 put / "REGION: LAM"
 put / "TFP (exogenous)" ;
 Loop (T, put AL(T,"LAM"));
@@ -1008,336 +1040,6 @@ put / "Carbon price";
 Loop(T, put cprice.l(T,"LAM"));
 put / "Saving rate";
 Loop(T, put S.l(T,"LAM"));
-put / "REGION: MAF0"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF0"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF0"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF0"));
-put / "Weight";
-Loop(T, put LB(T,"MAF0"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF0"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF0"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF0"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF0"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF0"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF0"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF0"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF0"));
-scc("1","MAF0") = scc("2","MAF0") * .85;
-Loop(T, put scc(t,"MAF0"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF0"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF0"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF0"));
-put / "REGION: MAF1"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF1"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF1"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF1"));
-put / "Weight";
-Loop(T, put LB(T,"MAF1"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF1"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF1"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF1"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF1"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF1"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF1"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF1"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF1"));
-scc("1","MAF1") = scc("2","MAF1") * .85;
-Loop(T, put scc(t,"MAF1"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF1"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF1"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF1"));
-put / "REGION: MAF2"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF2"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF2"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF2"));
-put / "Weight";
-Loop(T, put LB(T,"MAF2"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF2"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF2"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF2"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF2"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF2"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF2"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF2"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF2"));
-scc("1","MAF2") = scc("2","MAF2") * .85;
-Loop(T, put scc(t,"MAF2"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF2"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF2"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF2"));
-put / "REGION: MAF3"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF3"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF3"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF3"));
-put / "Weight";
-Loop(T, put LB(T,"MAF3"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF3"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF3"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF3"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF3"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF3"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF3"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF3"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF3"));
-scc("1","MAF3") = scc("2","MAF3") * .85;
-Loop(T, put scc(t,"MAF3"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF3"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF3"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF3"));
-put / "REGION: MAF4"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF4"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF4"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF4"));
-put / "Weight";
-Loop(T, put LB(T,"MAF4"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF4"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF4"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF4"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF4"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF4"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF4"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF4"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF4"));
-scc("1","MAF4") = scc("2","MAF4") * .85;
-Loop(T, put scc(t,"MAF4"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF4"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF4"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF4"));
-put / "REGION: MAF5"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF5"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF5"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF5"));
-put / "Weight";
-Loop(T, put LB(T,"MAF5"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF5"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF5"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF5"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF5"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF5"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF5"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF5"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF5"));
-scc("1","MAF5") = scc("2","MAF5") * .85;
-Loop(T, put scc(t,"MAF5"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF5"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF5"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF5"));
-put / "REGION: MAF6"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF6"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF6"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF6"));
-put / "Weight";
-Loop(T, put LB(T,"MAF6"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF6"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF6"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF6"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF6"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF6"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF6"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF6"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF6"));
-scc("1","MAF6") = scc("2","MAF6") * .85;
-Loop(T, put scc(t,"MAF6"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF6"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF6"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF6"));
-put / "REGION: MAF7"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF7"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF7"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF7"));
-put / "Weight";
-Loop(T, put LB(T,"MAF7"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF7"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF7"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF7"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF7"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF7"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF7"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF7"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF7"));
-scc("1","MAF7") = scc("2","MAF7") * .85;
-Loop(T, put scc(t,"MAF7"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF7"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF7"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF7"));
-put / "REGION: MAF8"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF8"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF8"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF8"));
-put / "Weight";
-Loop(T, put LB(T,"MAF8"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF8"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF8"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF8"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF8"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF8"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF8"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF8"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF8"));
-scc("1","MAF8") = scc("2","MAF8") * .85;
-Loop(T, put scc(t,"MAF8"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF8"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF8"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF8"));
-put / "REGION: MAF9"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF9"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF9"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF9"));
-put / "Weight";
-Loop(T, put LB(T,"MAF9"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF9"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF9"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF9"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF9"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF9"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF9"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF9"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF9"));
-scc("1","MAF9") = scc("2","MAF9") * .85;
-Loop(T, put scc(t,"MAF9"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF9"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF9"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF9"));
 put /"REGION: World"
 put / "Total CO2 Emissions, GTCO2/year" ;
 Loop (T, put Eco2.l(T));
@@ -1347,54 +1049,51 @@ put / "Atmospheric temperature (deg c above preind)";
 Loop(T, put TATM.l(T));
 put / "MIU global";
 Loop(T, put MIU_GLOBAL.l(T));
-ECO("a3","USA") = 1.57e-05;
+ECO("a2","USA") = 0.00284;
+ECO("a3","USA") = 1.570397e-05;
 ECO("n3","USA") = 7.315027067;
-ECO("a3","RUS") = 1.57e-05;
+ECO("a2","RUS") = 0.00284;
+ECO("a3","RUS") = 1.570397e-05;
 ECO("n3","RUS") = 7.315027067;
-ECO("a3","JAP") = 1.57e-05;
+ECO("a2","JAP") = 0.00284;
+ECO("a3","JAP") = 1.570397e-05;
 ECO("n3","JAP") = 7.315027067;
-ECO("a3","CAN") = 1.57e-05;
+ECO("a2","CAN") = 0.00284;
+ECO("a3","CAN") = 1.570397e-05;
 ECO("n3","CAN") = 7.315027067;
-ECO("a3","OAB") = 1.57e-05;
+ECO("a2","OAB") = 0.00284;
+ECO("a3","OAB") = 1.570397e-05;
 ECO("n3","OAB") = 7.315027067;
-ECO("a3","EU") = 1.57e-05;
+ECO("a2","EU") = 0.00284;
+ECO("a3","EU") = 1.570397e-05;
 ECO("n3","EU") = 7.315027067;
-ECO("a3","CHN") = 1.57e-05;
+ECO("a2","CHN") = 0.00284;
+ECO("a3","CHN") = 1.570397e-05;
 ECO("n3","CHN") = 7.315027067;
-ECO("a3","IND") = 1.57e-05;
+ECO("a2","IND") = 0.00284;
+ECO("a3","IND") = 1.570397e-05;
 ECO("n3","IND") = 7.315027067;
-ECO("a3","BRZ") = 1.57e-05;
+ECO("a2","BRZ") = 0.00284;
+ECO("a3","BRZ") = 1.570397e-05;
 ECO("n3","BRZ") = 7.315027067;
-ECO("a3","SAF") = 1.57e-05;
+ECO("a2","SAF") = 0.00284;
+ECO("a3","SAF") = 1.570397e-05;
 ECO("n3","SAF") = 7.315027067;
-ECO("a3","OEU") = 1.57e-05;
+ECO("a2","OEU") = 0.00284;
+ECO("a3","OEU") = 1.570397e-05;
 ECO("n3","OEU") = 7.315027067;
-ECO("a3","REF") = 1.57e-05;
+ECO("a2","REF") = 0.00284;
+ECO("a3","REF") = 1.570397e-05;
 ECO("n3","REF") = 7.315027067;
-ECO("a3","ASIA") = 1.57e-05;
+ECO("a2","ASIA") = 0.00284;
+ECO("a3","ASIA") = 1.570397e-05;
 ECO("n3","ASIA") = 7.315027067;
-ECO("a3","LAM") = 1.57e-05;
+ECO("a2","MAF") = 0.00284;
+ECO("a3","MAF") = 1.570397e-05;
+ECO("n3","MAF") = 7.315027067;
+ECO("a2","LAM") = 0.00284;
+ECO("a3","LAM") = 1.570397e-05;
 ECO("n3","LAM") = 7.315027067;
-ECO("a3","MAF0") = 1.57e-05;
-ECO("n3","MAF0") = 7.315027067;
-ECO("a3","MAF1") = 1.57e-05;
-ECO("n3","MAF1") = 7.315027067;
-ECO("a3","MAF2") = 1.57e-05;
-ECO("n3","MAF2") = 7.315027067;
-ECO("a3","MAF3") = 1.57e-05;
-ECO("n3","MAF3") = 7.315027067;
-ECO("a3","MAF4") = 1.57e-05;
-ECO("n3","MAF4") = 7.315027067;
-ECO("a3","MAF5") = 1.57e-05;
-ECO("n3","MAF5") = 7.315027067;
-ECO("a3","MAF6") = 1.57e-05;
-ECO("n3","MAF6") = 7.315027067;
-ECO("a3","MAF7") = 1.57e-05;
-ECO("n3","MAF7") = 7.315027067;
-ECO("a3","MAF8") = 1.57e-05;
-ECO("n3","MAF8") = 7.315027067;
-ECO("a3","MAF9") = 1.57e-05;
-ECO("n3","MAF9") = 7.315027067;
 * THE BEGINNING OF THE SEARCHING PROGRM.
 
 *******/////////////////////////////////////////initial weight
@@ -1410,7 +1109,7 @@ SOLVE RICE MAXIMIZING UTILITY2 USING NLP;
 FNKM(t,n)   = KK.M(t,n);
 FNKM("1",N) = FNKM("2",N);
 
-FWKM(T)     = SUM(N,1/FNKM(t,n))/  24  ;
+FWKM(T)     = SUM(N,1/FNKM(t,n))/  15  ;
 LB(T,N)     = (1/FNKM(t,n))/FWKM(T);
 
 
@@ -1431,14 +1130,14 @@ LOOP(ISER,
      NKM(ISER,"1",N)  = KK.M("2",N);
 
 *world average marginal capital
-     WKM(ISER,T)      = SUM(N,NKM(ISER,T,N))/  24  ;
+     WKM(ISER,T)      = SUM(N,NKM(ISER,T,N))/  15  ;
 *calculate the gap between nation and the world
      GAP(ISER,T,N)    = NKM(ISER,T,N)-WKM(ISER,T);
 *adjust the weight
      NWEI("1",T,N)   = LB(T,N);
      NWEI(ISER+1,T,N) = NWEI(ISER,T,N)*(1-0.10*GAP(ISER,T,N)/WKM(ISER,T));
      SNWEI(ISER,T)  = SUM(N,NWEI(ISER,T,N));
-     LB(T,N)            =  24  * NWEI(ISER,T,N)/SNWEI(ISER,T);
+     LB(T,N)            =  15  * NWEI(ISER,T,N)/SNWEI(ISER,T);
      LB("1",N)         = LB("2",N);
      SM(ISER,T)        = SUM(N,LB(T,N));
 );
@@ -1883,6 +1582,39 @@ put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA"));
 put / "Saving rate";
 Loop(T, put S.l(T,"ASIA"));
+put / "REGION: MAF"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF"));
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF"));
+put / "Weight";
+Loop(T, put LB(T,"MAF"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF"));
+put / "Social cost of carbon $/tCO2";
+scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF"));
+scc("1","MAF") = scc("2","MAF") * .85;
+Loop(T, put scc(t,"MAF"));
+put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF"));
 put / "REGION: LAM"
 put / "TFP (exogenous)" ;
 Loop (T, put AL(T,"LAM"));
@@ -1916,336 +1648,6 @@ put / "Carbon price";
 Loop(T, put cprice.l(T,"LAM"));
 put / "Saving rate";
 Loop(T, put S.l(T,"LAM"));
-put / "REGION: MAF0"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF0"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF0"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF0"));
-put / "Weight";
-Loop(T, put LB(T,"MAF0"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF0"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF0"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF0"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF0"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF0"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF0"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF0"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF0"));
-scc("1","MAF0") = scc("2","MAF0") * .85;
-Loop(T, put scc(t,"MAF0"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF0"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF0"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF0"));
-put / "REGION: MAF1"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF1"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF1"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF1"));
-put / "Weight";
-Loop(T, put LB(T,"MAF1"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF1"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF1"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF1"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF1"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF1"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF1"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF1"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF1"));
-scc("1","MAF1") = scc("2","MAF1") * .85;
-Loop(T, put scc(t,"MAF1"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF1"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF1"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF1"));
-put / "REGION: MAF2"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF2"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF2"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF2"));
-put / "Weight";
-Loop(T, put LB(T,"MAF2"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF2"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF2"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF2"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF2"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF2"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF2"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF2"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF2"));
-scc("1","MAF2") = scc("2","MAF2") * .85;
-Loop(T, put scc(t,"MAF2"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF2"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF2"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF2"));
-put / "REGION: MAF3"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF3"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF3"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF3"));
-put / "Weight";
-Loop(T, put LB(T,"MAF3"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF3"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF3"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF3"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF3"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF3"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF3"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF3"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF3"));
-scc("1","MAF3") = scc("2","MAF3") * .85;
-Loop(T, put scc(t,"MAF3"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF3"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF3"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF3"));
-put / "REGION: MAF4"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF4"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF4"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF4"));
-put / "Weight";
-Loop(T, put LB(T,"MAF4"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF4"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF4"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF4"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF4"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF4"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF4"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF4"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF4"));
-scc("1","MAF4") = scc("2","MAF4") * .85;
-Loop(T, put scc(t,"MAF4"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF4"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF4"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF4"));
-put / "REGION: MAF5"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF5"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF5"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF5"));
-put / "Weight";
-Loop(T, put LB(T,"MAF5"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF5"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF5"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF5"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF5"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF5"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF5"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF5"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF5"));
-scc("1","MAF5") = scc("2","MAF5") * .85;
-Loop(T, put scc(t,"MAF5"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF5"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF5"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF5"));
-put / "REGION: MAF6"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF6"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF6"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF6"));
-put / "Weight";
-Loop(T, put LB(T,"MAF6"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF6"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF6"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF6"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF6"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF6"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF6"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF6"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF6"));
-scc("1","MAF6") = scc("2","MAF6") * .85;
-Loop(T, put scc(t,"MAF6"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF6"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF6"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF6"));
-put / "REGION: MAF7"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF7"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF7"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF7"));
-put / "Weight";
-Loop(T, put LB(T,"MAF7"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF7"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF7"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF7"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF7"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF7"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF7"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF7"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF7"));
-scc("1","MAF7") = scc("2","MAF7") * .85;
-Loop(T, put scc(t,"MAF7"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF7"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF7"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF7"));
-put / "REGION: MAF8"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF8"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF8"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF8"));
-put / "Weight";
-Loop(T, put LB(T,"MAF8"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF8"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF8"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF8"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF8"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF8"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF8"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF8"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF8"));
-scc("1","MAF8") = scc("2","MAF8") * .85;
-Loop(T, put scc(t,"MAF8"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF8"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF8"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF8"));
-put / "REGION: MAF9"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF9"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF9"));
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF9"));
-put / "Weight";
-Loop(T, put LB(T,"MAF9"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF9"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF9"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF9"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF9"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF9"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF9"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF9"));
-put / "Social cost of carbon $/tCO2";
-scc(t,n) = -1000 * eco2eq.m(t) / (.00001 + cc.m(t,"MAF9"));
-scc("1","MAF9") = scc("2","MAF9") * .85;
-Loop(T, put scc(t,"MAF9"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF9"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF9"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF9"));
 put /"REGION: World"
 put / "Total CO2 Emissions, GTCO2/year" ;
 Loop (T, put Eco2.l(T));
