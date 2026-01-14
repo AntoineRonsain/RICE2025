@@ -8,7 +8,7 @@ from tabulate import tabulate
 from tools.tools import read_uncerainties_results
 from tools.compute_st_dev import compute_norm_euclide
 
-YEARS_N = 90
+YEARS_N = 80
 START_YEAR = 2020
 TIME_STEPS = np.array([START_YEAR + i * 5 for i in range(YEARS_N)])
 
@@ -74,7 +74,7 @@ def plot_emission_comparison(data_dict, limit_curve):
     mpl.rc('xtick', labelsize=15)
     mpl.rc('ytick', labelsize=15)
 
-    fig, axs = plt.subplots(3, 2, figsize=(14, 18), sharex=True, sharey=True)
+    fig, axs = plt.subplots(3, 2, figsize=(14, 18), sharex=True, sharey=False)
 
     damage_key_map = {
         "Low": "Low Damage",
@@ -113,16 +113,16 @@ def plot_emission_comparison(data_dict, limit_curve):
             if j == 0:
                 ax.set_ylabel(f"{damage_level} Damages", fontsize=20, labelpad=20, weight='bold')
 
-    axs[0, 0].legend(bbox_to_anchor=(1.5, 1.4), loc="center", fontsize=15, ncol=3)
-
+    handles, labels = axs[0, 0].get_legend_handles_labels()
+    fig.legend(handles, labels, loc='upper center', bbox_to_anchor=(0.5, 1.0), ncol=3, fontsize=15)
     plt.tight_layout()
     plt.subplots_adjust(top=0.90)
     plt.show()
 
 
 if __name__ == "__main__":
-    BASE_DIR = Path(__file__).resolve().parents[3]
-    OUTPUTS_DIR = BASE_DIR / "chapter_rice_consistency/spatial_consistency/outputs"
+    BASE_DIR = Path(__file__).resolve().parents[1]
+    OUTPUTS_DIR = BASE_DIR / "spatial_consistency/outputs"
 
 
     def load_data(filename):
@@ -131,28 +131,28 @@ if __name__ == "__main__":
 
     d_negishi = load_data("rice2023_negishi.csv")
     d10_negishi = load_data("rice2023_negishi_10asia.csv")
-    d_n_negishi = load_data("rice2023_nordhaus_negishi.csv")
-    d10_n_negishi = load_data("rice2023_nordhaus_negishi_10asia.csv")
+    d_q_negishi = load_data("rice2023_negishi_quad.csv")
+    d10_q_negishi = load_data("rice2023_negishi_quad_10asia.csv")
 
     d_nash = load_data("rice2023_nash.csv")
     d10_nash = load_data("rice2023_nash_10asia.csv")
-    d_n_nash = load_data("rice2023_nordhaus_nash.csv")
-    d10_n_nash = load_data("rice2023_nordhaus_nash_10asia.csv")
+    d_q_nash = load_data("rice2023_nash_quad.csv")
+    d10_q_nash = load_data("rice2023_nash_quad_10asia.csv")
 
     data_dict = {
         'Non-Cooperative + Low Damage': {
-            '1Asia': d_n_nash['Nordhaus'], '10Asia': d10_n_nash['Nordhaus']},
+            '1Asia': d_q_nash['Low Damage'], '10Asia': d10_q_nash['Low Damage']},
         'Non-Cooperative + Middle Damage': {
-            '1Asia': d_nash['Middle-Damage'], '10Asia': d10_nash['Middle-Damage']},
+            '1Asia': d_nash['Medium Damage'], '10Asia': d10_nash['Medium Damage']},
         'Non-Cooperative + Strong Damage': {
-            '1Asia': d_nash['Standard'], '10Asia': d10_nash['Standard']},
+            '1Asia': d_nash['High Damage'], '10Asia': d10_nash['High Damage']},
 
         'Cooperative + Low Damage': {
-            '1Asia': d_n_negishi['Nordhaus'], '10Asia': d10_n_negishi['Nordhaus']},
+            '1Asia': d_q_negishi['Low Damage'], '10Asia': d10_q_negishi['Low Damage']},
         'Cooperative + Middle Damage': {
-            '1Asia': d_negishi['Middle-Damage'], '10Asia': d10_negishi['Middle-Damage']},
+            '1Asia': d_negishi['Medium Damage'], '10Asia': d10_negishi['Medium Damage']},
         'Cooperative + Strong Damage': {
-            '1Asia': d_negishi['Standard'], '10Asia': d10_negishi['Standard']},
+            '1Asia': d_negishi['High Damage'], '10Asia': d10_negishi['High Damage']},
     }
 
     # 4. Compute and Print Dispersion Table

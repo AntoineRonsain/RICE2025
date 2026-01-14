@@ -11,7 +11,7 @@ import os
 if __name__ == "__main__":
 
     path = os.path.dirname(os.path.dirname(__file__))
-    data = read_results(os.path.join(path,"spatial_consistency/outputs/rice2023_negishi_10.csv"))
+    data = read_results(os.path.join(path,"spatial_consistency/outputs/rice2023_negishi_10Asia.csv"))
     data = data["High Damage"]
 
     regions = list(data.keys())

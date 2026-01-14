@@ -28,34 +28,33 @@ def load_simulation_data(base_path):
     """
     outputs_dir = base_path / "spatial_consistency/outputs"
 
-    def read(filename):
+    def read_file(filename):
         return read_uncerainties_results(os.path.join(outputs_dir, filename))
 
-    # Load raw files
-    d_negishi = read("rice2023_negishi.csv")
-    d10_negishi = read("rice2023_negishi_10asia.csv")
-    d_nash = read("rice2023_nash.csv")
-    d10_nash = read("rice2023_nash_10asia.csv")
+    d_negishi = read_file("rice2023_negishi.csv")
+    d10_negishi = read_file("rice2023_negishi_10asia.csv")
+    d_q_negishi = read_file("rice2023_negishi_quad.csv")
+    d10_q_negishi = read_file("rice2023_negishi_quad_10asia.csv")
 
-    d_n_negishi = read("rice2023_nordhaus_negishi.csv")
-    d10_n_negishi = read("rice2023_nordhaus_negishi_10asia.csv")
-    d_n_nash = read("rice2023_nordhaus_nash.csv")
-    d10_n_nash = read("rice2023_nordhaus_nash_10asia.csv")
+    d_nash = read_file("rice2023_nash.csv")
+    d10_nash = read_file("rice2023_nash_10asia.csv")
+    d_q_nash = read_file("rice2023_nash_quad.csv")
+    d10_q_nash = read_file("rice2023_nash_quad_10asia.csv")
 
-    # Structure data with keys matching 'Solver + Damage' format
     data_dict = {
-        'Negishi + Low Damage': {
-            '1Asia': d_n_negishi['Nordhaus'], '10Asia': d10_n_negishi['Nordhaus']},
-        'Negishi + Middle Damage': {
-            '1Asia': d_negishi['Middle-Damage'], '10Asia': d10_negishi['Middle-Damage']},
-        'Negishi + Strong Damage': {
-            '1Asia': d_negishi['Standard'], '10Asia': d10_negishi['Standard']},
-        'Nash + Low Damage': {
-            '1Asia': d_n_nash['Nordhaus'], '10Asia': d10_n_nash['Nordhaus']},
-        'Nash + Middle Damage': {
-            '1Asia': d_nash['Middle-Damage'], '10Asia': d10_nash['Middle-Damage']},
-        'Nash + Strong Damage': {
-            '1Asia': d_nash['Standard'], '10Asia': d10_nash['Standard']}
+        'Non-Cooperative + Low Damage': {
+            '1Asia': d_q_nash['Low Damage'], '10Asia': d10_q_nash['Low Damage']},
+        'Non-Cooperative + Middle Damage': {
+            '1Asia': d_nash['Medium Damage'], '10Asia': d10_nash['Medium Damage']},
+        'Non-Cooperative + Strong Damage': {
+            '1Asia': d_nash['High Damage'], '10Asia': d10_nash['High Damage']},
+
+        'Cooperative + Low Damage': {
+            '1Asia': d_q_negishi['Low Damage'], '10Asia': d10_q_negishi['Low Damage']},
+        'Cooperative + Middle Damage': {
+            '1Asia': d_negishi['Medium Damage'], '10Asia': d10_negishi['Medium Damage']},
+        'Cooperative + Strong Damage': {
+            '1Asia': d_negishi['High Damage'], '10Asia': d10_negishi['High Damage']},
     }
 
     return data_dict
@@ -224,7 +223,7 @@ def plot_global_impacts(df):
 
 if __name__ == "__main__":
     # 1. Setup
-    base_dir = Path(__file__).resolve().parents[2]
+    base_dir = Path(__file__).resolve().parents[1]
     data_dict = load_simulation_data(base_dir)
 
     # 2. Regional Emissions Analysis

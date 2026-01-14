@@ -155,11 +155,11 @@ def plot_global_indicators(data, scenarios, regions, scenario_labels):
 
 if __name__ == "__main__":
     # 1. Load Data
-    path = Path(__file__).resolve().parents[2]
+    path = Path(__file__).resolve().parents[1]
     outputs_dir = path / "spatial_consistency/outputs"
 
-    data = read_results(os.path.join(outputs_dir, "rice2023_negishi.csv"))
-    data_quad = read_results(os.path.join(outputs_dir, "rice2023_negishi_quad_10Asia.csv"))
+    data = read_results(os.path.join(outputs_dir, "rice2023_nash.csv"))
+    data_quad = read_results(os.path.join(outputs_dir, "rice2023_nash_quad.csv"))
 
     # Merge/Patch Data (Replacing Low Damage with Quad data as per original script)
     data["Low Damage"] = data_quad["Low Damage"]

@@ -35,28 +35,33 @@ def load_scenario_data(base_path):
     def read_file(filename):
         return read_uncerainties_results(os.path.join(output_dir, filename))
 
-    # Load raw data
+
     d_negishi = read_file("rice2023_negishi.csv")
     d10_negishi = read_file("rice2023_negishi_10asia.csv")
+    d_q_negishi = read_file("rice2023_negishi_quad.csv")
+    d10_q_negishi = read_file("rice2023_negishi_quad_10asia.csv")
+
     d_nash = read_file("rice2023_nash.csv")
     d10_nash = read_file("rice2023_nash_10asia.csv")
+    d_q_nash = read_file("rice2023_nash_quad.csv")
+    d10_q_nash = read_file("rice2023_nash_quad_10asia.csv")
 
-    # Map readable names to data sources
-    # Structure: {Scenario Name: {'1Asia': data, '10Asia': data}}
     full_data = {
-        'Nash + Low Damage': {
-            '1Asia': d_nash['Nordhaus'], '10Asia': d10_nash['Nordhaus']},
-        'Nash + Middle Damage': {
-            '1Asia': d_nash['Middle-Damage'], '10Asia': d10_nash['Middle-Damage']},
-        'Nash + Strong Damage': {
-            '1Asia': d_nash['Standard'], '10Asia': d10_nash['Standard']},
-        'Negishi + Low Damage': {
-            '1Asia': d_negishi['Nordhaus'], '10Asia': d10_negishi['Nordhaus']},
-        'Negishi + Middle Damage': {
-            '1Asia': d_negishi['Middle-Damage'], '10Asia': d10_negishi['Middle-Damage']},
-        'Negishi + Strong Damage': {
-            '1Asia': d_negishi['Standard'], '10Asia': d10_negishi['Standard']},
+        'Non-Cooperative + Low Damage': {
+            '1Asia': d_q_nash['Low Damage'], '10Asia': d10_q_nash['Low Damage']},
+        'Non-Cooperative + Middle Damage': {
+            '1Asia': d_nash['Medium Damage'], '10Asia': d10_nash['Medium Damage']},
+        'Non-Cooperative + Strong Damage': {
+            '1Asia': d_nash['High Damage'], '10Asia': d10_nash['High Damage']},
+
+        'Cooperative + Low Damage': {
+            '1Asia': d_q_negishi['Low Damage'], '10Asia': d10_q_negishi['Low Damage']},
+        'Cooperative + Middle Damage': {
+            '1Asia': d_negishi['Medium Damage'], '10Asia': d10_negishi['Medium Damage']},
+        'Cooperative + Strong Damage': {
+            '1Asia': d_negishi['High Damage'], '10Asia': d10_negishi['High Damage']},
     }
+
 
     # Slice data to the first 90 time steps to ensure consistency
     for model in full_data:
@@ -201,7 +206,7 @@ def prep_gdp_per_capita_diff(data_dict):
 
 if __name__ == "__main__":
 
-    base_dir = Path(__file__).resolve().parents[2]  # Adjust parent level if needed
+    base_dir = Path(__file__).resolve().parents[1]
 
     data_dict = load_scenario_data(base_dir)
 
