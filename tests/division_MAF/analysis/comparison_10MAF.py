@@ -26,35 +26,40 @@ def load_simulation_data(base_path):
     Returns:
         dict: A dictionary containing all scenarios structured by 'Solver + Damage'.
     """
-    outputs_dir = base_path / "spatial_consistency/outputs"
+    outputs_dir = os.path.dirname(os.path.dirname((os.path.dirname((os.path.dirname(__file__))))))
 
-    def read_file(filename):
-        return read_uncerainties_results(os.path.join(outputs_dir, filename))
+    def read_file_MAF(filename, output_path = outputs_dir):
+        output_path = os.path.join(output_path, "tests\division_MAF\output")
+        return read_uncerainties_results(os.path.join(output_path, filename))
 
-    d_negishi = read_file("rice2023_negishi.csv")
-    d10_negishi = read_file("rice2023_negishi_10asia.csv")
-    d_q_negishi = read_file("rice2023_negishi_quad.csv")
-    d10_q_negishi = read_file("rice2023_negishi_quad_10asia.csv")
+    def read_file_general(filename,output_path = outputs_dir):
+        output_path = os.path.join(output_path, "spatial_consistency\outputs")
+        return read_uncerainties_results(os.path.join(output_path, filename))
 
-    d_nash = read_file("rice2023_nash.csv")
-    d10_nash = read_file("rice2023_nash_10asia.csv")
-    d_q_nash = read_file("rice2023_nash_quad.csv")
-    d10_q_nash = read_file("rice2023_nash_quad_10asia.csv")
+    d_negishi = read_file_general("rice2023_negishi.csv")
+    d10_negishi = read_file_MAF("rice2023_negishi_10MAF.csv")
+    d_q_negishi = read_file_general("rice2023_negishi_quad.csv")
+    d10_q_negishi = read_file_MAF("rice2023_negishi_quad_10MAF.csv")
+
+    d_nash = read_file_general("rice2023_nash.csv")
+    d10_nash = read_file_MAF("rice2023_nash_10MAF.csv")
+    d_q_nash = read_file_general("rice2023_nash_quad.csv")
+    d10_q_nash = read_file_MAF("rice2023_nash_quad_10MAF.csv")
 
     data_dict = {
         'Non-Cooperative + Low Damage': {
-            '1Asia': d_q_nash['Low Damage'], '10Asia': d10_q_nash['Low Damage']},
+            '1MAF': d_q_nash['Low Damage'], '10MAF': d10_q_nash['Low Damage']},
         'Non-Cooperative + Middle Damage': {
-            '1Asia': d_nash['Medium Damage'], '10Asia': d10_nash['Medium Damage']},
+            '1MAF': d_nash['Medium Damage'], '10MAF': d10_nash['Medium Damage']},
         'Non-Cooperative + Strong Damage': {
-            '1Asia': d_nash['High Damage'], '10Asia': d10_nash['High Damage']},
+            '1MAF': d_nash['High Damage'], '10MAF': d10_nash['High Damage']},
 
         'Cooperative + Low Damage': {
-            '1Asia': d_q_negishi['Low Damage'], '10Asia': d10_q_negishi['Low Damage']},
+            '1MAF': d_q_negishi['Low Damage'], '10MAF': d10_q_negishi['Low Damage']},
         'Cooperative + Middle Damage': {
-            '1Asia': d_negishi['Medium Damage'], '10Asia': d10_negishi['Medium Damage']},
+            '1MAF': d_negishi['Medium Damage'], '10MAF': d10_negishi['Medium Damage']},
         'Cooperative + Strong Damage': {
-            '1Asia': d_negishi['High Damage'], '10Asia': d10_negishi['High Damage']},
+            '1MAF': d_negishi['High Damage'], '10MAF': d10_negishi['High Damage']},
     }
 
     return data_dict
@@ -62,17 +67,17 @@ def load_simulation_data(base_path):
 
 def process_regional_emissions(data_dict):
     """
-    Calculates the difference in emission control rates for non-Asian regions.
+    Calculates the difference in emission control rates for non-MAFn regions.
     """
     records = []
     for key, content in data_dict.items():
         solver, damage = key.split(' + ')
 
-        for region in content['1Asia']:
-            if region not in ["World", "ASIA"]:
+        for region in content['1MAF']:
+            if region not in ["World", "MAF"]:
                 # Calculate difference: Disaggregated - Aggregated
-                diff = (np.array(content['10Asia'][region]["Emissions control rate"][:STEPS]) -
-                        np.array(content['1Asia'][region]["Emissions control rate"][:STEPS]))
+                diff = (np.array(content['10MAF'][region]["Emissions control rate"][:STEPS]) -
+                        np.array(content['1MAF'][region]["Emissions control rate"][:STEPS]))
 
                 for val in diff:
                     records.append({
@@ -84,21 +89,21 @@ def process_regional_emissions(data_dict):
     return pd.DataFrame(records)
 
 
-def process_asia_comparison(data_dict):
+def process_MAF_comparison(data_dict):
     """
-    Calculates the difference between the mean Sub-Asian region (ASIA0) and the global Asia region.
+    Calculates the difference between the mean Sub-MAFn region (MAF0) and the global MAF region.
     """
     records = []
     for key, content in data_dict.items():
         solver, damage = key.split(' + ')
 
-        # specific comparison: ASIA0 (from 10Asia) vs ASIA (from 1Asia)
-        diff = (np.array(content['10Asia']['ASIA0']["Emissions control rate"][:STEPS]) -
-                np.array(content['1Asia']['ASIA']["Emissions control rate"][:STEPS]))
+        # specific comparison: MAF0 (from 10MAF) vs MAF (from 1MAF)
+        diff = (np.array(content['10MAF']['MAF0']["Emissions control rate"][:STEPS]) -
+                np.array(content['1MAF']['MAF']["Emissions control rate"][:STEPS]))
 
         for val in diff:
             records.append({
-                'region': 'Mean Sub-Asia vs Asia',
+                'region': 'Mean Sub-MAF vs MAF',
                 'value': val,
                 'solver': solver,
                 'damage': damage
@@ -116,19 +121,19 @@ def process_global_indicators(data_dict):
         solver_label = 'Cooperative' if solver_raw == 'Negishi' else 'Non-cooperative'
 
         # 1. Temperature Difference
-        delta_t = (np.array(content['10Asia']['World']["Atmospheric temperature (deg c above preind)"][:STEPS]) -
-                   np.array(content['1Asia']['World']["Atmospheric temperature (deg c above preind)"][:STEPS]))
+        delta_t = (np.array(content['10MAF']['World']["Atmospheric temperature (deg c above preind)"][:STEPS]) -
+                   np.array(content['1MAF']['World']["Atmospheric temperature (deg c above preind)"][:STEPS]))
 
         # 2. CO2 Emissions Difference
-        delta_co2 = (np.array(content['10Asia']['World']["Total CO2 Emissions, GTCO2/year"][:STEPS]) -
-                     np.array(content['1Asia']['World']["Total CO2 Emissions, GTCO2/year"][:STEPS]))
+        delta_co2 = (np.array(content['10MAF']['World']["Total CO2 Emissions, GTCO2/year"][:STEPS]) -
+                     np.array(content['1MAF']['World']["Total CO2 Emissions, GTCO2/year"][:STEPS]))
 
         # 3. Relative GDP Difference
         # Summing regional GDPs (excluding World)
-        gdp_1 = sum(np.array(content['1Asia'][r]["Output, net net trill 2019$"][:STEPS])
-                    for r in content['1Asia'] if r != "World")
-        gdp_10 = sum(np.array(content['10Asia'][r]["Output, net net trill 2019$"][:STEPS])
-                     for r in content['10Asia'] if r != "World")
+        gdp_1 = sum(np.array(content['1MAF'][r]["Output, net net trill 2019$"][:STEPS])
+                    for r in content['1MAF'] if r != "World")
+        gdp_10 = sum(np.array(content['10MAF'][r]["Output, net net trill 2019$"][:STEPS])
+                     for r in content['10MAF'] if r != "World")
 
         # Relative change: (New - Old) / Old
         delta_gdp_rel = (gdp_10 - gdp_1) / gdp_1
@@ -159,8 +164,8 @@ def plot_regional_boxplot(df, solver_name, title):
     plt.show()
 
 
-def plot_asia_comparison_side_by_side(df):
-    """Side-by-side boxplot for Cooperative vs Non-Cooperative Asia comparison."""
+def plot_MAF_comparison_side_by_side(df):
+    """Side-by-side boxplot for Cooperative vs Non-Cooperative MAF comparison."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 8), sharey=True)
 
     # CORRECTION ICI : Remplacer 'Negishi'/'Nash' par les clés réelles du DataFrame
@@ -241,9 +246,9 @@ if __name__ == "__main__":
     # Attention à bien respecter la casse définie dans load_simulation_data
     plot_regional_boxplot(df_regions, 'Non-Cooperative', 'Regional Emissions Change (Non-cooperative)')
 
-    # 3. Asia Specific Comparison
-    df_asia = process_asia_comparison(data_dict)
-    plot_asia_comparison_side_by_side(df_asia)
+    # 3. MAF Specific Comparison
+    df_MAF = process_MAF_comparison(data_dict)
+    plot_MAF_comparison_side_by_side(df_MAF)
 
     # 4. Global Indicators (GDP & Temp)
     df_global = process_global_indicators(data_dict)

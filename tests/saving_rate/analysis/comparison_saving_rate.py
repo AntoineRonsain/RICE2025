@@ -26,10 +26,11 @@ def load_simulation_data(base_path):
     Returns:
         dict: A dictionary containing all scenarios structured by 'Solver + Damage'.
     """
-    outputs_dir = base_path / "spatial_consistency/outputs"
+    outputs_dir = os.path.dirname(os.path.dirname((os.path.dirname((os.path.dirname(__file__))))))
 
-    def read_file(filename):
-        return read_uncerainties_results(os.path.join(outputs_dir, filename))
+    def read_file(filename, output_path = outputs_dir):
+        output_path = os.path.join(output_path, "tests\saving_rate\output")
+        return read_uncerainties_results(os.path.join(output_path, filename))
 
     d_negishi = read_file("rice2023_negishi.csv")
     d10_negishi = read_file("rice2023_negishi_10asia.csv")
@@ -43,18 +44,18 @@ def load_simulation_data(base_path):
 
     data_dict = {
         'Non-Cooperative + Low Damage': {
-            '1Asia': d_q_nash['Low Damage'], '10Asia': d10_q_nash['Low Damage']},
+            '1asia': d_q_nash['Low Damage'], '10asia': d10_q_nash['Low Damage']},
         'Non-Cooperative + Middle Damage': {
-            '1Asia': d_nash['Medium Damage'], '10Asia': d10_nash['Medium Damage']},
+            '1asia': d_nash['Medium Damage'], '10asia': d10_nash['Medium Damage']},
         'Non-Cooperative + Strong Damage': {
-            '1Asia': d_nash['High Damage'], '10Asia': d10_nash['High Damage']},
+            '1asia': d_nash['High Damage'], '10asia': d10_nash['High Damage']},
 
         'Cooperative + Low Damage': {
-            '1Asia': d_q_negishi['Low Damage'], '10Asia': d10_q_negishi['Low Damage']},
+            '1asia': d_q_negishi['Low Damage'], '10asia': d10_q_negishi['Low Damage']},
         'Cooperative + Middle Damage': {
-            '1Asia': d_negishi['Medium Damage'], '10Asia': d10_negishi['Medium Damage']},
+            '1asia': d_negishi['Medium Damage'], '10asia': d10_negishi['Medium Damage']},
         'Cooperative + Strong Damage': {
-            '1Asia': d_negishi['High Damage'], '10Asia': d10_negishi['High Damage']},
+            '1asia': d_negishi['High Damage'], '10asia': d10_negishi['High Damage']},
     }
 
     return data_dict
@@ -62,17 +63,17 @@ def load_simulation_data(base_path):
 
 def process_regional_emissions(data_dict):
     """
-    Calculates the difference in emission control rates for non-Asian regions.
+    Calculates the difference in emission control rates for non-asian regions.
     """
     records = []
     for key, content in data_dict.items():
         solver, damage = key.split(' + ')
 
-        for region in content['1Asia']:
+        for region in content['1asia']:
             if region not in ["World", "ASIA"]:
                 # Calculate difference: Disaggregated - Aggregated
-                diff = (np.array(content['10Asia'][region]["Emissions control rate"][:STEPS]) -
-                        np.array(content['1Asia'][region]["Emissions control rate"][:STEPS]))
+                diff = (np.array(content['10asia'][region]["Emissions control rate"][:STEPS]) -
+                        np.array(content['1asia'][region]["Emissions control rate"][:STEPS]))
 
                 for val in diff:
                     records.append({
@@ -86,19 +87,19 @@ def process_regional_emissions(data_dict):
 
 def process_asia_comparison(data_dict):
     """
-    Calculates the difference between the mean Sub-Asian region (ASIA0) and the global Asia region.
+    Calculates the difference between the mean Sub-asian region (asia0) and the global asia region.
     """
     records = []
     for key, content in data_dict.items():
         solver, damage = key.split(' + ')
 
-        # specific comparison: ASIA0 (from 10Asia) vs ASIA (from 1Asia)
-        diff = (np.array(content['10Asia']['ASIA0']["Emissions control rate"][:STEPS]) -
-                np.array(content['1Asia']['ASIA']["Emissions control rate"][:STEPS]))
+        # specific comparison: asia0 (from 10asia) vs asia (from 1asia)
+        diff = (np.array(content['10asia']['ASIA0']["Emissions control rate"][:STEPS]) -
+                np.array(content['1asia']['ASIA']["Emissions control rate"][:STEPS]))
 
         for val in diff:
             records.append({
-                'region': 'Mean Sub-Asia vs Asia',
+                'region': 'Mean Sub-asia vs asia',
                 'value': val,
                 'solver': solver,
                 'damage': damage
@@ -116,19 +117,19 @@ def process_global_indicators(data_dict):
         solver_label = 'Cooperative' if solver_raw == 'Negishi' else 'Non-cooperative'
 
         # 1. Temperature Difference
-        delta_t = (np.array(content['10Asia']['World']["Atmospheric temperature (deg c above preind)"][:STEPS]) -
-                   np.array(content['1Asia']['World']["Atmospheric temperature (deg c above preind)"][:STEPS]))
+        delta_t = (np.array(content['10asia']['World']["Atmospheric temperature (deg c above preind)"][:STEPS]) -
+                   np.array(content['1asia']['World']["Atmospheric temperature (deg c above preind)"][:STEPS]))
 
         # 2. CO2 Emissions Difference
-        delta_co2 = (np.array(content['10Asia']['World']["Total CO2 Emissions, GTCO2/year"][:STEPS]) -
-                     np.array(content['1Asia']['World']["Total CO2 Emissions, GTCO2/year"][:STEPS]))
+        delta_co2 = (np.array(content['10asia']['World']["Total CO2 Emissions, GTCO2/year"][:STEPS]) -
+                     np.array(content['1asia']['World']["Total CO2 Emissions, GTCO2/year"][:STEPS]))
 
         # 3. Relative GDP Difference
         # Summing regional GDPs (excluding World)
-        gdp_1 = sum(np.array(content['1Asia'][r]["Output, net net trill 2019$"][:STEPS])
-                    for r in content['1Asia'] if r != "World")
-        gdp_10 = sum(np.array(content['10Asia'][r]["Output, net net trill 2019$"][:STEPS])
-                     for r in content['10Asia'] if r != "World")
+        gdp_1 = sum(np.array(content['1asia'][r]["Output, net net trill 2019$"][:STEPS])
+                    for r in content['1asia'] if r != "World")
+        gdp_10 = sum(np.array(content['10asia'][r]["Output, net net trill 2019$"][:STEPS])
+                     for r in content['10asia'] if r != "World")
 
         # Relative change: (New - Old) / Old
         delta_gdp_rel = (gdp_10 - gdp_1) / gdp_1
@@ -160,7 +161,7 @@ def plot_regional_boxplot(df, solver_name, title):
 
 
 def plot_asia_comparison_side_by_side(df):
-    """Side-by-side boxplot for Cooperative vs Non-Cooperative Asia comparison."""
+    """Side-by-side boxplot for Cooperative vs Non-Cooperative asia comparison."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 8), sharey=True)
 
     # CORRECTION ICI : Remplacer 'Negishi'/'Nash' par les clés réelles du DataFrame
@@ -241,7 +242,7 @@ if __name__ == "__main__":
     # Attention à bien respecter la casse définie dans load_simulation_data
     plot_regional_boxplot(df_regions, 'Non-Cooperative', 'Regional Emissions Change (Non-cooperative)')
 
-    # 3. Asia Specific Comparison
+    # 3. asia Specific Comparison
     df_asia = process_asia_comparison(data_dict)
     plot_asia_comparison_side_by_side(df_asia)
 
