@@ -49,14 +49,14 @@ def load_scenario_data(base_path):
     full_data = {
         'Non-Cooperative + Low Damage': {
             '1Asia': d_q_nash['Low Damage'], '10Asia': d10_q_nash['Low Damage']},
-        'Non-Cooperative + Middle Damage': {
+        'Non-Cooperative + Medium Damage': {
             '1Asia': d_nash['Medium Damage'], '10Asia': d10_nash['Medium Damage']},
         'Non-Cooperative + Strong Damage': {
             '1Asia': d_nash['High Damage'], '10Asia': d10_nash['High Damage']},
 
         'Cooperative + Low Damage': {
             '1Asia': d_q_negishi['Low Damage'], '10Asia': d10_q_negishi['Low Damage']},
-        'Cooperative + Middle Damage': {
+        'Cooperative + Medium Damage': {
             '1Asia': d_negishi['Medium Damage'], '10Asia': d10_negishi['Medium Damage']},
         'Cooperative + Strong Damage': {
             '1Asia': d_negishi['High Damage'], '10Asia': d10_negishi['High Damage']},
@@ -91,7 +91,7 @@ def create_boxplot(df, x_col, y_col, hue_col, title, ylabel="", xlabel="", legen
     plt.figure(figsize=(16, 10))
     sns.set_style("whitegrid")
 
-    ax = sns.boxplot(x=x_col, y=y_col, data=df, hue=hue_col, palette="Set2", linewidth=STYLE_CONFIG['line_width'])
+    ax = sns.boxplot(x=x_col, y=y_col, data=df, hue=hue_col, linewidth=STYLE_CONFIG['line_width'])
 
     ax.set_title(title, fontsize=STYLE_CONFIG['title_size'], pad=20)
     ax.set_xlabel(xlabel, fontsize=STYLE_CONFIG['axis_label_size'])

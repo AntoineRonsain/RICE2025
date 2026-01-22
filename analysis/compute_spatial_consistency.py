@@ -66,8 +66,8 @@ def content_table(data_dict):
 
 
 if __name__ == "__main__":
-    BASE_DIR = Path(__file__).resolve().parents[3]
-    OUTPUTS_DIR = BASE_DIR / "chapter_rice_consistency/spatial_consistency/outputs"
+    BASE_DIR = Path(__file__).resolve().parents[1]
+    OUTPUTS_DIR = BASE_DIR / "spatial_consistency/outputs"
 
 
     def load_rice_data(filename):
@@ -76,13 +76,13 @@ if __name__ == "__main__":
 
     data_negishi = load_rice_data("rice2023_negishi.csv")
     data10_negishi = load_rice_data("rice2023_negishi_10asia.csv")
-    data_q_negishi = load_rice_data("rice2023_quad_negishi.csv")
-    data10_q_negishi = load_rice_data("rice2023_quad_negishi_10asia.csv")
+    data_q_negishi = load_rice_data("rice2023_negishi_quad.csv")
+    data10_q_negishi = load_rice_data("rice2023_negishi_quad_10asia.csv")
 
     data_nash = load_rice_data("rice2023_nash.csv")
     data10_nash = load_rice_data("rice2023_nash_10asia.csv")
-    data_q_nash = load_rice_data("rice2023_quad_nash.csv")
-    data10_q_nash = load_rice_data("rice2023_quad_nash_10asia.csv")
+    data_q_nash = load_rice_data("rice2023_nash_quad.csv")
+    data10_q_nash = load_rice_data("rice2023_nash_quad_10asia.csv")
 
     structure_nash = {
         'Low': {'1Asia': data_q_nash['Low Damage'], '10Asia': data10_q_nash['Low Damage']},

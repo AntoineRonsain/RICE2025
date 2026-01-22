@@ -51,24 +51,36 @@ def flag_nash_welfare_func(dict):
 
 
 def flag_loop_nash_solver(dict):
+
     string_table = ""
+    string_table += "MIU.FX(t, n) = miuup(t, n);\n"
+    string_table += "S.FX(t, n) = optlrsav;\n"
+
+    string_table += "LOOP(ITER,\n"
+
     k = 1
     scenarios = list(dict.keys())
     regions = list(dict[scenarios[0]].keys())
     for r in regions:
         string_table += f'MIE(ITER,"{k}",t,n)=MIU.L(t,n);\n'
-        # string_table += f'EIE(ITER,"{k}",t,n)=EIND.L(t,n);\n\n'
-        string_table += 'MIU.LO(t,n) = 0;\nMIU.UP(t,n) = miuup(t,n);\nMIU.FX("1",n) = ECO("MIU0",N);\n\n'
+        string_table += f'SE(ITER,"{k}",t,n)=S.L(t,n);\n'
+        string_table += 'MIU.LO(t,n) = 0;\nMIU.UP(t,n) = miuup(t,n);\nMIU.FX("1",n) = ECO("MIU0",N);\n'
+        string_table += 'S.LO(t,n) = 0.1;\nS.UP(t,n) = 0.6;\n'
         string_table += f'MIU.FX(t,n)$(ORD(n) NE {k})=MIE(ITER,"{k}",t,n);\n'
+        string_table += f'S.FX(t,n)$(ORD(n) NE {k})=SE(ITER,"{k}",t,n);\n'
         string_table += f'SOLVE  RICE MAXIMIZING UT2_{r} USING NLP;\n'
-        string_table += f'marginal_miu(T,"{r}") = MIU.m(T,"{r}");\n \n \n'
+        string_table += f'marginal_miu(T,"{r}") = MIU.m(T,"{r}");\n'
+        string_table += f'marg_S(ITER, t,"{r}") = S.m(T,"{r}");\n'
+        string_table += f'marg_DAM(ITER, t,"{r}") = DAMFRACEQ.m(T,"{r}");\n'
+        string_table += f'marg_K(ITER, t,"{r}") = KK.m(T,"{r}");\n'
         k+=1
 
     string_table += f'*Reset for the next iteration.\n'
     string_table += f'MIE(ITER, "{k}", t, n) = MIU.L(t, n);\n'
-    string_table += f'EIE(ITER, "{k}", t, n) = EIND.L(t, n);\n'
+    string_table += f'SE(ITER, "{k}", t, n) = S.L(t, n);\n'
     string_table += f'MIE(ITER + 1, "1", t, n) = MIE(ITER, "{k}", t, n);\n'
-    string_table += f'EIE(ITER + 1, "1", t, n) = EIE(ITER, "{k}", t, n);\n'
+    string_table += f'SE(ITER + 1, "1", t, n) = SE(ITER, "{k}", t, n);\n'
+    string_table += ');\n'
 
     return string_table
 
@@ -129,6 +141,8 @@ def flag_solve(dict):
             string_table += f'Loop(T, put UT2_{r}.l);\n'
             string_table += 'put / "Marginal regional welfare";\n'
             string_table += f'Loop(T, put marginal_miu(T,"{r}"));\n'
+            string_table += f'put / "Marginal Cost of Damages (Shadow Price)";\n'
+            string_table += f'Loop(T, put marg_DAM("5", T, "{r}"));'
             string_table += 'put / "Population (exogenous)" ;\n'
             string_table += f'Loop (T, put L(T,"{r}"));\n'
             string_table += 'put / "Carbon price";\n'
@@ -147,10 +161,10 @@ def flag_solve(dict):
         string_table += 'put / "MIU global";\n'
         string_table += 'Loop(T, put MIU_GLOBAL.l(T));\n'
 
-        for r in regions :
-            for k in range(5):
-                string_table += 'put / "('+str(r) +','+str(k) +')";\n'
-                string_table += 'Loop(T, put MIE("'+str(k+1)+'","16",t,"'+str(r)+'"));\n'
+        # for r in regions :
+        #     for k in range(5):
+        #         string_table += 'put / "('+str(r) +','+str(k) +')";\n'
+        #         string_table += 'Loop(T, put MIE("'+str(k+1)+'","16",t,"'+str(r)+'"));\n'
 
     return string_table
 

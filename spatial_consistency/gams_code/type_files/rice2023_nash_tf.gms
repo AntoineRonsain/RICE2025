@@ -60,7 +60,7 @@ PARAMETERS
 
         Q       Utility derivative scaling factor                   /1E4 /
         Q1                                                          /1E5 /
-        Q2                                                          /1E6 /
+        Q2                                                          /1E8 /
         betaclim                                                    / 0.6  /
         elasmu    Elasticity of marginal utility of consumption     / 0.9  /
         rhof      Riskfree real rate per year                       / .001 /
@@ -85,6 +85,7 @@ PARAMETERS
 
         EIE(ITER,SIT,t,n)
         MIE(ITER,SIT,t,n)
+        SE(ITER,SIT,t,n)
         marginal_miu(T,n)
 
         L(t,n)           Level of population and labor

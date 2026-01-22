@@ -167,7 +167,7 @@ if __name__ == "__main__":
     # 2. Setup Meta-data
     scenario_mapping = {
         "Low Damage": "Low Damage",
-        "Medium Damage": "Middle Damage",
+        "Medium Damage": "Medium Damage",
         "High Damage": "High Damage",
     }
 

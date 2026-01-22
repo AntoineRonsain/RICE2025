@@ -44,14 +44,14 @@ def load_simulation_data(base_path):
     data_dict = {
         'Non-Cooperative + Low Damage': {
             '1Asia': d_q_nash['Low Damage'], '10Asia': d10_q_nash['Low Damage']},
-        'Non-Cooperative + Middle Damage': {
+        'Non-Cooperative + Medium Damage': {
             '1Asia': d_nash['Medium Damage'], '10Asia': d10_nash['Medium Damage']},
         'Non-Cooperative + Strong Damage': {
             '1Asia': d_nash['High Damage'], '10Asia': d10_nash['High Damage']},
 
         'Cooperative + Low Damage': {
             '1Asia': d_q_negishi['Low Damage'], '10Asia': d10_q_negishi['Low Damage']},
-        'Cooperative + Middle Damage': {
+        'Cooperative + Medium Damage': {
             '1Asia': d_negishi['Medium Damage'], '10Asia': d10_negishi['Medium Damage']},
         'Cooperative + Strong Damage': {
             '1Asia': d_negishi['High Damage'], '10Asia': d10_negishi['High Damage']},
@@ -147,7 +147,7 @@ def process_global_indicators(data_dict):
 def plot_regional_boxplot(df, solver_name, title):
     """Generic boxplot for regional emissions."""
     plt.figure(figsize=(12, 8))
-    sns.boxplot(x='region', y='value', data=df[df['solver'] == solver_name], hue='damage', palette="Set2")
+    sns.boxplot(x='region', y='value', data=df[df['solver'] == solver_name], hue='damage')
 
     plt.title(title, fontsize=STYLE['title_size'], pad=20)
     plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', fontsize=STYLE['legend_size'])
@@ -171,7 +171,7 @@ def plot_asia_comparison_side_by_side(df):
         sns.boxplot(
             data=df[df['solver'] == solver_key],
             x='region', y='value', hue='damage',
-            ax=axes[i], palette="Set2"
+            ax=axes[i]
         )
         axes[i].set_title(title, fontsize=STYLE['title_size'])
         axes[i].set_xlabel('')
@@ -200,7 +200,7 @@ def plot_global_impacts(df):
     sns.boxplot(
         data=df[df['metric'] == 'GDP (Relative)'],
         x='solver', y='value', hue='damage',
-        ax=axes[0], palette="Set2"
+        ax=axes[0]
     )
     axes[0].set_title('GDP (Relative Change)', fontsize=STYLE['title_size'])
     axes[0].set_ylabel('Fraction of GDP', fontsize=STYLE['label_size'])
@@ -211,7 +211,7 @@ def plot_global_impacts(df):
     sns.boxplot(
         data=df[df['metric'] == 'Temperature'],
         x='solver', y='value', hue='damage',
-        ax=axes[1], palette="Set2"
+        ax=axes[1]
     )
     axes[1].set_title('Temperature Increase (°C)', fontsize=STYLE['title_size'])
     axes[1].set_ylabel('Change in °C', fontsize=STYLE['label_size'])

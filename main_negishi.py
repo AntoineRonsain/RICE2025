@@ -24,3 +24,13 @@ if __name__ == '__main__':
                            })
     get_optim_file(repo, data, mode= "10Asia", dam ="Quadratic")
 
+    data = multiscenarios({"Medium Damage": repo + 'inputs/medium_dam_10MAF.csv',
+                           "High Damage": repo + 'inputs/high_dam_10MAF.csv',
+                           })
+    get_optim_file(repo, data, mode= "10MAF")
+
+    data = multiscenarios({"Low Damage": repo + 'inputs/low_dam_10MAF.csv'
+                           })
+    get_optim_file(repo, data, mode= "10MAF", dam ="Quadratic")
+
+

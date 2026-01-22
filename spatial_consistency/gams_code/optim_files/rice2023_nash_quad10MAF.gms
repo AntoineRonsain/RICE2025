@@ -7,12 +7,12 @@ $offtext
 $title        July 19, 2023 (dice2023.gms)
 
 set
-    t  Time periods (5 years per period)                     /1*81/
+    t  Time periods (5 years per period)                     /1*101/
     ISER    Weight searching interation index  /1*5 /
     ITER    Nash loop                          /1*5 /
     SIT     Nash loop for region1-15           /1*25/
 
-N /USA, RUS, JAP, CAN, OAB, EU, CHN, IND, BRZ, SAF, OEU, REF, ASIA, MAF, LAM/
+N /USA, RUS, JAP, CAN, OAB, EU, CHN, IND, BRZ, SAF, OEU, REF, ASIA, LAM, MAF0, MAF1, MAF2, MAF3, MAF4, MAF5, MAF6, MAF7, MAF8, MAF9/
 
 ;
 
@@ -83,23 +83,23 @@ SETS ECOT
 /pop0, popasym, popadj, a0, gA0, dela, sig0, gsigma1, delgsig, asymgsig, q0, K0, miu0, a2, a3, n3/
 
 TABLE ECO(ECOT,N)
-          USA         RUS         JAP          CAN         OAB         EU          CHN         IND         BRZ           SAF         OEU          REF         ASIA         MAF           LAM
-pop0      331.432     143.787     126.496      37.6032     88.2753     510.945     1424.55     1383.2      213.863       58.7212     101.697      98.16       1177.43      1793.67       420.939
-popasym   489.012     143.787     126.496      56.7038     98.3873     512.515     1441.18     1678.57     232.724       77.5934     111.315      118.112     1475.59      3657.55       526.507
-popadj    0.0948651   0.145       0.145        0.095758    0.0836356   0.845329    0.864755    0.311317    0.423562      0.203888    0.328072     0.266731    0.262046     0.152873      0.272184
-a0        13.3999     8.1927      9.2269       11.4356     8.54114     9.93393     5.68029     3.40244     5.36764       4.83754     6.90522      6.68749     4.41482      3.694         5.58724
-gA0       0.0297618   0.0573968   0.0471163    0.0400154   0.0500945   0.0475897   0.109478    0.170205    0.0832742     0.0821519   0.0731599    0.0662272   0.104503     0.0953594     0.0774209
-dela      0.00276194  0.00544409  0.00435665   0.00412869  0.00449444  0.0047987   0.0103848   0.0137549   0.00697187    0.00640958  0.00686484   0.00578246  0.00849175   0.00681257    0.00644025
-sig0      0.280922    0.479159    0.254381     0.260517    0.259556    0.165847    0.527972    0.281054    0.170522      0.657903    0.249117     0.358589    0.238792     0.290092      0.215192
-gsigma1   -0.0240468  -0.0191403  -0.00655657  -0.0302755  -0.032377   -0.0278566  -0.0174615  -0.0133732  -0.000656878  -0.0112051  -0.00958924  -0.041946   -0.00911635  -0.000927845  -0.00881594
-delgsig   0.941915    0.990365    0.993352     0.959565    0.935345    0.971375    0.957398    0.997355    0.998825      0.996289    0.990639     0.935723    0.994484     0.999648      0.994804
-asymgsig  -0.005      -0.005      -0.005       -0.005      -0.005      -0.005      -0.005      -0.005      -0.005        -0.005      -0.005       -0.005      -0.005       -0.005        -0.005
-q0        21.6153     4.29061     5.82879      1.96194     3.10118     23.0363     23.3937     9.81744     3.81842       0.847688    2.15806      1.51893     13.8835      13.0466       7.38158
-K0        43.6249     7.43774     16.9125      4.35539     6.51907     53.9706     65.485      18.7344     9.48238       1.79211     3.76203      1.48676     29.9892      23.9355       14.5124
-miu0      0.0486596   0.0157365   0.0139357    0.0115777   0.0120244   0.0330613   0.0309619   0.0222417   0.0150853     0.00639427  0.00800447   0.0101568   0.0285936    0.0539258     0.0172459
-a2        0.003467    0.003467    0.003467     0.003467    0.003467    0.003467    0.003467    0.003467    0.003467      0.003467    0.003467     0.003467    0.003467     0.003467      0.003467
-a3        0           0           0            0           0           0           0           0           0             0           0            0           0            0             0
-n3        0           0           0            0           0           0           0           0           0             0           0            0           0            0             0;
+          USA         RUS         JAP          CAN         OAB         EU          CHN         IND         BRZ           SAF         OEU          REF         ASIA         LAM          MAF0          MAF1          MAF2          MAF3          MAF4          MAF5          MAF6          MAF7          MAF8          MAF9
+pop0      331.432     143.787     126.496      37.6032     88.2753     510.945     1424.55     1383.2      213.863       58.7212     101.697      98.16       1177.43      420.939      179.367       179.367       179.367       179.367       179.367       179.367       179.367       179.367       179.367       179.367
+popasym   489.012     143.787     126.496      56.7038     98.3873     512.515     1441.18     1678.57     232.724       77.5934     111.315      118.112     1475.59      526.507      365.755       365.755       365.755       365.755       365.755       365.755       365.755       365.755       365.755       365.755
+popadj    0.0948651   0.145       0.145        0.095758    0.0836356   0.845329    0.864755    0.311317    0.423562      0.203888    0.328072     0.266731    0.262046     0.272184     0.152873      0.152873      0.152873      0.152873      0.152873      0.152873      0.152873      0.152873      0.152873      0.152873
+a0        13.3999     8.1927      9.2269       11.4356     8.54114     9.93393     5.68029     3.40244     5.36764       4.83754     6.90522      6.68749     4.41482      5.58724      3.694         3.694         3.694         3.694         3.694         3.694         3.694         3.694         3.694         3.694
+gA0       0.0297618   0.0573968   0.0471163    0.0400154   0.0500945   0.0475897   0.109478    0.170205    0.0832742     0.0821519   0.0731599    0.0662272   0.104503     0.0774209    0.0953594     0.0953594     0.0953594     0.0953594     0.0953594     0.0953594     0.0953594     0.0953594     0.0953594     0.0953594
+dela      0.00276194  0.00544409  0.00435665   0.00412869  0.00449444  0.0047987   0.0103848   0.0137549   0.00697187    0.00640958  0.00686484   0.00578246  0.00849175   0.00644025   0.00681257    0.00681257    0.00681257    0.00681257    0.00681257    0.00681257    0.00681257    0.00681257    0.00681257    0.00681257
+sig0      0.280922    0.479159    0.254381     0.260517    0.259556    0.165847    0.527972    0.281054    0.170522      0.657903    0.249117     0.358589    0.238792     0.215192     0.290092      0.290092      0.290092      0.290092      0.290092      0.290092      0.290092      0.290092      0.290092      0.290092
+gsigma1   -0.0240468  -0.0191403  -0.00655657  -0.0302755  -0.032377   -0.0278566  -0.0174615  -0.0133732  -0.000656878  -0.0112051  -0.00958924  -0.041946   -0.00911635  -0.00881594  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845  -0.000927845
+delgsig   0.941915    0.990365    0.993352     0.959565    0.935345    0.971375    0.957398    0.997355    0.998825      0.996289    0.990639     0.935723    0.994484     0.994804     0.999648      0.999648      0.999648      0.999648      0.999648      0.999648      0.999648      0.999648      0.999648      0.999648
+asymgsig  -0.005      -0.005      -0.005       -0.005      -0.005      -0.005      -0.005      -0.005      -0.005        -0.005      -0.005       -0.005      -0.005       -0.005       -0.005        -0.005        -0.005        -0.005        -0.005        -0.005        -0.005        -0.005        -0.005        -0.005
+q0        21.6153     4.29061     5.82879      1.96194     3.10118     23.0363     23.3937     9.81744     3.81842       0.847688    2.15806      1.51893     13.8835      7.38158      1.30466       1.30466       1.30466       1.30466       1.30466       1.30466       1.30466       1.30466       1.30466       1.30466
+K0        43.6249     7.43774     16.9125      4.35539     6.51907     53.9706     65.485      18.7344     9.48238       1.79211     3.76203      1.48676     29.9892      14.5124      2.39355       2.39355       2.39355       2.39355       2.39355       2.39355       2.39355       2.39355       2.39355       2.39355
+miu0      0.0486596   0.0157365   0.0139357    0.0115777   0.0120244   0.0330613   0.0309619   0.0222417   0.0150853     0.00639427  0.00800447   0.0101568   0.0285936    0.0172459    0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258     0.0539258
+a2        0.003467    0.003467    0.003467     0.003467    0.003467    0.003467    0.003467    0.003467    0.003467      0.003467    0.003467     0.003467    0.003467     0.003467     0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467      0.003467
+a3        0           0           0            0           0           0           0           0           0             0           0            0           0            0            0             0             0             0             0             0             0             0             0             0
+n3        0           0           0            0           0           0           0           0           0             0           0            0           0            0            0             0             0             0             0             0             0             0             0             0;
 
 
 
@@ -107,6 +107,7 @@ PARAMETERS
 
         EIE(ITER,SIT,t,n)
         MIE(ITER,SIT,t,n)
+        SE(ITER,SIT,t,n)
         marginal_miu(T,n)
 
         L(t,n)           Level of population and labor
@@ -144,8 +145,17 @@ NUT_SAF         Nash Utility of SAF
 NUT_OEU         Nash Utility of OEU
 NUT_REF         Nash Utility of REF
 NUT_ASIA         Nash Utility of ASIA
-NUT_MAF         Nash Utility of MAF
 NUT_LAM         Nash Utility of LAM
+NUT_MAF0         Nash Utility of MAF0
+NUT_MAF1         Nash Utility of MAF1
+NUT_MAF2         Nash Utility of MAF2
+NUT_MAF3         Nash Utility of MAF3
+NUT_MAF4         Nash Utility of MAF4
+NUT_MAF5         Nash Utility of MAF5
+NUT_MAF6         Nash Utility of MAF6
+NUT_MAF7         Nash Utility of MAF7
+NUT_MAF8         Nash Utility of MAF8
+NUT_MAF9         Nash Utility of MAF9
 
 ;
 ** Dynamic parameter values
@@ -189,8 +199,17 @@ NUT_SAF = ININUT;
 NUT_OEU = ININUT;
 NUT_REF = ININUT;
 NUT_ASIA = ININUT;
-NUT_MAF = ININUT;
 NUT_LAM = ININUT;
+NUT_MAF0 = ININUT;
+NUT_MAF1 = ININUT;
+NUT_MAF2 = ININUT;
+NUT_MAF3 = ININUT;
+NUT_MAF4 = ININUT;
+NUT_MAF5 = ININUT;
+NUT_MAF6 = ININUT;
+NUT_MAF7 = ININUT;
+NUT_MAF8 = ININUT;
+NUT_MAF9 = ININUT;
 
 
 * nonco2 Parameters
@@ -309,12 +328,39 @@ UT2_REF Social welfare function of REF
 UT_ASIA Social welfare function of ASIA
 UT1_ASIA Social welfare function of ASIA
 UT2_ASIA Social welfare function of ASIA
-UT_MAF Social welfare function of MAF
-UT1_MAF Social welfare function of MAF
-UT2_MAF Social welfare function of MAF
 UT_LAM Social welfare function of LAM
 UT1_LAM Social welfare function of LAM
 UT2_LAM Social welfare function of LAM
+UT_MAF0 Social welfare function of MAF0
+UT1_MAF0 Social welfare function of MAF0
+UT2_MAF0 Social welfare function of MAF0
+UT_MAF1 Social welfare function of MAF1
+UT1_MAF1 Social welfare function of MAF1
+UT2_MAF1 Social welfare function of MAF1
+UT_MAF2 Social welfare function of MAF2
+UT1_MAF2 Social welfare function of MAF2
+UT2_MAF2 Social welfare function of MAF2
+UT_MAF3 Social welfare function of MAF3
+UT1_MAF3 Social welfare function of MAF3
+UT2_MAF3 Social welfare function of MAF3
+UT_MAF4 Social welfare function of MAF4
+UT1_MAF4 Social welfare function of MAF4
+UT2_MAF4 Social welfare function of MAF4
+UT_MAF5 Social welfare function of MAF5
+UT1_MAF5 Social welfare function of MAF5
+UT2_MAF5 Social welfare function of MAF5
+UT_MAF6 Social welfare function of MAF6
+UT1_MAF6 Social welfare function of MAF6
+UT2_MAF6 Social welfare function of MAF6
+UT_MAF7 Social welfare function of MAF7
+UT1_MAF7 Social welfare function of MAF7
+UT2_MAF7 Social welfare function of MAF7
+UT_MAF8 Social welfare function of MAF8
+UT1_MAF8 Social welfare function of MAF8
+UT2_MAF8 Social welfare function of MAF8
+UT_MAF9 Social welfare function of MAF9
+UT1_MAF9 Social welfare function of MAF9
+UT2_MAF9 Social welfare function of MAF9
 
 ;
 NONNEGATIVE VARIABLES  MIU, TATM, MAT, MU, ML, Y, YNET, YGROSS, C, K, I;
@@ -530,12 +576,39 @@ OBJ2_REF
 OBJ_ASIA
 OBJ1_ASIA
 OBJ2_ASIA
-OBJ_MAF
-OBJ1_MAF
-OBJ2_MAF
 OBJ_LAM
 OBJ1_LAM
 OBJ2_LAM
+OBJ_MAF0
+OBJ1_MAF0
+OBJ2_MAF0
+OBJ_MAF1
+OBJ1_MAF1
+OBJ2_MAF1
+OBJ_MAF2
+OBJ1_MAF2
+OBJ2_MAF2
+OBJ_MAF3
+OBJ1_MAF3
+OBJ2_MAF3
+OBJ_MAF4
+OBJ1_MAF4
+OBJ2_MAF4
+OBJ_MAF5
+OBJ1_MAF5
+OBJ2_MAF5
+OBJ_MAF6
+OBJ1_MAF6
+OBJ2_MAF6
+OBJ_MAF7
+OBJ1_MAF7
+OBJ2_MAF7
+OBJ_MAF8
+OBJ1_MAF8
+OBJ2_MAF8
+OBJ_MAF9
+OBJ1_MAF9
+OBJ2_MAF9
 ;
 OBJ_USA..    UT_USA =E= Q* SUM(t, CEMUTOTPER(t,"USA"));
 OBJ1_USA..    UT1_USA =E= Q1* SUM(t, CEMUTOTPER(t,"USA"));
@@ -576,12 +649,39 @@ OBJ2_REF..    UT2_REF =E= Q2* SUM(t, CEMUTOTPER(t,"REF"));
 OBJ_ASIA..    UT_ASIA =E= Q* SUM(t, CEMUTOTPER(t,"ASIA"));
 OBJ1_ASIA..    UT1_ASIA =E= Q1* SUM(t, CEMUTOTPER(t,"ASIA"));
 OBJ2_ASIA..    UT2_ASIA =E= Q2* SUM(t, CEMUTOTPER(t,"ASIA"));
-OBJ_MAF..    UT_MAF =E= Q* SUM(t, CEMUTOTPER(t,"MAF"));
-OBJ1_MAF..    UT1_MAF =E= Q1* SUM(t, CEMUTOTPER(t,"MAF"));
-OBJ2_MAF..    UT2_MAF =E= Q2* SUM(t, CEMUTOTPER(t,"MAF"));
 OBJ_LAM..    UT_LAM =E= Q* SUM(t, CEMUTOTPER(t,"LAM"));
 OBJ1_LAM..    UT1_LAM =E= Q1* SUM(t, CEMUTOTPER(t,"LAM"));
 OBJ2_LAM..    UT2_LAM =E= Q2* SUM(t, CEMUTOTPER(t,"LAM"));
+OBJ_MAF0..    UT_MAF0 =E= Q* SUM(t, CEMUTOTPER(t,"MAF0"));
+OBJ1_MAF0..    UT1_MAF0 =E= Q1* SUM(t, CEMUTOTPER(t,"MAF0"));
+OBJ2_MAF0..    UT2_MAF0 =E= Q2* SUM(t, CEMUTOTPER(t,"MAF0"));
+OBJ_MAF1..    UT_MAF1 =E= Q* SUM(t, CEMUTOTPER(t,"MAF1"));
+OBJ1_MAF1..    UT1_MAF1 =E= Q1* SUM(t, CEMUTOTPER(t,"MAF1"));
+OBJ2_MAF1..    UT2_MAF1 =E= Q2* SUM(t, CEMUTOTPER(t,"MAF1"));
+OBJ_MAF2..    UT_MAF2 =E= Q* SUM(t, CEMUTOTPER(t,"MAF2"));
+OBJ1_MAF2..    UT1_MAF2 =E= Q1* SUM(t, CEMUTOTPER(t,"MAF2"));
+OBJ2_MAF2..    UT2_MAF2 =E= Q2* SUM(t, CEMUTOTPER(t,"MAF2"));
+OBJ_MAF3..    UT_MAF3 =E= Q* SUM(t, CEMUTOTPER(t,"MAF3"));
+OBJ1_MAF3..    UT1_MAF3 =E= Q1* SUM(t, CEMUTOTPER(t,"MAF3"));
+OBJ2_MAF3..    UT2_MAF3 =E= Q2* SUM(t, CEMUTOTPER(t,"MAF3"));
+OBJ_MAF4..    UT_MAF4 =E= Q* SUM(t, CEMUTOTPER(t,"MAF4"));
+OBJ1_MAF4..    UT1_MAF4 =E= Q1* SUM(t, CEMUTOTPER(t,"MAF4"));
+OBJ2_MAF4..    UT2_MAF4 =E= Q2* SUM(t, CEMUTOTPER(t,"MAF4"));
+OBJ_MAF5..    UT_MAF5 =E= Q* SUM(t, CEMUTOTPER(t,"MAF5"));
+OBJ1_MAF5..    UT1_MAF5 =E= Q1* SUM(t, CEMUTOTPER(t,"MAF5"));
+OBJ2_MAF5..    UT2_MAF5 =E= Q2* SUM(t, CEMUTOTPER(t,"MAF5"));
+OBJ_MAF6..    UT_MAF6 =E= Q* SUM(t, CEMUTOTPER(t,"MAF6"));
+OBJ1_MAF6..    UT1_MAF6 =E= Q1* SUM(t, CEMUTOTPER(t,"MAF6"));
+OBJ2_MAF6..    UT2_MAF6 =E= Q2* SUM(t, CEMUTOTPER(t,"MAF6"));
+OBJ_MAF7..    UT_MAF7 =E= Q* SUM(t, CEMUTOTPER(t,"MAF7"));
+OBJ1_MAF7..    UT1_MAF7 =E= Q1* SUM(t, CEMUTOTPER(t,"MAF7"));
+OBJ2_MAF7..    UT2_MAF7 =E= Q2* SUM(t, CEMUTOTPER(t,"MAF7"));
+OBJ_MAF8..    UT_MAF8 =E= Q* SUM(t, CEMUTOTPER(t,"MAF8"));
+OBJ1_MAF8..    UT1_MAF8 =E= Q1* SUM(t, CEMUTOTPER(t,"MAF8"));
+OBJ2_MAF8..    UT2_MAF8 =E= Q2* SUM(t, CEMUTOTPER(t,"MAF8"));
+OBJ_MAF9..    UT_MAF9 =E= Q* SUM(t, CEMUTOTPER(t,"MAF9"));
+OBJ1_MAF9..    UT1_MAF9 =E= Q1* SUM(t, CEMUTOTPER(t,"MAF9"));
+OBJ2_MAF9..    UT2_MAF9 =E= Q2* SUM(t, CEMUTOTPER(t,"MAF9"));
 
 
 
@@ -591,7 +691,8 @@ OBJ2_LAM..    UT2_LAM =E= Q2* SUM(t, CEMUTOTPER(t,"LAM"));
 
 * Ccntrol rate limits
 miu.up(t,n) = miuup(t,n);
-S.UP(t,n)         = 1;
+S.fx(t,n)         = optlrsav;
+*S.UP(t,n)         = 1;
 K.LO(t,n)         = 1;
 C.LO(t,n)         = 0.05;
 CPC.LO(t,n)       = .001;
@@ -639,173 +740,366 @@ MIU.FX("1",n) = ECO("MIU0",N);
 
 
 
-MIU.FX(t,n) = 0;
-SOLVE RICE MAXIMIZING UTILITY  USING NLP;
-
 ******////////////////////////////////////////////////////////////////////******
 *************************** Calculate Nash Equilibrium *************************
 ******/////////////////////////////formula/////////////////////////////////******
+
+PARAMETERS
+    marg_S(ITER, t, n)      "Utilité marginale de la contrainte d'épargne (Shadow Price)"
+    marg_DAM(ITER, t, n)    "Coût marginal des dommages (Shadow Price de l'équation DAMEQ)"
+    marg_K(ITER, t, n)      "Valeur marginale du stock de capital"
+;
+
+
+
+
+MIU.FX(t, n) = miuup(t, n);
+S.FX(t, n) = optlrsav;
 LOOP(ITER,
-
-
 MIE(ITER,"1",t,n)=MIU.L(t,n);
+SE(ITER,"1",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 1)=MIE(ITER,"1",t,n);
+S.FX(t,n)$(ORD(n) NE 1)=SE(ITER,"1",t,n);
 SOLVE  RICE MAXIMIZING UT2_USA USING NLP;
 marginal_miu(T,"USA") = MIU.m(T,"USA");
- 
- 
+marg_S(ITER, t,"USA") = S.m(T,"USA");
+marg_DAM(ITER, t,"USA") = DAMFRACEQ.m(T,"USA");
+marg_K(ITER, t,"USA") = KK.m(T,"USA");
 MIE(ITER,"2",t,n)=MIU.L(t,n);
+SE(ITER,"2",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 2)=MIE(ITER,"2",t,n);
+S.FX(t,n)$(ORD(n) NE 2)=SE(ITER,"2",t,n);
 SOLVE  RICE MAXIMIZING UT2_RUS USING NLP;
 marginal_miu(T,"RUS") = MIU.m(T,"RUS");
- 
- 
+marg_S(ITER, t,"RUS") = S.m(T,"RUS");
+marg_DAM(ITER, t,"RUS") = DAMFRACEQ.m(T,"RUS");
+marg_K(ITER, t,"RUS") = KK.m(T,"RUS");
 MIE(ITER,"3",t,n)=MIU.L(t,n);
+SE(ITER,"3",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 3)=MIE(ITER,"3",t,n);
+S.FX(t,n)$(ORD(n) NE 3)=SE(ITER,"3",t,n);
 SOLVE  RICE MAXIMIZING UT2_JAP USING NLP;
 marginal_miu(T,"JAP") = MIU.m(T,"JAP");
- 
- 
+marg_S(ITER, t,"JAP") = S.m(T,"JAP");
+marg_DAM(ITER, t,"JAP") = DAMFRACEQ.m(T,"JAP");
+marg_K(ITER, t,"JAP") = KK.m(T,"JAP");
 MIE(ITER,"4",t,n)=MIU.L(t,n);
+SE(ITER,"4",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 4)=MIE(ITER,"4",t,n);
+S.FX(t,n)$(ORD(n) NE 4)=SE(ITER,"4",t,n);
 SOLVE  RICE MAXIMIZING UT2_CAN USING NLP;
 marginal_miu(T,"CAN") = MIU.m(T,"CAN");
- 
- 
+marg_S(ITER, t,"CAN") = S.m(T,"CAN");
+marg_DAM(ITER, t,"CAN") = DAMFRACEQ.m(T,"CAN");
+marg_K(ITER, t,"CAN") = KK.m(T,"CAN");
 MIE(ITER,"5",t,n)=MIU.L(t,n);
+SE(ITER,"5",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 5)=MIE(ITER,"5",t,n);
+S.FX(t,n)$(ORD(n) NE 5)=SE(ITER,"5",t,n);
 SOLVE  RICE MAXIMIZING UT2_OAB USING NLP;
 marginal_miu(T,"OAB") = MIU.m(T,"OAB");
- 
- 
+marg_S(ITER, t,"OAB") = S.m(T,"OAB");
+marg_DAM(ITER, t,"OAB") = DAMFRACEQ.m(T,"OAB");
+marg_K(ITER, t,"OAB") = KK.m(T,"OAB");
 MIE(ITER,"6",t,n)=MIU.L(t,n);
+SE(ITER,"6",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 6)=MIE(ITER,"6",t,n);
+S.FX(t,n)$(ORD(n) NE 6)=SE(ITER,"6",t,n);
 SOLVE  RICE MAXIMIZING UT2_EU USING NLP;
 marginal_miu(T,"EU") = MIU.m(T,"EU");
- 
- 
+marg_S(ITER, t,"EU") = S.m(T,"EU");
+marg_DAM(ITER, t,"EU") = DAMFRACEQ.m(T,"EU");
+marg_K(ITER, t,"EU") = KK.m(T,"EU");
 MIE(ITER,"7",t,n)=MIU.L(t,n);
+SE(ITER,"7",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 7)=MIE(ITER,"7",t,n);
+S.FX(t,n)$(ORD(n) NE 7)=SE(ITER,"7",t,n);
 SOLVE  RICE MAXIMIZING UT2_CHN USING NLP;
 marginal_miu(T,"CHN") = MIU.m(T,"CHN");
- 
- 
+marg_S(ITER, t,"CHN") = S.m(T,"CHN");
+marg_DAM(ITER, t,"CHN") = DAMFRACEQ.m(T,"CHN");
+marg_K(ITER, t,"CHN") = KK.m(T,"CHN");
 MIE(ITER,"8",t,n)=MIU.L(t,n);
+SE(ITER,"8",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 8)=MIE(ITER,"8",t,n);
+S.FX(t,n)$(ORD(n) NE 8)=SE(ITER,"8",t,n);
 SOLVE  RICE MAXIMIZING UT2_IND USING NLP;
 marginal_miu(T,"IND") = MIU.m(T,"IND");
- 
- 
+marg_S(ITER, t,"IND") = S.m(T,"IND");
+marg_DAM(ITER, t,"IND") = DAMFRACEQ.m(T,"IND");
+marg_K(ITER, t,"IND") = KK.m(T,"IND");
 MIE(ITER,"9",t,n)=MIU.L(t,n);
+SE(ITER,"9",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 9)=MIE(ITER,"9",t,n);
+S.FX(t,n)$(ORD(n) NE 9)=SE(ITER,"9",t,n);
 SOLVE  RICE MAXIMIZING UT2_BRZ USING NLP;
 marginal_miu(T,"BRZ") = MIU.m(T,"BRZ");
- 
- 
+marg_S(ITER, t,"BRZ") = S.m(T,"BRZ");
+marg_DAM(ITER, t,"BRZ") = DAMFRACEQ.m(T,"BRZ");
+marg_K(ITER, t,"BRZ") = KK.m(T,"BRZ");
 MIE(ITER,"10",t,n)=MIU.L(t,n);
+SE(ITER,"10",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 10)=MIE(ITER,"10",t,n);
+S.FX(t,n)$(ORD(n) NE 10)=SE(ITER,"10",t,n);
 SOLVE  RICE MAXIMIZING UT2_SAF USING NLP;
 marginal_miu(T,"SAF") = MIU.m(T,"SAF");
- 
- 
+marg_S(ITER, t,"SAF") = S.m(T,"SAF");
+marg_DAM(ITER, t,"SAF") = DAMFRACEQ.m(T,"SAF");
+marg_K(ITER, t,"SAF") = KK.m(T,"SAF");
 MIE(ITER,"11",t,n)=MIU.L(t,n);
+SE(ITER,"11",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 11)=MIE(ITER,"11",t,n);
+S.FX(t,n)$(ORD(n) NE 11)=SE(ITER,"11",t,n);
 SOLVE  RICE MAXIMIZING UT2_OEU USING NLP;
 marginal_miu(T,"OEU") = MIU.m(T,"OEU");
- 
- 
+marg_S(ITER, t,"OEU") = S.m(T,"OEU");
+marg_DAM(ITER, t,"OEU") = DAMFRACEQ.m(T,"OEU");
+marg_K(ITER, t,"OEU") = KK.m(T,"OEU");
 MIE(ITER,"12",t,n)=MIU.L(t,n);
+SE(ITER,"12",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 12)=MIE(ITER,"12",t,n);
+S.FX(t,n)$(ORD(n) NE 12)=SE(ITER,"12",t,n);
 SOLVE  RICE MAXIMIZING UT2_REF USING NLP;
 marginal_miu(T,"REF") = MIU.m(T,"REF");
- 
- 
+marg_S(ITER, t,"REF") = S.m(T,"REF");
+marg_DAM(ITER, t,"REF") = DAMFRACEQ.m(T,"REF");
+marg_K(ITER, t,"REF") = KK.m(T,"REF");
 MIE(ITER,"13",t,n)=MIU.L(t,n);
+SE(ITER,"13",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 13)=MIE(ITER,"13",t,n);
+S.FX(t,n)$(ORD(n) NE 13)=SE(ITER,"13",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA USING NLP;
 marginal_miu(T,"ASIA") = MIU.m(T,"ASIA");
- 
- 
+marg_S(ITER, t,"ASIA") = S.m(T,"ASIA");
+marg_DAM(ITER, t,"ASIA") = DAMFRACEQ.m(T,"ASIA");
+marg_K(ITER, t,"ASIA") = KK.m(T,"ASIA");
 MIE(ITER,"14",t,n)=MIU.L(t,n);
+SE(ITER,"14",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 14)=MIE(ITER,"14",t,n);
-SOLVE  RICE MAXIMIZING UT2_MAF USING NLP;
-marginal_miu(T,"MAF") = MIU.m(T,"MAF");
- 
- 
-MIE(ITER,"15",t,n)=MIU.L(t,n);
-MIU.LO(t,n) = 0;
-MIU.UP(t,n) = miuup(t,n);
-MIU.FX("1",n) = ECO("MIU0",N);
-
-MIU.FX(t,n)$(ORD(n) NE 15)=MIE(ITER,"15",t,n);
+S.FX(t,n)$(ORD(n) NE 14)=SE(ITER,"14",t,n);
 SOLVE  RICE MAXIMIZING UT2_LAM USING NLP;
 marginal_miu(T,"LAM") = MIU.m(T,"LAM");
- 
- 
+marg_S(ITER, t,"LAM") = S.m(T,"LAM");
+marg_DAM(ITER, t,"LAM") = DAMFRACEQ.m(T,"LAM");
+marg_K(ITER, t,"LAM") = KK.m(T,"LAM");
+MIE(ITER,"15",t,n)=MIU.L(t,n);
+SE(ITER,"15",t,n)=S.L(t,n);
+MIU.LO(t,n) = 0;
+MIU.UP(t,n) = miuup(t,n);
+MIU.FX("1",n) = ECO("MIU0",N);
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
+MIU.FX(t,n)$(ORD(n) NE 15)=MIE(ITER,"15",t,n);
+S.FX(t,n)$(ORD(n) NE 15)=SE(ITER,"15",t,n);
+SOLVE  RICE MAXIMIZING UT2_MAF0 USING NLP;
+marginal_miu(T,"MAF0") = MIU.m(T,"MAF0");
+marg_S(ITER, t,"MAF0") = S.m(T,"MAF0");
+marg_DAM(ITER, t,"MAF0") = DAMFRACEQ.m(T,"MAF0");
+marg_K(ITER, t,"MAF0") = KK.m(T,"MAF0");
+MIE(ITER,"16",t,n)=MIU.L(t,n);
+SE(ITER,"16",t,n)=S.L(t,n);
+MIU.LO(t,n) = 0;
+MIU.UP(t,n) = miuup(t,n);
+MIU.FX("1",n) = ECO("MIU0",N);
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
+MIU.FX(t,n)$(ORD(n) NE 16)=MIE(ITER,"16",t,n);
+S.FX(t,n)$(ORD(n) NE 16)=SE(ITER,"16",t,n);
+SOLVE  RICE MAXIMIZING UT2_MAF1 USING NLP;
+marginal_miu(T,"MAF1") = MIU.m(T,"MAF1");
+marg_S(ITER, t,"MAF1") = S.m(T,"MAF1");
+marg_DAM(ITER, t,"MAF1") = DAMFRACEQ.m(T,"MAF1");
+marg_K(ITER, t,"MAF1") = KK.m(T,"MAF1");
+MIE(ITER,"17",t,n)=MIU.L(t,n);
+SE(ITER,"17",t,n)=S.L(t,n);
+MIU.LO(t,n) = 0;
+MIU.UP(t,n) = miuup(t,n);
+MIU.FX("1",n) = ECO("MIU0",N);
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
+MIU.FX(t,n)$(ORD(n) NE 17)=MIE(ITER,"17",t,n);
+S.FX(t,n)$(ORD(n) NE 17)=SE(ITER,"17",t,n);
+SOLVE  RICE MAXIMIZING UT2_MAF2 USING NLP;
+marginal_miu(T,"MAF2") = MIU.m(T,"MAF2");
+marg_S(ITER, t,"MAF2") = S.m(T,"MAF2");
+marg_DAM(ITER, t,"MAF2") = DAMFRACEQ.m(T,"MAF2");
+marg_K(ITER, t,"MAF2") = KK.m(T,"MAF2");
+MIE(ITER,"18",t,n)=MIU.L(t,n);
+SE(ITER,"18",t,n)=S.L(t,n);
+MIU.LO(t,n) = 0;
+MIU.UP(t,n) = miuup(t,n);
+MIU.FX("1",n) = ECO("MIU0",N);
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
+MIU.FX(t,n)$(ORD(n) NE 18)=MIE(ITER,"18",t,n);
+S.FX(t,n)$(ORD(n) NE 18)=SE(ITER,"18",t,n);
+SOLVE  RICE MAXIMIZING UT2_MAF3 USING NLP;
+marginal_miu(T,"MAF3") = MIU.m(T,"MAF3");
+marg_S(ITER, t,"MAF3") = S.m(T,"MAF3");
+marg_DAM(ITER, t,"MAF3") = DAMFRACEQ.m(T,"MAF3");
+marg_K(ITER, t,"MAF3") = KK.m(T,"MAF3");
+MIE(ITER,"19",t,n)=MIU.L(t,n);
+SE(ITER,"19",t,n)=S.L(t,n);
+MIU.LO(t,n) = 0;
+MIU.UP(t,n) = miuup(t,n);
+MIU.FX("1",n) = ECO("MIU0",N);
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
+MIU.FX(t,n)$(ORD(n) NE 19)=MIE(ITER,"19",t,n);
+S.FX(t,n)$(ORD(n) NE 19)=SE(ITER,"19",t,n);
+SOLVE  RICE MAXIMIZING UT2_MAF4 USING NLP;
+marginal_miu(T,"MAF4") = MIU.m(T,"MAF4");
+marg_S(ITER, t,"MAF4") = S.m(T,"MAF4");
+marg_DAM(ITER, t,"MAF4") = DAMFRACEQ.m(T,"MAF4");
+marg_K(ITER, t,"MAF4") = KK.m(T,"MAF4");
+MIE(ITER,"20",t,n)=MIU.L(t,n);
+SE(ITER,"20",t,n)=S.L(t,n);
+MIU.LO(t,n) = 0;
+MIU.UP(t,n) = miuup(t,n);
+MIU.FX("1",n) = ECO("MIU0",N);
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
+MIU.FX(t,n)$(ORD(n) NE 20)=MIE(ITER,"20",t,n);
+S.FX(t,n)$(ORD(n) NE 20)=SE(ITER,"20",t,n);
+SOLVE  RICE MAXIMIZING UT2_MAF5 USING NLP;
+marginal_miu(T,"MAF5") = MIU.m(T,"MAF5");
+marg_S(ITER, t,"MAF5") = S.m(T,"MAF5");
+marg_DAM(ITER, t,"MAF5") = DAMFRACEQ.m(T,"MAF5");
+marg_K(ITER, t,"MAF5") = KK.m(T,"MAF5");
+MIE(ITER,"21",t,n)=MIU.L(t,n);
+SE(ITER,"21",t,n)=S.L(t,n);
+MIU.LO(t,n) = 0;
+MIU.UP(t,n) = miuup(t,n);
+MIU.FX("1",n) = ECO("MIU0",N);
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
+MIU.FX(t,n)$(ORD(n) NE 21)=MIE(ITER,"21",t,n);
+S.FX(t,n)$(ORD(n) NE 21)=SE(ITER,"21",t,n);
+SOLVE  RICE MAXIMIZING UT2_MAF6 USING NLP;
+marginal_miu(T,"MAF6") = MIU.m(T,"MAF6");
+marg_S(ITER, t,"MAF6") = S.m(T,"MAF6");
+marg_DAM(ITER, t,"MAF6") = DAMFRACEQ.m(T,"MAF6");
+marg_K(ITER, t,"MAF6") = KK.m(T,"MAF6");
+MIE(ITER,"22",t,n)=MIU.L(t,n);
+SE(ITER,"22",t,n)=S.L(t,n);
+MIU.LO(t,n) = 0;
+MIU.UP(t,n) = miuup(t,n);
+MIU.FX("1",n) = ECO("MIU0",N);
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
+MIU.FX(t,n)$(ORD(n) NE 22)=MIE(ITER,"22",t,n);
+S.FX(t,n)$(ORD(n) NE 22)=SE(ITER,"22",t,n);
+SOLVE  RICE MAXIMIZING UT2_MAF7 USING NLP;
+marginal_miu(T,"MAF7") = MIU.m(T,"MAF7");
+marg_S(ITER, t,"MAF7") = S.m(T,"MAF7");
+marg_DAM(ITER, t,"MAF7") = DAMFRACEQ.m(T,"MAF7");
+marg_K(ITER, t,"MAF7") = KK.m(T,"MAF7");
+MIE(ITER,"23",t,n)=MIU.L(t,n);
+SE(ITER,"23",t,n)=S.L(t,n);
+MIU.LO(t,n) = 0;
+MIU.UP(t,n) = miuup(t,n);
+MIU.FX("1",n) = ECO("MIU0",N);
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
+MIU.FX(t,n)$(ORD(n) NE 23)=MIE(ITER,"23",t,n);
+S.FX(t,n)$(ORD(n) NE 23)=SE(ITER,"23",t,n);
+SOLVE  RICE MAXIMIZING UT2_MAF8 USING NLP;
+marginal_miu(T,"MAF8") = MIU.m(T,"MAF8");
+marg_S(ITER, t,"MAF8") = S.m(T,"MAF8");
+marg_DAM(ITER, t,"MAF8") = DAMFRACEQ.m(T,"MAF8");
+marg_K(ITER, t,"MAF8") = KK.m(T,"MAF8");
+MIE(ITER,"24",t,n)=MIU.L(t,n);
+SE(ITER,"24",t,n)=S.L(t,n);
+MIU.LO(t,n) = 0;
+MIU.UP(t,n) = miuup(t,n);
+MIU.FX("1",n) = ECO("MIU0",N);
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
+MIU.FX(t,n)$(ORD(n) NE 24)=MIE(ITER,"24",t,n);
+S.FX(t,n)$(ORD(n) NE 24)=SE(ITER,"24",t,n);
+SOLVE  RICE MAXIMIZING UT2_MAF9 USING NLP;
+marginal_miu(T,"MAF9") = MIU.m(T,"MAF9");
+marg_S(ITER, t,"MAF9") = S.m(T,"MAF9");
+marg_DAM(ITER, t,"MAF9") = DAMFRACEQ.m(T,"MAF9");
+marg_K(ITER, t,"MAF9") = KK.m(T,"MAF9");
 *Reset for the next iteration.
-MIE(ITER, "16", t, n) = MIU.L(t, n);
-EIE(ITER, "16", t, n) = EIND.L(t, n);
-MIE(ITER + 1, "1", t, n) = MIE(ITER, "16", t, n);
-EIE(ITER + 1, "1", t, n) = EIE(ITER, "16", t, n);
-
-
+MIE(ITER, "25", t, n) = MIU.L(t, n);
+SE(ITER, "25", t, n) = S.L(t, n);
+MIE(ITER + 1, "1", t, n) = MIE(ITER, "25", t, n);
+SE(ITER + 1, "1", t, n) = SE(ITER, "25", t, n);
 );
+
+
 
 
 
@@ -838,7 +1132,8 @@ put / "Regional welfare";
 Loop(T, put UT2_USA.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"USA"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "USA"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"USA"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"USA"));
@@ -871,7 +1166,8 @@ put / "Regional welfare";
 Loop(T, put UT2_RUS.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"RUS"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "RUS"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"RUS"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"RUS"));
@@ -904,7 +1200,8 @@ put / "Regional welfare";
 Loop(T, put UT2_JAP.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"JAP"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "JAP"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"JAP"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"JAP"));
@@ -937,7 +1234,8 @@ put / "Regional welfare";
 Loop(T, put UT2_CAN.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"CAN"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "CAN"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"CAN"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"CAN"));
@@ -970,7 +1268,8 @@ put / "Regional welfare";
 Loop(T, put UT2_OAB.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"OAB"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "OAB"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"OAB"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"OAB"));
@@ -1003,7 +1302,8 @@ put / "Regional welfare";
 Loop(T, put UT2_EU.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"EU"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "EU"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"EU"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"EU"));
@@ -1036,7 +1336,8 @@ put / "Regional welfare";
 Loop(T, put UT2_CHN.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"CHN"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "CHN"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"CHN"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"CHN"));
@@ -1069,7 +1370,8 @@ put / "Regional welfare";
 Loop(T, put UT2_IND.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"IND"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "IND"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"IND"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"IND"));
@@ -1102,7 +1404,8 @@ put / "Regional welfare";
 Loop(T, put UT2_BRZ.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"BRZ"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "BRZ"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"BRZ"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"BRZ"));
@@ -1135,7 +1438,8 @@ put / "Regional welfare";
 Loop(T, put UT2_SAF.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"SAF"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "SAF"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"SAF"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"SAF"));
@@ -1168,7 +1472,8 @@ put / "Regional welfare";
 Loop(T, put UT2_OEU.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"OEU"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "OEU"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"OEU"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"OEU"));
@@ -1201,7 +1506,8 @@ put / "Regional welfare";
 Loop(T, put UT2_REF.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"REF"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "REF"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"REF"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"REF"));
@@ -1234,45 +1540,13 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA"));
 put / "Saving rate";
 Loop(T, put S.l(T,"ASIA"));
-put /"REGION: MAF"
-put / "TFP (exogenous)" ;
-Loop (T, put AL(T,"MAF"));
-put / "Output, net net trill 2019$" ;
-Loop (T, put Y.l(T,"MAF"));
-put / "Industrial CO2 GtCO2/yr" ;
-Loop (T, put EIND.l(T,"MAF")) ;
-put / "Emissions control rate";
-Loop(T, put MIU.l(T,"MAF"));
-put / "Output, gross-net, 2019$";
-Loop(T, put ynet.l(t,"MAF"));
-put / "Output, gross-gross, 2019$";
-Loop(T, put YGROSS.L(t,"MAF"));
-put / "Capital stock, 2019$" ;
-Loop (T, put k.l(t,"MAF"));
-put / "Climate damages, fraction of output" ;
-Loop (T, put DAMFRAC.l(T,"MAF"));
-put / "Abatement, 2019$" ;
-Loop (T, put abatecost.l(t,"MAF"));
-put / "Abatement/0utput" ;
-Loop (T, put ABATECOSTFRAC.l(t,"MAF"));
-put / "Sigma,(CO2/output, no controls, all CO2)";
-Loop(T, put sigma(t,"MAF"));
-put / "Regional welfare";
-Loop(T, put UT2_MAF.l);
-put / "Marginal regional welfare";
-Loop(T, put marginal_miu(T,"MAF"));
-put / "Population (exogenous)" ;
-Loop (T, put L(T,"MAF"));
-put / "Carbon price";
-Loop(T, put cprice.l(T,"MAF"));
-put / "Saving rate";
-Loop(T, put S.l(T,"MAF"));
 put /"REGION: LAM"
 put / "TFP (exogenous)" ;
 Loop (T, put AL(T,"LAM"));
@@ -1300,12 +1574,353 @@ put / "Regional welfare";
 Loop(T, put UT2_LAM.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"LAM"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "LAM"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"LAM"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"LAM"));
 put / "Saving rate";
 Loop(T, put S.l(T,"LAM"));
+put /"REGION: MAF0"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF0"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF0"));
+put / "Industrial CO2 GtCO2/yr" ;
+Loop (T, put EIND.l(T,"MAF0")) ;
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF0"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF0"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF0"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF0"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF0"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF0"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF0"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF0"));
+put / "Regional welfare";
+Loop(T, put UT2_MAF0.l);
+put / "Marginal regional welfare";
+Loop(T, put marginal_miu(T,"MAF0"));
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF0"));put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF0"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF0"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF0"));
+put /"REGION: MAF1"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF1"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF1"));
+put / "Industrial CO2 GtCO2/yr" ;
+Loop (T, put EIND.l(T,"MAF1")) ;
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF1"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF1"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF1"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF1"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF1"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF1"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF1"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF1"));
+put / "Regional welfare";
+Loop(T, put UT2_MAF1.l);
+put / "Marginal regional welfare";
+Loop(T, put marginal_miu(T,"MAF1"));
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF1"));put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF1"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF1"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF1"));
+put /"REGION: MAF2"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF2"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF2"));
+put / "Industrial CO2 GtCO2/yr" ;
+Loop (T, put EIND.l(T,"MAF2")) ;
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF2"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF2"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF2"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF2"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF2"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF2"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF2"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF2"));
+put / "Regional welfare";
+Loop(T, put UT2_MAF2.l);
+put / "Marginal regional welfare";
+Loop(T, put marginal_miu(T,"MAF2"));
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF2"));put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF2"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF2"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF2"));
+put /"REGION: MAF3"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF3"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF3"));
+put / "Industrial CO2 GtCO2/yr" ;
+Loop (T, put EIND.l(T,"MAF3")) ;
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF3"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF3"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF3"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF3"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF3"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF3"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF3"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF3"));
+put / "Regional welfare";
+Loop(T, put UT2_MAF3.l);
+put / "Marginal regional welfare";
+Loop(T, put marginal_miu(T,"MAF3"));
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF3"));put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF3"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF3"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF3"));
+put /"REGION: MAF4"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF4"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF4"));
+put / "Industrial CO2 GtCO2/yr" ;
+Loop (T, put EIND.l(T,"MAF4")) ;
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF4"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF4"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF4"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF4"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF4"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF4"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF4"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF4"));
+put / "Regional welfare";
+Loop(T, put UT2_MAF4.l);
+put / "Marginal regional welfare";
+Loop(T, put marginal_miu(T,"MAF4"));
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF4"));put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF4"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF4"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF4"));
+put /"REGION: MAF5"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF5"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF5"));
+put / "Industrial CO2 GtCO2/yr" ;
+Loop (T, put EIND.l(T,"MAF5")) ;
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF5"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF5"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF5"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF5"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF5"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF5"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF5"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF5"));
+put / "Regional welfare";
+Loop(T, put UT2_MAF5.l);
+put / "Marginal regional welfare";
+Loop(T, put marginal_miu(T,"MAF5"));
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF5"));put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF5"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF5"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF5"));
+put /"REGION: MAF6"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF6"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF6"));
+put / "Industrial CO2 GtCO2/yr" ;
+Loop (T, put EIND.l(T,"MAF6")) ;
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF6"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF6"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF6"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF6"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF6"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF6"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF6"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF6"));
+put / "Regional welfare";
+Loop(T, put UT2_MAF6.l);
+put / "Marginal regional welfare";
+Loop(T, put marginal_miu(T,"MAF6"));
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF6"));put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF6"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF6"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF6"));
+put /"REGION: MAF7"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF7"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF7"));
+put / "Industrial CO2 GtCO2/yr" ;
+Loop (T, put EIND.l(T,"MAF7")) ;
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF7"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF7"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF7"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF7"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF7"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF7"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF7"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF7"));
+put / "Regional welfare";
+Loop(T, put UT2_MAF7.l);
+put / "Marginal regional welfare";
+Loop(T, put marginal_miu(T,"MAF7"));
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF7"));put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF7"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF7"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF7"));
+put /"REGION: MAF8"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF8"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF8"));
+put / "Industrial CO2 GtCO2/yr" ;
+Loop (T, put EIND.l(T,"MAF8")) ;
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF8"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF8"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF8"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF8"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF8"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF8"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF8"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF8"));
+put / "Regional welfare";
+Loop(T, put UT2_MAF8.l);
+put / "Marginal regional welfare";
+Loop(T, put marginal_miu(T,"MAF8"));
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF8"));put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF8"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF8"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF8"));
+put /"REGION: MAF9"
+put / "TFP (exogenous)" ;
+Loop (T, put AL(T,"MAF9"));
+put / "Output, net net trill 2019$" ;
+Loop (T, put Y.l(T,"MAF9"));
+put / "Industrial CO2 GtCO2/yr" ;
+Loop (T, put EIND.l(T,"MAF9")) ;
+put / "Emissions control rate";
+Loop(T, put MIU.l(T,"MAF9"));
+put / "Output, gross-net, 2019$";
+Loop(T, put ynet.l(t,"MAF9"));
+put / "Output, gross-gross, 2019$";
+Loop(T, put YGROSS.L(t,"MAF9"));
+put / "Capital stock, 2019$" ;
+Loop (T, put k.l(t,"MAF9"));
+put / "Climate damages, fraction of output" ;
+Loop (T, put DAMFRAC.l(T,"MAF9"));
+put / "Abatement, 2019$" ;
+Loop (T, put abatecost.l(t,"MAF9"));
+put / "Abatement/0utput" ;
+Loop (T, put ABATECOSTFRAC.l(t,"MAF9"));
+put / "Sigma,(CO2/output, no controls, all CO2)";
+Loop(T, put sigma(t,"MAF9"));
+put / "Regional welfare";
+Loop(T, put UT2_MAF9.l);
+put / "Marginal regional welfare";
+Loop(T, put marginal_miu(T,"MAF9"));
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF9"));put / "Population (exogenous)" ;
+Loop (T, put L(T,"MAF9"));
+put / "Carbon price";
+Loop(T, put cprice.l(T,"MAF9"));
+put / "Saving rate";
+Loop(T, put S.l(T,"MAF9"));
 put /"REGION: World"
 put / "Total CO2 Emissions, GTCO2/year" ;
 Loop (T, put Eco2.l(T));
@@ -1315,155 +1930,5 @@ put / "Atmospheric temperature (deg c above preind)";
 Loop(T, put TATM.l(T));
 put / "MIU global";
 Loop(T, put MIU_GLOBAL.l(T));
-put / "(USA,0)";
-Loop(T, put MIE("1","16",t,"USA"));
-put / "(USA,1)";
-Loop(T, put MIE("2","16",t,"USA"));
-put / "(USA,2)";
-Loop(T, put MIE("3","16",t,"USA"));
-put / "(USA,3)";
-Loop(T, put MIE("4","16",t,"USA"));
-put / "(USA,4)";
-Loop(T, put MIE("5","16",t,"USA"));
-put / "(RUS,0)";
-Loop(T, put MIE("1","16",t,"RUS"));
-put / "(RUS,1)";
-Loop(T, put MIE("2","16",t,"RUS"));
-put / "(RUS,2)";
-Loop(T, put MIE("3","16",t,"RUS"));
-put / "(RUS,3)";
-Loop(T, put MIE("4","16",t,"RUS"));
-put / "(RUS,4)";
-Loop(T, put MIE("5","16",t,"RUS"));
-put / "(JAP,0)";
-Loop(T, put MIE("1","16",t,"JAP"));
-put / "(JAP,1)";
-Loop(T, put MIE("2","16",t,"JAP"));
-put / "(JAP,2)";
-Loop(T, put MIE("3","16",t,"JAP"));
-put / "(JAP,3)";
-Loop(T, put MIE("4","16",t,"JAP"));
-put / "(JAP,4)";
-Loop(T, put MIE("5","16",t,"JAP"));
-put / "(CAN,0)";
-Loop(T, put MIE("1","16",t,"CAN"));
-put / "(CAN,1)";
-Loop(T, put MIE("2","16",t,"CAN"));
-put / "(CAN,2)";
-Loop(T, put MIE("3","16",t,"CAN"));
-put / "(CAN,3)";
-Loop(T, put MIE("4","16",t,"CAN"));
-put / "(CAN,4)";
-Loop(T, put MIE("5","16",t,"CAN"));
-put / "(OAB,0)";
-Loop(T, put MIE("1","16",t,"OAB"));
-put / "(OAB,1)";
-Loop(T, put MIE("2","16",t,"OAB"));
-put / "(OAB,2)";
-Loop(T, put MIE("3","16",t,"OAB"));
-put / "(OAB,3)";
-Loop(T, put MIE("4","16",t,"OAB"));
-put / "(OAB,4)";
-Loop(T, put MIE("5","16",t,"OAB"));
-put / "(EU,0)";
-Loop(T, put MIE("1","16",t,"EU"));
-put / "(EU,1)";
-Loop(T, put MIE("2","16",t,"EU"));
-put / "(EU,2)";
-Loop(T, put MIE("3","16",t,"EU"));
-put / "(EU,3)";
-Loop(T, put MIE("4","16",t,"EU"));
-put / "(EU,4)";
-Loop(T, put MIE("5","16",t,"EU"));
-put / "(CHN,0)";
-Loop(T, put MIE("1","16",t,"CHN"));
-put / "(CHN,1)";
-Loop(T, put MIE("2","16",t,"CHN"));
-put / "(CHN,2)";
-Loop(T, put MIE("3","16",t,"CHN"));
-put / "(CHN,3)";
-Loop(T, put MIE("4","16",t,"CHN"));
-put / "(CHN,4)";
-Loop(T, put MIE("5","16",t,"CHN"));
-put / "(IND,0)";
-Loop(T, put MIE("1","16",t,"IND"));
-put / "(IND,1)";
-Loop(T, put MIE("2","16",t,"IND"));
-put / "(IND,2)";
-Loop(T, put MIE("3","16",t,"IND"));
-put / "(IND,3)";
-Loop(T, put MIE("4","16",t,"IND"));
-put / "(IND,4)";
-Loop(T, put MIE("5","16",t,"IND"));
-put / "(BRZ,0)";
-Loop(T, put MIE("1","16",t,"BRZ"));
-put / "(BRZ,1)";
-Loop(T, put MIE("2","16",t,"BRZ"));
-put / "(BRZ,2)";
-Loop(T, put MIE("3","16",t,"BRZ"));
-put / "(BRZ,3)";
-Loop(T, put MIE("4","16",t,"BRZ"));
-put / "(BRZ,4)";
-Loop(T, put MIE("5","16",t,"BRZ"));
-put / "(SAF,0)";
-Loop(T, put MIE("1","16",t,"SAF"));
-put / "(SAF,1)";
-Loop(T, put MIE("2","16",t,"SAF"));
-put / "(SAF,2)";
-Loop(T, put MIE("3","16",t,"SAF"));
-put / "(SAF,3)";
-Loop(T, put MIE("4","16",t,"SAF"));
-put / "(SAF,4)";
-Loop(T, put MIE("5","16",t,"SAF"));
-put / "(OEU,0)";
-Loop(T, put MIE("1","16",t,"OEU"));
-put / "(OEU,1)";
-Loop(T, put MIE("2","16",t,"OEU"));
-put / "(OEU,2)";
-Loop(T, put MIE("3","16",t,"OEU"));
-put / "(OEU,3)";
-Loop(T, put MIE("4","16",t,"OEU"));
-put / "(OEU,4)";
-Loop(T, put MIE("5","16",t,"OEU"));
-put / "(REF,0)";
-Loop(T, put MIE("1","16",t,"REF"));
-put / "(REF,1)";
-Loop(T, put MIE("2","16",t,"REF"));
-put / "(REF,2)";
-Loop(T, put MIE("3","16",t,"REF"));
-put / "(REF,3)";
-Loop(T, put MIE("4","16",t,"REF"));
-put / "(REF,4)";
-Loop(T, put MIE("5","16",t,"REF"));
-put / "(ASIA,0)";
-Loop(T, put MIE("1","16",t,"ASIA"));
-put / "(ASIA,1)";
-Loop(T, put MIE("2","16",t,"ASIA"));
-put / "(ASIA,2)";
-Loop(T, put MIE("3","16",t,"ASIA"));
-put / "(ASIA,3)";
-Loop(T, put MIE("4","16",t,"ASIA"));
-put / "(ASIA,4)";
-Loop(T, put MIE("5","16",t,"ASIA"));
-put / "(MAF,0)";
-Loop(T, put MIE("1","16",t,"MAF"));
-put / "(MAF,1)";
-Loop(T, put MIE("2","16",t,"MAF"));
-put / "(MAF,2)";
-Loop(T, put MIE("3","16",t,"MAF"));
-put / "(MAF,3)";
-Loop(T, put MIE("4","16",t,"MAF"));
-put / "(MAF,4)";
-Loop(T, put MIE("5","16",t,"MAF"));
-put / "(LAM,0)";
-Loop(T, put MIE("1","16",t,"LAM"));
-put / "(LAM,1)";
-Loop(T, put MIE("2","16",t,"LAM"));
-put / "(LAM,2)";
-Loop(T, put MIE("3","16",t,"LAM"));
-put / "(LAM,3)";
-Loop(T, put MIE("4","16",t,"LAM"));
-put / "(LAM,4)";
-Loop(T, put MIE("5","16",t,"LAM"));
 
 

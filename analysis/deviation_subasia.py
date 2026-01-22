@@ -68,7 +68,7 @@ def plot_emission_comparison(data_dict, limit_curve):
 
     Layout: 3 Rows (Damage levels) x 2 Columns (Coop vs Non-Coop).
     """
-    rows_scenarios = ["Low", "Middle", "Strong"]
+    rows_scenarios = ["Low", "Medium", "Strong"]
     cols_scenarios = ["Cooperative", "Non-Cooperative"]
 
     mpl.rc('xtick', labelsize=15)
@@ -78,7 +78,7 @@ def plot_emission_comparison(data_dict, limit_curve):
 
     damage_key_map = {
         "Low": "Low Damage",
-        "Middle": "Middle Damage",
+        "Medium": "Medium Damage",
         "Strong": "Strong Damage"
     }
 
@@ -142,14 +142,14 @@ if __name__ == "__main__":
     data_dict = {
         'Non-Cooperative + Low Damage': {
             '1Asia': d_q_nash['Low Damage'], '10Asia': d10_q_nash['Low Damage']},
-        'Non-Cooperative + Middle Damage': {
+        'Non-Cooperative + Medium Damage': {
             '1Asia': d_nash['Medium Damage'], '10Asia': d10_nash['Medium Damage']},
         'Non-Cooperative + Strong Damage': {
             '1Asia': d_nash['High Damage'], '10Asia': d10_nash['High Damage']},
 
         'Cooperative + Low Damage': {
             '1Asia': d_q_negishi['Low Damage'], '10Asia': d10_q_negishi['Low Damage']},
-        'Cooperative + Middle Damage': {
+        'Cooperative + Medium Damage': {
             '1Asia': d_negishi['Medium Damage'], '10Asia': d10_negishi['Medium Damage']},
         'Cooperative + Strong Damage': {
             '1Asia': d_negishi['High Damage'], '10Asia': d10_negishi['High Damage']},

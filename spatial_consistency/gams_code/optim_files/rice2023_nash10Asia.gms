@@ -61,7 +61,7 @@ PARAMETERS
 
         Q       Utility derivative scaling factor                   /1E4 /
         Q1                                                          /1E5 /
-        Q2                                                          /1E6 /
+        Q2                                                          /1E8 /
         betaclim                                                    / 0.6  /
         elasmu    Elasticity of marginal utility of consumption     / 0.9  /
         rhof      Riskfree real rate per year                       / .001 /
@@ -107,6 +107,7 @@ PARAMETERS
 
         EIE(ITER,SIT,t,n)
         MIE(ITER,SIT,t,n)
+        SE(ITER,SIT,t,n)
         marginal_miu(T,n)
 
         L(t,n)           Level of population and labor
@@ -738,263 +739,366 @@ MIU.FX("1",n) = ECO("MIU0",N);
 
 
 
-MIU.FX(t,n) = 0;
-SOLVE RICE MAXIMIZING UTILITY  USING NLP;
-
 ******////////////////////////////////////////////////////////////////////******
 *************************** Calculate Nash Equilibrium *************************
 ******/////////////////////////////formula/////////////////////////////////******
+
+PARAMETERS
+    marg_S(ITER, t, n)      "Utilité marginale de la contrainte d'épargne (Shadow Price)"
+    marg_DAM(ITER, t, n)    "Coût marginal des dommages (Shadow Price de l'équation DAMEQ)"
+    marg_K(ITER, t, n)      "Valeur marginale du stock de capital"
+;
+
+
+
+
+MIU.FX(t, n) = miuup(t, n);
+S.FX(t, n) = optlrsav;
 LOOP(ITER,
-
-
 MIE(ITER,"1",t,n)=MIU.L(t,n);
+SE(ITER,"1",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 1)=MIE(ITER,"1",t,n);
+S.FX(t,n)$(ORD(n) NE 1)=SE(ITER,"1",t,n);
 SOLVE  RICE MAXIMIZING UT2_USA USING NLP;
 marginal_miu(T,"USA") = MIU.m(T,"USA");
- 
- 
+marg_S(ITER, t,"USA") = S.m(T,"USA");
+marg_DAM(ITER, t,"USA") = DAMFRACEQ.m(T,"USA");
+marg_K(ITER, t,"USA") = KK.m(T,"USA");
 MIE(ITER,"2",t,n)=MIU.L(t,n);
+SE(ITER,"2",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 2)=MIE(ITER,"2",t,n);
+S.FX(t,n)$(ORD(n) NE 2)=SE(ITER,"2",t,n);
 SOLVE  RICE MAXIMIZING UT2_RUS USING NLP;
 marginal_miu(T,"RUS") = MIU.m(T,"RUS");
- 
- 
+marg_S(ITER, t,"RUS") = S.m(T,"RUS");
+marg_DAM(ITER, t,"RUS") = DAMFRACEQ.m(T,"RUS");
+marg_K(ITER, t,"RUS") = KK.m(T,"RUS");
 MIE(ITER,"3",t,n)=MIU.L(t,n);
+SE(ITER,"3",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 3)=MIE(ITER,"3",t,n);
+S.FX(t,n)$(ORD(n) NE 3)=SE(ITER,"3",t,n);
 SOLVE  RICE MAXIMIZING UT2_JAP USING NLP;
 marginal_miu(T,"JAP") = MIU.m(T,"JAP");
- 
- 
+marg_S(ITER, t,"JAP") = S.m(T,"JAP");
+marg_DAM(ITER, t,"JAP") = DAMFRACEQ.m(T,"JAP");
+marg_K(ITER, t,"JAP") = KK.m(T,"JAP");
 MIE(ITER,"4",t,n)=MIU.L(t,n);
+SE(ITER,"4",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 4)=MIE(ITER,"4",t,n);
+S.FX(t,n)$(ORD(n) NE 4)=SE(ITER,"4",t,n);
 SOLVE  RICE MAXIMIZING UT2_CAN USING NLP;
 marginal_miu(T,"CAN") = MIU.m(T,"CAN");
- 
- 
+marg_S(ITER, t,"CAN") = S.m(T,"CAN");
+marg_DAM(ITER, t,"CAN") = DAMFRACEQ.m(T,"CAN");
+marg_K(ITER, t,"CAN") = KK.m(T,"CAN");
 MIE(ITER,"5",t,n)=MIU.L(t,n);
+SE(ITER,"5",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 5)=MIE(ITER,"5",t,n);
+S.FX(t,n)$(ORD(n) NE 5)=SE(ITER,"5",t,n);
 SOLVE  RICE MAXIMIZING UT2_OAB USING NLP;
 marginal_miu(T,"OAB") = MIU.m(T,"OAB");
- 
- 
+marg_S(ITER, t,"OAB") = S.m(T,"OAB");
+marg_DAM(ITER, t,"OAB") = DAMFRACEQ.m(T,"OAB");
+marg_K(ITER, t,"OAB") = KK.m(T,"OAB");
 MIE(ITER,"6",t,n)=MIU.L(t,n);
+SE(ITER,"6",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 6)=MIE(ITER,"6",t,n);
+S.FX(t,n)$(ORD(n) NE 6)=SE(ITER,"6",t,n);
 SOLVE  RICE MAXIMIZING UT2_EU USING NLP;
 marginal_miu(T,"EU") = MIU.m(T,"EU");
- 
- 
+marg_S(ITER, t,"EU") = S.m(T,"EU");
+marg_DAM(ITER, t,"EU") = DAMFRACEQ.m(T,"EU");
+marg_K(ITER, t,"EU") = KK.m(T,"EU");
 MIE(ITER,"7",t,n)=MIU.L(t,n);
+SE(ITER,"7",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 7)=MIE(ITER,"7",t,n);
+S.FX(t,n)$(ORD(n) NE 7)=SE(ITER,"7",t,n);
 SOLVE  RICE MAXIMIZING UT2_CHN USING NLP;
 marginal_miu(T,"CHN") = MIU.m(T,"CHN");
- 
- 
+marg_S(ITER, t,"CHN") = S.m(T,"CHN");
+marg_DAM(ITER, t,"CHN") = DAMFRACEQ.m(T,"CHN");
+marg_K(ITER, t,"CHN") = KK.m(T,"CHN");
 MIE(ITER,"8",t,n)=MIU.L(t,n);
+SE(ITER,"8",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 8)=MIE(ITER,"8",t,n);
+S.FX(t,n)$(ORD(n) NE 8)=SE(ITER,"8",t,n);
 SOLVE  RICE MAXIMIZING UT2_IND USING NLP;
 marginal_miu(T,"IND") = MIU.m(T,"IND");
- 
- 
+marg_S(ITER, t,"IND") = S.m(T,"IND");
+marg_DAM(ITER, t,"IND") = DAMFRACEQ.m(T,"IND");
+marg_K(ITER, t,"IND") = KK.m(T,"IND");
 MIE(ITER,"9",t,n)=MIU.L(t,n);
+SE(ITER,"9",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 9)=MIE(ITER,"9",t,n);
+S.FX(t,n)$(ORD(n) NE 9)=SE(ITER,"9",t,n);
 SOLVE  RICE MAXIMIZING UT2_BRZ USING NLP;
 marginal_miu(T,"BRZ") = MIU.m(T,"BRZ");
- 
- 
+marg_S(ITER, t,"BRZ") = S.m(T,"BRZ");
+marg_DAM(ITER, t,"BRZ") = DAMFRACEQ.m(T,"BRZ");
+marg_K(ITER, t,"BRZ") = KK.m(T,"BRZ");
 MIE(ITER,"10",t,n)=MIU.L(t,n);
+SE(ITER,"10",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 10)=MIE(ITER,"10",t,n);
+S.FX(t,n)$(ORD(n) NE 10)=SE(ITER,"10",t,n);
 SOLVE  RICE MAXIMIZING UT2_SAF USING NLP;
 marginal_miu(T,"SAF") = MIU.m(T,"SAF");
- 
- 
+marg_S(ITER, t,"SAF") = S.m(T,"SAF");
+marg_DAM(ITER, t,"SAF") = DAMFRACEQ.m(T,"SAF");
+marg_K(ITER, t,"SAF") = KK.m(T,"SAF");
 MIE(ITER,"11",t,n)=MIU.L(t,n);
+SE(ITER,"11",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 11)=MIE(ITER,"11",t,n);
+S.FX(t,n)$(ORD(n) NE 11)=SE(ITER,"11",t,n);
 SOLVE  RICE MAXIMIZING UT2_OEU USING NLP;
 marginal_miu(T,"OEU") = MIU.m(T,"OEU");
- 
- 
+marg_S(ITER, t,"OEU") = S.m(T,"OEU");
+marg_DAM(ITER, t,"OEU") = DAMFRACEQ.m(T,"OEU");
+marg_K(ITER, t,"OEU") = KK.m(T,"OEU");
 MIE(ITER,"12",t,n)=MIU.L(t,n);
+SE(ITER,"12",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 12)=MIE(ITER,"12",t,n);
+S.FX(t,n)$(ORD(n) NE 12)=SE(ITER,"12",t,n);
 SOLVE  RICE MAXIMIZING UT2_REF USING NLP;
 marginal_miu(T,"REF") = MIU.m(T,"REF");
- 
- 
+marg_S(ITER, t,"REF") = S.m(T,"REF");
+marg_DAM(ITER, t,"REF") = DAMFRACEQ.m(T,"REF");
+marg_K(ITER, t,"REF") = KK.m(T,"REF");
 MIE(ITER,"13",t,n)=MIU.L(t,n);
+SE(ITER,"13",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 13)=MIE(ITER,"13",t,n);
+S.FX(t,n)$(ORD(n) NE 13)=SE(ITER,"13",t,n);
 SOLVE  RICE MAXIMIZING UT2_MAF USING NLP;
 marginal_miu(T,"MAF") = MIU.m(T,"MAF");
- 
- 
+marg_S(ITER, t,"MAF") = S.m(T,"MAF");
+marg_DAM(ITER, t,"MAF") = DAMFRACEQ.m(T,"MAF");
+marg_K(ITER, t,"MAF") = KK.m(T,"MAF");
 MIE(ITER,"14",t,n)=MIU.L(t,n);
+SE(ITER,"14",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 14)=MIE(ITER,"14",t,n);
+S.FX(t,n)$(ORD(n) NE 14)=SE(ITER,"14",t,n);
 SOLVE  RICE MAXIMIZING UT2_LAM USING NLP;
 marginal_miu(T,"LAM") = MIU.m(T,"LAM");
- 
- 
+marg_S(ITER, t,"LAM") = S.m(T,"LAM");
+marg_DAM(ITER, t,"LAM") = DAMFRACEQ.m(T,"LAM");
+marg_K(ITER, t,"LAM") = KK.m(T,"LAM");
 MIE(ITER,"15",t,n)=MIU.L(t,n);
+SE(ITER,"15",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 15)=MIE(ITER,"15",t,n);
+S.FX(t,n)$(ORD(n) NE 15)=SE(ITER,"15",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA0 USING NLP;
 marginal_miu(T,"ASIA0") = MIU.m(T,"ASIA0");
- 
- 
+marg_S(ITER, t,"ASIA0") = S.m(T,"ASIA0");
+marg_DAM(ITER, t,"ASIA0") = DAMFRACEQ.m(T,"ASIA0");
+marg_K(ITER, t,"ASIA0") = KK.m(T,"ASIA0");
 MIE(ITER,"16",t,n)=MIU.L(t,n);
+SE(ITER,"16",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 16)=MIE(ITER,"16",t,n);
+S.FX(t,n)$(ORD(n) NE 16)=SE(ITER,"16",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA1 USING NLP;
 marginal_miu(T,"ASIA1") = MIU.m(T,"ASIA1");
- 
- 
+marg_S(ITER, t,"ASIA1") = S.m(T,"ASIA1");
+marg_DAM(ITER, t,"ASIA1") = DAMFRACEQ.m(T,"ASIA1");
+marg_K(ITER, t,"ASIA1") = KK.m(T,"ASIA1");
 MIE(ITER,"17",t,n)=MIU.L(t,n);
+SE(ITER,"17",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 17)=MIE(ITER,"17",t,n);
+S.FX(t,n)$(ORD(n) NE 17)=SE(ITER,"17",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA2 USING NLP;
 marginal_miu(T,"ASIA2") = MIU.m(T,"ASIA2");
- 
- 
+marg_S(ITER, t,"ASIA2") = S.m(T,"ASIA2");
+marg_DAM(ITER, t,"ASIA2") = DAMFRACEQ.m(T,"ASIA2");
+marg_K(ITER, t,"ASIA2") = KK.m(T,"ASIA2");
 MIE(ITER,"18",t,n)=MIU.L(t,n);
+SE(ITER,"18",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 18)=MIE(ITER,"18",t,n);
+S.FX(t,n)$(ORD(n) NE 18)=SE(ITER,"18",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA3 USING NLP;
 marginal_miu(T,"ASIA3") = MIU.m(T,"ASIA3");
- 
- 
+marg_S(ITER, t,"ASIA3") = S.m(T,"ASIA3");
+marg_DAM(ITER, t,"ASIA3") = DAMFRACEQ.m(T,"ASIA3");
+marg_K(ITER, t,"ASIA3") = KK.m(T,"ASIA3");
 MIE(ITER,"19",t,n)=MIU.L(t,n);
+SE(ITER,"19",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 19)=MIE(ITER,"19",t,n);
+S.FX(t,n)$(ORD(n) NE 19)=SE(ITER,"19",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA4 USING NLP;
 marginal_miu(T,"ASIA4") = MIU.m(T,"ASIA4");
- 
- 
+marg_S(ITER, t,"ASIA4") = S.m(T,"ASIA4");
+marg_DAM(ITER, t,"ASIA4") = DAMFRACEQ.m(T,"ASIA4");
+marg_K(ITER, t,"ASIA4") = KK.m(T,"ASIA4");
 MIE(ITER,"20",t,n)=MIU.L(t,n);
+SE(ITER,"20",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 20)=MIE(ITER,"20",t,n);
+S.FX(t,n)$(ORD(n) NE 20)=SE(ITER,"20",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA5 USING NLP;
 marginal_miu(T,"ASIA5") = MIU.m(T,"ASIA5");
- 
- 
+marg_S(ITER, t,"ASIA5") = S.m(T,"ASIA5");
+marg_DAM(ITER, t,"ASIA5") = DAMFRACEQ.m(T,"ASIA5");
+marg_K(ITER, t,"ASIA5") = KK.m(T,"ASIA5");
 MIE(ITER,"21",t,n)=MIU.L(t,n);
+SE(ITER,"21",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 21)=MIE(ITER,"21",t,n);
+S.FX(t,n)$(ORD(n) NE 21)=SE(ITER,"21",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA6 USING NLP;
 marginal_miu(T,"ASIA6") = MIU.m(T,"ASIA6");
- 
- 
+marg_S(ITER, t,"ASIA6") = S.m(T,"ASIA6");
+marg_DAM(ITER, t,"ASIA6") = DAMFRACEQ.m(T,"ASIA6");
+marg_K(ITER, t,"ASIA6") = KK.m(T,"ASIA6");
 MIE(ITER,"22",t,n)=MIU.L(t,n);
+SE(ITER,"22",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 22)=MIE(ITER,"22",t,n);
+S.FX(t,n)$(ORD(n) NE 22)=SE(ITER,"22",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA7 USING NLP;
 marginal_miu(T,"ASIA7") = MIU.m(T,"ASIA7");
- 
- 
+marg_S(ITER, t,"ASIA7") = S.m(T,"ASIA7");
+marg_DAM(ITER, t,"ASIA7") = DAMFRACEQ.m(T,"ASIA7");
+marg_K(ITER, t,"ASIA7") = KK.m(T,"ASIA7");
 MIE(ITER,"23",t,n)=MIU.L(t,n);
+SE(ITER,"23",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 23)=MIE(ITER,"23",t,n);
+S.FX(t,n)$(ORD(n) NE 23)=SE(ITER,"23",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA8 USING NLP;
 marginal_miu(T,"ASIA8") = MIU.m(T,"ASIA8");
- 
- 
+marg_S(ITER, t,"ASIA8") = S.m(T,"ASIA8");
+marg_DAM(ITER, t,"ASIA8") = DAMFRACEQ.m(T,"ASIA8");
+marg_K(ITER, t,"ASIA8") = KK.m(T,"ASIA8");
 MIE(ITER,"24",t,n)=MIU.L(t,n);
+SE(ITER,"24",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 24)=MIE(ITER,"24",t,n);
+S.FX(t,n)$(ORD(n) NE 24)=SE(ITER,"24",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA9 USING NLP;
 marginal_miu(T,"ASIA9") = MIU.m(T,"ASIA9");
- 
- 
+marg_S(ITER, t,"ASIA9") = S.m(T,"ASIA9");
+marg_DAM(ITER, t,"ASIA9") = DAMFRACEQ.m(T,"ASIA9");
+marg_K(ITER, t,"ASIA9") = KK.m(T,"ASIA9");
 *Reset for the next iteration.
 MIE(ITER, "25", t, n) = MIU.L(t, n);
-EIE(ITER, "25", t, n) = EIND.L(t, n);
+SE(ITER, "25", t, n) = S.L(t, n);
 MIE(ITER + 1, "1", t, n) = MIE(ITER, "25", t, n);
-EIE(ITER + 1, "1", t, n) = EIE(ITER, "25", t, n);
-
-
+SE(ITER + 1, "1", t, n) = SE(ITER, "25", t, n);
 );
+
+
 
 
 
@@ -1027,7 +1131,8 @@ put / "Regional welfare";
 Loop(T, put UT2_USA.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"USA"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "USA"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"USA"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"USA"));
@@ -1060,7 +1165,8 @@ put / "Regional welfare";
 Loop(T, put UT2_RUS.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"RUS"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "RUS"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"RUS"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"RUS"));
@@ -1093,7 +1199,8 @@ put / "Regional welfare";
 Loop(T, put UT2_JAP.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"JAP"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "JAP"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"JAP"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"JAP"));
@@ -1126,7 +1233,8 @@ put / "Regional welfare";
 Loop(T, put UT2_CAN.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"CAN"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "CAN"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"CAN"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"CAN"));
@@ -1159,7 +1267,8 @@ put / "Regional welfare";
 Loop(T, put UT2_OAB.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"OAB"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "OAB"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"OAB"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"OAB"));
@@ -1192,7 +1301,8 @@ put / "Regional welfare";
 Loop(T, put UT2_EU.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"EU"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "EU"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"EU"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"EU"));
@@ -1225,7 +1335,8 @@ put / "Regional welfare";
 Loop(T, put UT2_CHN.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"CHN"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "CHN"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"CHN"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"CHN"));
@@ -1258,7 +1369,8 @@ put / "Regional welfare";
 Loop(T, put UT2_IND.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"IND"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "IND"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"IND"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"IND"));
@@ -1291,7 +1403,8 @@ put / "Regional welfare";
 Loop(T, put UT2_BRZ.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"BRZ"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "BRZ"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"BRZ"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"BRZ"));
@@ -1324,7 +1437,8 @@ put / "Regional welfare";
 Loop(T, put UT2_SAF.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"SAF"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "SAF"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"SAF"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"SAF"));
@@ -1357,7 +1471,8 @@ put / "Regional welfare";
 Loop(T, put UT2_OEU.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"OEU"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "OEU"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"OEU"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"OEU"));
@@ -1390,7 +1505,8 @@ put / "Regional welfare";
 Loop(T, put UT2_REF.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"REF"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "REF"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"REF"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"REF"));
@@ -1423,7 +1539,8 @@ put / "Regional welfare";
 Loop(T, put UT2_MAF.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"MAF"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"MAF"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"MAF"));
@@ -1456,7 +1573,8 @@ put / "Regional welfare";
 Loop(T, put UT2_LAM.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"LAM"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "LAM"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"LAM"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"LAM"));
@@ -1489,7 +1607,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA0.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA0"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA0"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA0"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA0"));
@@ -1522,7 +1641,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA1.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA1"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA1"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA1"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA1"));
@@ -1555,7 +1675,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA2.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA2"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA2"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA2"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA2"));
@@ -1588,7 +1709,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA3.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA3"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA3"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA3"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA3"));
@@ -1621,7 +1743,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA4.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA4"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA4"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA4"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA4"));
@@ -1654,7 +1777,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA5.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA5"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA5"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA5"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA5"));
@@ -1687,7 +1811,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA6.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA6"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA6"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA6"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA6"));
@@ -1720,7 +1845,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA7.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA7"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA7"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA7"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA7"));
@@ -1753,7 +1879,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA8.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA8"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA8"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA8"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA8"));
@@ -1786,7 +1913,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA9.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA9"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA9"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA9"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA9"));
@@ -1801,246 +1929,6 @@ put / "Atmospheric temperature (deg c above preind)";
 Loop(T, put TATM.l(T));
 put / "MIU global";
 Loop(T, put MIU_GLOBAL.l(T));
-put / "(USA,0)";
-Loop(T, put MIE("1","16",t,"USA"));
-put / "(USA,1)";
-Loop(T, put MIE("2","16",t,"USA"));
-put / "(USA,2)";
-Loop(T, put MIE("3","16",t,"USA"));
-put / "(USA,3)";
-Loop(T, put MIE("4","16",t,"USA"));
-put / "(USA,4)";
-Loop(T, put MIE("5","16",t,"USA"));
-put / "(RUS,0)";
-Loop(T, put MIE("1","16",t,"RUS"));
-put / "(RUS,1)";
-Loop(T, put MIE("2","16",t,"RUS"));
-put / "(RUS,2)";
-Loop(T, put MIE("3","16",t,"RUS"));
-put / "(RUS,3)";
-Loop(T, put MIE("4","16",t,"RUS"));
-put / "(RUS,4)";
-Loop(T, put MIE("5","16",t,"RUS"));
-put / "(JAP,0)";
-Loop(T, put MIE("1","16",t,"JAP"));
-put / "(JAP,1)";
-Loop(T, put MIE("2","16",t,"JAP"));
-put / "(JAP,2)";
-Loop(T, put MIE("3","16",t,"JAP"));
-put / "(JAP,3)";
-Loop(T, put MIE("4","16",t,"JAP"));
-put / "(JAP,4)";
-Loop(T, put MIE("5","16",t,"JAP"));
-put / "(CAN,0)";
-Loop(T, put MIE("1","16",t,"CAN"));
-put / "(CAN,1)";
-Loop(T, put MIE("2","16",t,"CAN"));
-put / "(CAN,2)";
-Loop(T, put MIE("3","16",t,"CAN"));
-put / "(CAN,3)";
-Loop(T, put MIE("4","16",t,"CAN"));
-put / "(CAN,4)";
-Loop(T, put MIE("5","16",t,"CAN"));
-put / "(OAB,0)";
-Loop(T, put MIE("1","16",t,"OAB"));
-put / "(OAB,1)";
-Loop(T, put MIE("2","16",t,"OAB"));
-put / "(OAB,2)";
-Loop(T, put MIE("3","16",t,"OAB"));
-put / "(OAB,3)";
-Loop(T, put MIE("4","16",t,"OAB"));
-put / "(OAB,4)";
-Loop(T, put MIE("5","16",t,"OAB"));
-put / "(EU,0)";
-Loop(T, put MIE("1","16",t,"EU"));
-put / "(EU,1)";
-Loop(T, put MIE("2","16",t,"EU"));
-put / "(EU,2)";
-Loop(T, put MIE("3","16",t,"EU"));
-put / "(EU,3)";
-Loop(T, put MIE("4","16",t,"EU"));
-put / "(EU,4)";
-Loop(T, put MIE("5","16",t,"EU"));
-put / "(CHN,0)";
-Loop(T, put MIE("1","16",t,"CHN"));
-put / "(CHN,1)";
-Loop(T, put MIE("2","16",t,"CHN"));
-put / "(CHN,2)";
-Loop(T, put MIE("3","16",t,"CHN"));
-put / "(CHN,3)";
-Loop(T, put MIE("4","16",t,"CHN"));
-put / "(CHN,4)";
-Loop(T, put MIE("5","16",t,"CHN"));
-put / "(IND,0)";
-Loop(T, put MIE("1","16",t,"IND"));
-put / "(IND,1)";
-Loop(T, put MIE("2","16",t,"IND"));
-put / "(IND,2)";
-Loop(T, put MIE("3","16",t,"IND"));
-put / "(IND,3)";
-Loop(T, put MIE("4","16",t,"IND"));
-put / "(IND,4)";
-Loop(T, put MIE("5","16",t,"IND"));
-put / "(BRZ,0)";
-Loop(T, put MIE("1","16",t,"BRZ"));
-put / "(BRZ,1)";
-Loop(T, put MIE("2","16",t,"BRZ"));
-put / "(BRZ,2)";
-Loop(T, put MIE("3","16",t,"BRZ"));
-put / "(BRZ,3)";
-Loop(T, put MIE("4","16",t,"BRZ"));
-put / "(BRZ,4)";
-Loop(T, put MIE("5","16",t,"BRZ"));
-put / "(SAF,0)";
-Loop(T, put MIE("1","16",t,"SAF"));
-put / "(SAF,1)";
-Loop(T, put MIE("2","16",t,"SAF"));
-put / "(SAF,2)";
-Loop(T, put MIE("3","16",t,"SAF"));
-put / "(SAF,3)";
-Loop(T, put MIE("4","16",t,"SAF"));
-put / "(SAF,4)";
-Loop(T, put MIE("5","16",t,"SAF"));
-put / "(OEU,0)";
-Loop(T, put MIE("1","16",t,"OEU"));
-put / "(OEU,1)";
-Loop(T, put MIE("2","16",t,"OEU"));
-put / "(OEU,2)";
-Loop(T, put MIE("3","16",t,"OEU"));
-put / "(OEU,3)";
-Loop(T, put MIE("4","16",t,"OEU"));
-put / "(OEU,4)";
-Loop(T, put MIE("5","16",t,"OEU"));
-put / "(REF,0)";
-Loop(T, put MIE("1","16",t,"REF"));
-put / "(REF,1)";
-Loop(T, put MIE("2","16",t,"REF"));
-put / "(REF,2)";
-Loop(T, put MIE("3","16",t,"REF"));
-put / "(REF,3)";
-Loop(T, put MIE("4","16",t,"REF"));
-put / "(REF,4)";
-Loop(T, put MIE("5","16",t,"REF"));
-put / "(MAF,0)";
-Loop(T, put MIE("1","16",t,"MAF"));
-put / "(MAF,1)";
-Loop(T, put MIE("2","16",t,"MAF"));
-put / "(MAF,2)";
-Loop(T, put MIE("3","16",t,"MAF"));
-put / "(MAF,3)";
-Loop(T, put MIE("4","16",t,"MAF"));
-put / "(MAF,4)";
-Loop(T, put MIE("5","16",t,"MAF"));
-put / "(LAM,0)";
-Loop(T, put MIE("1","16",t,"LAM"));
-put / "(LAM,1)";
-Loop(T, put MIE("2","16",t,"LAM"));
-put / "(LAM,2)";
-Loop(T, put MIE("3","16",t,"LAM"));
-put / "(LAM,3)";
-Loop(T, put MIE("4","16",t,"LAM"));
-put / "(LAM,4)";
-Loop(T, put MIE("5","16",t,"LAM"));
-put / "(ASIA0,0)";
-Loop(T, put MIE("1","16",t,"ASIA0"));
-put / "(ASIA0,1)";
-Loop(T, put MIE("2","16",t,"ASIA0"));
-put / "(ASIA0,2)";
-Loop(T, put MIE("3","16",t,"ASIA0"));
-put / "(ASIA0,3)";
-Loop(T, put MIE("4","16",t,"ASIA0"));
-put / "(ASIA0,4)";
-Loop(T, put MIE("5","16",t,"ASIA0"));
-put / "(ASIA1,0)";
-Loop(T, put MIE("1","16",t,"ASIA1"));
-put / "(ASIA1,1)";
-Loop(T, put MIE("2","16",t,"ASIA1"));
-put / "(ASIA1,2)";
-Loop(T, put MIE("3","16",t,"ASIA1"));
-put / "(ASIA1,3)";
-Loop(T, put MIE("4","16",t,"ASIA1"));
-put / "(ASIA1,4)";
-Loop(T, put MIE("5","16",t,"ASIA1"));
-put / "(ASIA2,0)";
-Loop(T, put MIE("1","16",t,"ASIA2"));
-put / "(ASIA2,1)";
-Loop(T, put MIE("2","16",t,"ASIA2"));
-put / "(ASIA2,2)";
-Loop(T, put MIE("3","16",t,"ASIA2"));
-put / "(ASIA2,3)";
-Loop(T, put MIE("4","16",t,"ASIA2"));
-put / "(ASIA2,4)";
-Loop(T, put MIE("5","16",t,"ASIA2"));
-put / "(ASIA3,0)";
-Loop(T, put MIE("1","16",t,"ASIA3"));
-put / "(ASIA3,1)";
-Loop(T, put MIE("2","16",t,"ASIA3"));
-put / "(ASIA3,2)";
-Loop(T, put MIE("3","16",t,"ASIA3"));
-put / "(ASIA3,3)";
-Loop(T, put MIE("4","16",t,"ASIA3"));
-put / "(ASIA3,4)";
-Loop(T, put MIE("5","16",t,"ASIA3"));
-put / "(ASIA4,0)";
-Loop(T, put MIE("1","16",t,"ASIA4"));
-put / "(ASIA4,1)";
-Loop(T, put MIE("2","16",t,"ASIA4"));
-put / "(ASIA4,2)";
-Loop(T, put MIE("3","16",t,"ASIA4"));
-put / "(ASIA4,3)";
-Loop(T, put MIE("4","16",t,"ASIA4"));
-put / "(ASIA4,4)";
-Loop(T, put MIE("5","16",t,"ASIA4"));
-put / "(ASIA5,0)";
-Loop(T, put MIE("1","16",t,"ASIA5"));
-put / "(ASIA5,1)";
-Loop(T, put MIE("2","16",t,"ASIA5"));
-put / "(ASIA5,2)";
-Loop(T, put MIE("3","16",t,"ASIA5"));
-put / "(ASIA5,3)";
-Loop(T, put MIE("4","16",t,"ASIA5"));
-put / "(ASIA5,4)";
-Loop(T, put MIE("5","16",t,"ASIA5"));
-put / "(ASIA6,0)";
-Loop(T, put MIE("1","16",t,"ASIA6"));
-put / "(ASIA6,1)";
-Loop(T, put MIE("2","16",t,"ASIA6"));
-put / "(ASIA6,2)";
-Loop(T, put MIE("3","16",t,"ASIA6"));
-put / "(ASIA6,3)";
-Loop(T, put MIE("4","16",t,"ASIA6"));
-put / "(ASIA6,4)";
-Loop(T, put MIE("5","16",t,"ASIA6"));
-put / "(ASIA7,0)";
-Loop(T, put MIE("1","16",t,"ASIA7"));
-put / "(ASIA7,1)";
-Loop(T, put MIE("2","16",t,"ASIA7"));
-put / "(ASIA7,2)";
-Loop(T, put MIE("3","16",t,"ASIA7"));
-put / "(ASIA7,3)";
-Loop(T, put MIE("4","16",t,"ASIA7"));
-put / "(ASIA7,4)";
-Loop(T, put MIE("5","16",t,"ASIA7"));
-put / "(ASIA8,0)";
-Loop(T, put MIE("1","16",t,"ASIA8"));
-put / "(ASIA8,1)";
-Loop(T, put MIE("2","16",t,"ASIA8"));
-put / "(ASIA8,2)";
-Loop(T, put MIE("3","16",t,"ASIA8"));
-put / "(ASIA8,3)";
-Loop(T, put MIE("4","16",t,"ASIA8"));
-put / "(ASIA8,4)";
-Loop(T, put MIE("5","16",t,"ASIA8"));
-put / "(ASIA9,0)";
-Loop(T, put MIE("1","16",t,"ASIA9"));
-put / "(ASIA9,1)";
-Loop(T, put MIE("2","16",t,"ASIA9"));
-put / "(ASIA9,2)";
-Loop(T, put MIE("3","16",t,"ASIA9"));
-put / "(ASIA9,3)";
-Loop(T, put MIE("4","16",t,"ASIA9"));
-put / "(ASIA9,4)";
-Loop(T, put MIE("5","16",t,"ASIA9"));
 ECO("a2","USA") = 0.00284;
 ECO("a3","USA") = 1.57e-05;
 ECO("n3","USA") = 7.315027067;
@@ -2119,263 +2007,366 @@ MIU.FX("1",n) = ECO("MIU0",N);
 
 
 
-MIU.FX(t,n) = 0;
-SOLVE RICE MAXIMIZING UTILITY  USING NLP;
-
 ******////////////////////////////////////////////////////////////////////******
 *************************** Calculate Nash Equilibrium *************************
 ******/////////////////////////////formula/////////////////////////////////******
+
+PARAMETERS
+    marg_S(ITER, t, n)      "Utilité marginale de la contrainte d'épargne (Shadow Price)"
+    marg_DAM(ITER, t, n)    "Coût marginal des dommages (Shadow Price de l'équation DAMEQ)"
+    marg_K(ITER, t, n)      "Valeur marginale du stock de capital"
+;
+
+
+
+
+MIU.FX(t, n) = miuup(t, n);
+S.FX(t, n) = optlrsav;
 LOOP(ITER,
-
-
 MIE(ITER,"1",t,n)=MIU.L(t,n);
+SE(ITER,"1",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 1)=MIE(ITER,"1",t,n);
+S.FX(t,n)$(ORD(n) NE 1)=SE(ITER,"1",t,n);
 SOLVE  RICE MAXIMIZING UT2_USA USING NLP;
 marginal_miu(T,"USA") = MIU.m(T,"USA");
- 
- 
+marg_S(ITER, t,"USA") = S.m(T,"USA");
+marg_DAM(ITER, t,"USA") = DAMFRACEQ.m(T,"USA");
+marg_K(ITER, t,"USA") = KK.m(T,"USA");
 MIE(ITER,"2",t,n)=MIU.L(t,n);
+SE(ITER,"2",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 2)=MIE(ITER,"2",t,n);
+S.FX(t,n)$(ORD(n) NE 2)=SE(ITER,"2",t,n);
 SOLVE  RICE MAXIMIZING UT2_RUS USING NLP;
 marginal_miu(T,"RUS") = MIU.m(T,"RUS");
- 
- 
+marg_S(ITER, t,"RUS") = S.m(T,"RUS");
+marg_DAM(ITER, t,"RUS") = DAMFRACEQ.m(T,"RUS");
+marg_K(ITER, t,"RUS") = KK.m(T,"RUS");
 MIE(ITER,"3",t,n)=MIU.L(t,n);
+SE(ITER,"3",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 3)=MIE(ITER,"3",t,n);
+S.FX(t,n)$(ORD(n) NE 3)=SE(ITER,"3",t,n);
 SOLVE  RICE MAXIMIZING UT2_JAP USING NLP;
 marginal_miu(T,"JAP") = MIU.m(T,"JAP");
- 
- 
+marg_S(ITER, t,"JAP") = S.m(T,"JAP");
+marg_DAM(ITER, t,"JAP") = DAMFRACEQ.m(T,"JAP");
+marg_K(ITER, t,"JAP") = KK.m(T,"JAP");
 MIE(ITER,"4",t,n)=MIU.L(t,n);
+SE(ITER,"4",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 4)=MIE(ITER,"4",t,n);
+S.FX(t,n)$(ORD(n) NE 4)=SE(ITER,"4",t,n);
 SOLVE  RICE MAXIMIZING UT2_CAN USING NLP;
 marginal_miu(T,"CAN") = MIU.m(T,"CAN");
- 
- 
+marg_S(ITER, t,"CAN") = S.m(T,"CAN");
+marg_DAM(ITER, t,"CAN") = DAMFRACEQ.m(T,"CAN");
+marg_K(ITER, t,"CAN") = KK.m(T,"CAN");
 MIE(ITER,"5",t,n)=MIU.L(t,n);
+SE(ITER,"5",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 5)=MIE(ITER,"5",t,n);
+S.FX(t,n)$(ORD(n) NE 5)=SE(ITER,"5",t,n);
 SOLVE  RICE MAXIMIZING UT2_OAB USING NLP;
 marginal_miu(T,"OAB") = MIU.m(T,"OAB");
- 
- 
+marg_S(ITER, t,"OAB") = S.m(T,"OAB");
+marg_DAM(ITER, t,"OAB") = DAMFRACEQ.m(T,"OAB");
+marg_K(ITER, t,"OAB") = KK.m(T,"OAB");
 MIE(ITER,"6",t,n)=MIU.L(t,n);
+SE(ITER,"6",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 6)=MIE(ITER,"6",t,n);
+S.FX(t,n)$(ORD(n) NE 6)=SE(ITER,"6",t,n);
 SOLVE  RICE MAXIMIZING UT2_EU USING NLP;
 marginal_miu(T,"EU") = MIU.m(T,"EU");
- 
- 
+marg_S(ITER, t,"EU") = S.m(T,"EU");
+marg_DAM(ITER, t,"EU") = DAMFRACEQ.m(T,"EU");
+marg_K(ITER, t,"EU") = KK.m(T,"EU");
 MIE(ITER,"7",t,n)=MIU.L(t,n);
+SE(ITER,"7",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 7)=MIE(ITER,"7",t,n);
+S.FX(t,n)$(ORD(n) NE 7)=SE(ITER,"7",t,n);
 SOLVE  RICE MAXIMIZING UT2_CHN USING NLP;
 marginal_miu(T,"CHN") = MIU.m(T,"CHN");
- 
- 
+marg_S(ITER, t,"CHN") = S.m(T,"CHN");
+marg_DAM(ITER, t,"CHN") = DAMFRACEQ.m(T,"CHN");
+marg_K(ITER, t,"CHN") = KK.m(T,"CHN");
 MIE(ITER,"8",t,n)=MIU.L(t,n);
+SE(ITER,"8",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 8)=MIE(ITER,"8",t,n);
+S.FX(t,n)$(ORD(n) NE 8)=SE(ITER,"8",t,n);
 SOLVE  RICE MAXIMIZING UT2_IND USING NLP;
 marginal_miu(T,"IND") = MIU.m(T,"IND");
- 
- 
+marg_S(ITER, t,"IND") = S.m(T,"IND");
+marg_DAM(ITER, t,"IND") = DAMFRACEQ.m(T,"IND");
+marg_K(ITER, t,"IND") = KK.m(T,"IND");
 MIE(ITER,"9",t,n)=MIU.L(t,n);
+SE(ITER,"9",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 9)=MIE(ITER,"9",t,n);
+S.FX(t,n)$(ORD(n) NE 9)=SE(ITER,"9",t,n);
 SOLVE  RICE MAXIMIZING UT2_BRZ USING NLP;
 marginal_miu(T,"BRZ") = MIU.m(T,"BRZ");
- 
- 
+marg_S(ITER, t,"BRZ") = S.m(T,"BRZ");
+marg_DAM(ITER, t,"BRZ") = DAMFRACEQ.m(T,"BRZ");
+marg_K(ITER, t,"BRZ") = KK.m(T,"BRZ");
 MIE(ITER,"10",t,n)=MIU.L(t,n);
+SE(ITER,"10",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 10)=MIE(ITER,"10",t,n);
+S.FX(t,n)$(ORD(n) NE 10)=SE(ITER,"10",t,n);
 SOLVE  RICE MAXIMIZING UT2_SAF USING NLP;
 marginal_miu(T,"SAF") = MIU.m(T,"SAF");
- 
- 
+marg_S(ITER, t,"SAF") = S.m(T,"SAF");
+marg_DAM(ITER, t,"SAF") = DAMFRACEQ.m(T,"SAF");
+marg_K(ITER, t,"SAF") = KK.m(T,"SAF");
 MIE(ITER,"11",t,n)=MIU.L(t,n);
+SE(ITER,"11",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 11)=MIE(ITER,"11",t,n);
+S.FX(t,n)$(ORD(n) NE 11)=SE(ITER,"11",t,n);
 SOLVE  RICE MAXIMIZING UT2_OEU USING NLP;
 marginal_miu(T,"OEU") = MIU.m(T,"OEU");
- 
- 
+marg_S(ITER, t,"OEU") = S.m(T,"OEU");
+marg_DAM(ITER, t,"OEU") = DAMFRACEQ.m(T,"OEU");
+marg_K(ITER, t,"OEU") = KK.m(T,"OEU");
 MIE(ITER,"12",t,n)=MIU.L(t,n);
+SE(ITER,"12",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 12)=MIE(ITER,"12",t,n);
+S.FX(t,n)$(ORD(n) NE 12)=SE(ITER,"12",t,n);
 SOLVE  RICE MAXIMIZING UT2_REF USING NLP;
 marginal_miu(T,"REF") = MIU.m(T,"REF");
- 
- 
+marg_S(ITER, t,"REF") = S.m(T,"REF");
+marg_DAM(ITER, t,"REF") = DAMFRACEQ.m(T,"REF");
+marg_K(ITER, t,"REF") = KK.m(T,"REF");
 MIE(ITER,"13",t,n)=MIU.L(t,n);
+SE(ITER,"13",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 13)=MIE(ITER,"13",t,n);
+S.FX(t,n)$(ORD(n) NE 13)=SE(ITER,"13",t,n);
 SOLVE  RICE MAXIMIZING UT2_MAF USING NLP;
 marginal_miu(T,"MAF") = MIU.m(T,"MAF");
- 
- 
+marg_S(ITER, t,"MAF") = S.m(T,"MAF");
+marg_DAM(ITER, t,"MAF") = DAMFRACEQ.m(T,"MAF");
+marg_K(ITER, t,"MAF") = KK.m(T,"MAF");
 MIE(ITER,"14",t,n)=MIU.L(t,n);
+SE(ITER,"14",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 14)=MIE(ITER,"14",t,n);
+S.FX(t,n)$(ORD(n) NE 14)=SE(ITER,"14",t,n);
 SOLVE  RICE MAXIMIZING UT2_LAM USING NLP;
 marginal_miu(T,"LAM") = MIU.m(T,"LAM");
- 
- 
+marg_S(ITER, t,"LAM") = S.m(T,"LAM");
+marg_DAM(ITER, t,"LAM") = DAMFRACEQ.m(T,"LAM");
+marg_K(ITER, t,"LAM") = KK.m(T,"LAM");
 MIE(ITER,"15",t,n)=MIU.L(t,n);
+SE(ITER,"15",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 15)=MIE(ITER,"15",t,n);
+S.FX(t,n)$(ORD(n) NE 15)=SE(ITER,"15",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA0 USING NLP;
 marginal_miu(T,"ASIA0") = MIU.m(T,"ASIA0");
- 
- 
+marg_S(ITER, t,"ASIA0") = S.m(T,"ASIA0");
+marg_DAM(ITER, t,"ASIA0") = DAMFRACEQ.m(T,"ASIA0");
+marg_K(ITER, t,"ASIA0") = KK.m(T,"ASIA0");
 MIE(ITER,"16",t,n)=MIU.L(t,n);
+SE(ITER,"16",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 16)=MIE(ITER,"16",t,n);
+S.FX(t,n)$(ORD(n) NE 16)=SE(ITER,"16",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA1 USING NLP;
 marginal_miu(T,"ASIA1") = MIU.m(T,"ASIA1");
- 
- 
+marg_S(ITER, t,"ASIA1") = S.m(T,"ASIA1");
+marg_DAM(ITER, t,"ASIA1") = DAMFRACEQ.m(T,"ASIA1");
+marg_K(ITER, t,"ASIA1") = KK.m(T,"ASIA1");
 MIE(ITER,"17",t,n)=MIU.L(t,n);
+SE(ITER,"17",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 17)=MIE(ITER,"17",t,n);
+S.FX(t,n)$(ORD(n) NE 17)=SE(ITER,"17",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA2 USING NLP;
 marginal_miu(T,"ASIA2") = MIU.m(T,"ASIA2");
- 
- 
+marg_S(ITER, t,"ASIA2") = S.m(T,"ASIA2");
+marg_DAM(ITER, t,"ASIA2") = DAMFRACEQ.m(T,"ASIA2");
+marg_K(ITER, t,"ASIA2") = KK.m(T,"ASIA2");
 MIE(ITER,"18",t,n)=MIU.L(t,n);
+SE(ITER,"18",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 18)=MIE(ITER,"18",t,n);
+S.FX(t,n)$(ORD(n) NE 18)=SE(ITER,"18",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA3 USING NLP;
 marginal_miu(T,"ASIA3") = MIU.m(T,"ASIA3");
- 
- 
+marg_S(ITER, t,"ASIA3") = S.m(T,"ASIA3");
+marg_DAM(ITER, t,"ASIA3") = DAMFRACEQ.m(T,"ASIA3");
+marg_K(ITER, t,"ASIA3") = KK.m(T,"ASIA3");
 MIE(ITER,"19",t,n)=MIU.L(t,n);
+SE(ITER,"19",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 19)=MIE(ITER,"19",t,n);
+S.FX(t,n)$(ORD(n) NE 19)=SE(ITER,"19",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA4 USING NLP;
 marginal_miu(T,"ASIA4") = MIU.m(T,"ASIA4");
- 
- 
+marg_S(ITER, t,"ASIA4") = S.m(T,"ASIA4");
+marg_DAM(ITER, t,"ASIA4") = DAMFRACEQ.m(T,"ASIA4");
+marg_K(ITER, t,"ASIA4") = KK.m(T,"ASIA4");
 MIE(ITER,"20",t,n)=MIU.L(t,n);
+SE(ITER,"20",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 20)=MIE(ITER,"20",t,n);
+S.FX(t,n)$(ORD(n) NE 20)=SE(ITER,"20",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA5 USING NLP;
 marginal_miu(T,"ASIA5") = MIU.m(T,"ASIA5");
- 
- 
+marg_S(ITER, t,"ASIA5") = S.m(T,"ASIA5");
+marg_DAM(ITER, t,"ASIA5") = DAMFRACEQ.m(T,"ASIA5");
+marg_K(ITER, t,"ASIA5") = KK.m(T,"ASIA5");
 MIE(ITER,"21",t,n)=MIU.L(t,n);
+SE(ITER,"21",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 21)=MIE(ITER,"21",t,n);
+S.FX(t,n)$(ORD(n) NE 21)=SE(ITER,"21",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA6 USING NLP;
 marginal_miu(T,"ASIA6") = MIU.m(T,"ASIA6");
- 
- 
+marg_S(ITER, t,"ASIA6") = S.m(T,"ASIA6");
+marg_DAM(ITER, t,"ASIA6") = DAMFRACEQ.m(T,"ASIA6");
+marg_K(ITER, t,"ASIA6") = KK.m(T,"ASIA6");
 MIE(ITER,"22",t,n)=MIU.L(t,n);
+SE(ITER,"22",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 22)=MIE(ITER,"22",t,n);
+S.FX(t,n)$(ORD(n) NE 22)=SE(ITER,"22",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA7 USING NLP;
 marginal_miu(T,"ASIA7") = MIU.m(T,"ASIA7");
- 
- 
+marg_S(ITER, t,"ASIA7") = S.m(T,"ASIA7");
+marg_DAM(ITER, t,"ASIA7") = DAMFRACEQ.m(T,"ASIA7");
+marg_K(ITER, t,"ASIA7") = KK.m(T,"ASIA7");
 MIE(ITER,"23",t,n)=MIU.L(t,n);
+SE(ITER,"23",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 23)=MIE(ITER,"23",t,n);
+S.FX(t,n)$(ORD(n) NE 23)=SE(ITER,"23",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA8 USING NLP;
 marginal_miu(T,"ASIA8") = MIU.m(T,"ASIA8");
- 
- 
+marg_S(ITER, t,"ASIA8") = S.m(T,"ASIA8");
+marg_DAM(ITER, t,"ASIA8") = DAMFRACEQ.m(T,"ASIA8");
+marg_K(ITER, t,"ASIA8") = KK.m(T,"ASIA8");
 MIE(ITER,"24",t,n)=MIU.L(t,n);
+SE(ITER,"24",t,n)=S.L(t,n);
 MIU.LO(t,n) = 0;
 MIU.UP(t,n) = miuup(t,n);
 MIU.FX("1",n) = ECO("MIU0",N);
-
+S.LO(t,n) = 0.1;
+S.UP(t,n) = 0.6;
 MIU.FX(t,n)$(ORD(n) NE 24)=MIE(ITER,"24",t,n);
+S.FX(t,n)$(ORD(n) NE 24)=SE(ITER,"24",t,n);
 SOLVE  RICE MAXIMIZING UT2_ASIA9 USING NLP;
 marginal_miu(T,"ASIA9") = MIU.m(T,"ASIA9");
- 
- 
+marg_S(ITER, t,"ASIA9") = S.m(T,"ASIA9");
+marg_DAM(ITER, t,"ASIA9") = DAMFRACEQ.m(T,"ASIA9");
+marg_K(ITER, t,"ASIA9") = KK.m(T,"ASIA9");
 *Reset for the next iteration.
 MIE(ITER, "25", t, n) = MIU.L(t, n);
-EIE(ITER, "25", t, n) = EIND.L(t, n);
+SE(ITER, "25", t, n) = S.L(t, n);
 MIE(ITER + 1, "1", t, n) = MIE(ITER, "25", t, n);
-EIE(ITER + 1, "1", t, n) = EIE(ITER, "25", t, n);
-
-
+SE(ITER + 1, "1", t, n) = SE(ITER, "25", t, n);
 );
+
+
 
 
 
@@ -2408,7 +2399,8 @@ put / "Regional welfare";
 Loop(T, put UT2_USA.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"USA"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "USA"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"USA"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"USA"));
@@ -2441,7 +2433,8 @@ put / "Regional welfare";
 Loop(T, put UT2_RUS.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"RUS"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "RUS"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"RUS"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"RUS"));
@@ -2474,7 +2467,8 @@ put / "Regional welfare";
 Loop(T, put UT2_JAP.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"JAP"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "JAP"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"JAP"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"JAP"));
@@ -2507,7 +2501,8 @@ put / "Regional welfare";
 Loop(T, put UT2_CAN.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"CAN"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "CAN"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"CAN"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"CAN"));
@@ -2540,7 +2535,8 @@ put / "Regional welfare";
 Loop(T, put UT2_OAB.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"OAB"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "OAB"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"OAB"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"OAB"));
@@ -2573,7 +2569,8 @@ put / "Regional welfare";
 Loop(T, put UT2_EU.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"EU"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "EU"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"EU"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"EU"));
@@ -2606,7 +2603,8 @@ put / "Regional welfare";
 Loop(T, put UT2_CHN.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"CHN"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "CHN"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"CHN"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"CHN"));
@@ -2639,7 +2637,8 @@ put / "Regional welfare";
 Loop(T, put UT2_IND.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"IND"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "IND"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"IND"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"IND"));
@@ -2672,7 +2671,8 @@ put / "Regional welfare";
 Loop(T, put UT2_BRZ.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"BRZ"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "BRZ"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"BRZ"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"BRZ"));
@@ -2705,7 +2705,8 @@ put / "Regional welfare";
 Loop(T, put UT2_SAF.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"SAF"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "SAF"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"SAF"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"SAF"));
@@ -2738,7 +2739,8 @@ put / "Regional welfare";
 Loop(T, put UT2_OEU.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"OEU"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "OEU"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"OEU"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"OEU"));
@@ -2771,7 +2773,8 @@ put / "Regional welfare";
 Loop(T, put UT2_REF.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"REF"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "REF"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"REF"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"REF"));
@@ -2804,7 +2807,8 @@ put / "Regional welfare";
 Loop(T, put UT2_MAF.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"MAF"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "MAF"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"MAF"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"MAF"));
@@ -2837,7 +2841,8 @@ put / "Regional welfare";
 Loop(T, put UT2_LAM.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"LAM"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "LAM"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"LAM"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"LAM"));
@@ -2870,7 +2875,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA0.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA0"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA0"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA0"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA0"));
@@ -2903,7 +2909,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA1.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA1"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA1"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA1"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA1"));
@@ -2936,7 +2943,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA2.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA2"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA2"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA2"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA2"));
@@ -2969,7 +2977,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA3.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA3"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA3"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA3"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA3"));
@@ -3002,7 +3011,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA4.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA4"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA4"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA4"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA4"));
@@ -3035,7 +3045,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA5.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA5"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA5"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA5"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA5"));
@@ -3068,7 +3079,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA6.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA6"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA6"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA6"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA6"));
@@ -3101,7 +3113,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA7.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA7"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA7"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA7"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA7"));
@@ -3134,7 +3147,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA8.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA8"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA8"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA8"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA8"));
@@ -3167,7 +3181,8 @@ put / "Regional welfare";
 Loop(T, put UT2_ASIA9.l);
 put / "Marginal regional welfare";
 Loop(T, put marginal_miu(T,"ASIA9"));
-put / "Population (exogenous)" ;
+put / "Marginal Cost of Damages (Shadow Price)";
+Loop(T, put marg_DAM("5", T, "ASIA9"));put / "Population (exogenous)" ;
 Loop (T, put L(T,"ASIA9"));
 put / "Carbon price";
 Loop(T, put cprice.l(T,"ASIA9"));
@@ -3182,245 +3197,5 @@ put / "Atmospheric temperature (deg c above preind)";
 Loop(T, put TATM.l(T));
 put / "MIU global";
 Loop(T, put MIU_GLOBAL.l(T));
-put / "(USA,0)";
-Loop(T, put MIE("1","16",t,"USA"));
-put / "(USA,1)";
-Loop(T, put MIE("2","16",t,"USA"));
-put / "(USA,2)";
-Loop(T, put MIE("3","16",t,"USA"));
-put / "(USA,3)";
-Loop(T, put MIE("4","16",t,"USA"));
-put / "(USA,4)";
-Loop(T, put MIE("5","16",t,"USA"));
-put / "(RUS,0)";
-Loop(T, put MIE("1","16",t,"RUS"));
-put / "(RUS,1)";
-Loop(T, put MIE("2","16",t,"RUS"));
-put / "(RUS,2)";
-Loop(T, put MIE("3","16",t,"RUS"));
-put / "(RUS,3)";
-Loop(T, put MIE("4","16",t,"RUS"));
-put / "(RUS,4)";
-Loop(T, put MIE("5","16",t,"RUS"));
-put / "(JAP,0)";
-Loop(T, put MIE("1","16",t,"JAP"));
-put / "(JAP,1)";
-Loop(T, put MIE("2","16",t,"JAP"));
-put / "(JAP,2)";
-Loop(T, put MIE("3","16",t,"JAP"));
-put / "(JAP,3)";
-Loop(T, put MIE("4","16",t,"JAP"));
-put / "(JAP,4)";
-Loop(T, put MIE("5","16",t,"JAP"));
-put / "(CAN,0)";
-Loop(T, put MIE("1","16",t,"CAN"));
-put / "(CAN,1)";
-Loop(T, put MIE("2","16",t,"CAN"));
-put / "(CAN,2)";
-Loop(T, put MIE("3","16",t,"CAN"));
-put / "(CAN,3)";
-Loop(T, put MIE("4","16",t,"CAN"));
-put / "(CAN,4)";
-Loop(T, put MIE("5","16",t,"CAN"));
-put / "(OAB,0)";
-Loop(T, put MIE("1","16",t,"OAB"));
-put / "(OAB,1)";
-Loop(T, put MIE("2","16",t,"OAB"));
-put / "(OAB,2)";
-Loop(T, put MIE("3","16",t,"OAB"));
-put / "(OAB,3)";
-Loop(T, put MIE("4","16",t,"OAB"));
-put / "(OAB,4)";
-Loop(T, put MIE("5","16",t,"OAB"));
-put / "(EU,0)";
-Loop(T, put MIE("1","16",t,"EU"));
-put / "(EU,1)";
-Loop(T, put MIE("2","16",t,"EU"));
-put / "(EU,2)";
-Loop(T, put MIE("3","16",t,"EU"));
-put / "(EU,3)";
-Loop(T, put MIE("4","16",t,"EU"));
-put / "(EU,4)";
-Loop(T, put MIE("5","16",t,"EU"));
-put / "(CHN,0)";
-Loop(T, put MIE("1","16",t,"CHN"));
-put / "(CHN,1)";
-Loop(T, put MIE("2","16",t,"CHN"));
-put / "(CHN,2)";
-Loop(T, put MIE("3","16",t,"CHN"));
-put / "(CHN,3)";
-Loop(T, put MIE("4","16",t,"CHN"));
-put / "(CHN,4)";
-Loop(T, put MIE("5","16",t,"CHN"));
-put / "(IND,0)";
-Loop(T, put MIE("1","16",t,"IND"));
-put / "(IND,1)";
-Loop(T, put MIE("2","16",t,"IND"));
-put / "(IND,2)";
-Loop(T, put MIE("3","16",t,"IND"));
-put / "(IND,3)";
-Loop(T, put MIE("4","16",t,"IND"));
-put / "(IND,4)";
-Loop(T, put MIE("5","16",t,"IND"));
-put / "(BRZ,0)";
-Loop(T, put MIE("1","16",t,"BRZ"));
-put / "(BRZ,1)";
-Loop(T, put MIE("2","16",t,"BRZ"));
-put / "(BRZ,2)";
-Loop(T, put MIE("3","16",t,"BRZ"));
-put / "(BRZ,3)";
-Loop(T, put MIE("4","16",t,"BRZ"));
-put / "(BRZ,4)";
-Loop(T, put MIE("5","16",t,"BRZ"));
-put / "(SAF,0)";
-Loop(T, put MIE("1","16",t,"SAF"));
-put / "(SAF,1)";
-Loop(T, put MIE("2","16",t,"SAF"));
-put / "(SAF,2)";
-Loop(T, put MIE("3","16",t,"SAF"));
-put / "(SAF,3)";
-Loop(T, put MIE("4","16",t,"SAF"));
-put / "(SAF,4)";
-Loop(T, put MIE("5","16",t,"SAF"));
-put / "(OEU,0)";
-Loop(T, put MIE("1","16",t,"OEU"));
-put / "(OEU,1)";
-Loop(T, put MIE("2","16",t,"OEU"));
-put / "(OEU,2)";
-Loop(T, put MIE("3","16",t,"OEU"));
-put / "(OEU,3)";
-Loop(T, put MIE("4","16",t,"OEU"));
-put / "(OEU,4)";
-Loop(T, put MIE("5","16",t,"OEU"));
-put / "(REF,0)";
-Loop(T, put MIE("1","16",t,"REF"));
-put / "(REF,1)";
-Loop(T, put MIE("2","16",t,"REF"));
-put / "(REF,2)";
-Loop(T, put MIE("3","16",t,"REF"));
-put / "(REF,3)";
-Loop(T, put MIE("4","16",t,"REF"));
-put / "(REF,4)";
-Loop(T, put MIE("5","16",t,"REF"));
-put / "(MAF,0)";
-Loop(T, put MIE("1","16",t,"MAF"));
-put / "(MAF,1)";
-Loop(T, put MIE("2","16",t,"MAF"));
-put / "(MAF,2)";
-Loop(T, put MIE("3","16",t,"MAF"));
-put / "(MAF,3)";
-Loop(T, put MIE("4","16",t,"MAF"));
-put / "(MAF,4)";
-Loop(T, put MIE("5","16",t,"MAF"));
-put / "(LAM,0)";
-Loop(T, put MIE("1","16",t,"LAM"));
-put / "(LAM,1)";
-Loop(T, put MIE("2","16",t,"LAM"));
-put / "(LAM,2)";
-Loop(T, put MIE("3","16",t,"LAM"));
-put / "(LAM,3)";
-Loop(T, put MIE("4","16",t,"LAM"));
-put / "(LAM,4)";
-Loop(T, put MIE("5","16",t,"LAM"));
-put / "(ASIA0,0)";
-Loop(T, put MIE("1","16",t,"ASIA0"));
-put / "(ASIA0,1)";
-Loop(T, put MIE("2","16",t,"ASIA0"));
-put / "(ASIA0,2)";
-Loop(T, put MIE("3","16",t,"ASIA0"));
-put / "(ASIA0,3)";
-Loop(T, put MIE("4","16",t,"ASIA0"));
-put / "(ASIA0,4)";
-Loop(T, put MIE("5","16",t,"ASIA0"));
-put / "(ASIA1,0)";
-Loop(T, put MIE("1","16",t,"ASIA1"));
-put / "(ASIA1,1)";
-Loop(T, put MIE("2","16",t,"ASIA1"));
-put / "(ASIA1,2)";
-Loop(T, put MIE("3","16",t,"ASIA1"));
-put / "(ASIA1,3)";
-Loop(T, put MIE("4","16",t,"ASIA1"));
-put / "(ASIA1,4)";
-Loop(T, put MIE("5","16",t,"ASIA1"));
-put / "(ASIA2,0)";
-Loop(T, put MIE("1","16",t,"ASIA2"));
-put / "(ASIA2,1)";
-Loop(T, put MIE("2","16",t,"ASIA2"));
-put / "(ASIA2,2)";
-Loop(T, put MIE("3","16",t,"ASIA2"));
-put / "(ASIA2,3)";
-Loop(T, put MIE("4","16",t,"ASIA2"));
-put / "(ASIA2,4)";
-Loop(T, put MIE("5","16",t,"ASIA2"));
-put / "(ASIA3,0)";
-Loop(T, put MIE("1","16",t,"ASIA3"));
-put / "(ASIA3,1)";
-Loop(T, put MIE("2","16",t,"ASIA3"));
-put / "(ASIA3,2)";
-Loop(T, put MIE("3","16",t,"ASIA3"));
-put / "(ASIA3,3)";
-Loop(T, put MIE("4","16",t,"ASIA3"));
-put / "(ASIA3,4)";
-Loop(T, put MIE("5","16",t,"ASIA3"));
-put / "(ASIA4,0)";
-Loop(T, put MIE("1","16",t,"ASIA4"));
-put / "(ASIA4,1)";
-Loop(T, put MIE("2","16",t,"ASIA4"));
-put / "(ASIA4,2)";
-Loop(T, put MIE("3","16",t,"ASIA4"));
-put / "(ASIA4,3)";
-Loop(T, put MIE("4","16",t,"ASIA4"));
-put / "(ASIA4,4)";
-Loop(T, put MIE("5","16",t,"ASIA4"));
-put / "(ASIA5,0)";
-Loop(T, put MIE("1","16",t,"ASIA5"));
-put / "(ASIA5,1)";
-Loop(T, put MIE("2","16",t,"ASIA5"));
-put / "(ASIA5,2)";
-Loop(T, put MIE("3","16",t,"ASIA5"));
-put / "(ASIA5,3)";
-Loop(T, put MIE("4","16",t,"ASIA5"));
-put / "(ASIA5,4)";
-Loop(T, put MIE("5","16",t,"ASIA5"));
-put / "(ASIA6,0)";
-Loop(T, put MIE("1","16",t,"ASIA6"));
-put / "(ASIA6,1)";
-Loop(T, put MIE("2","16",t,"ASIA6"));
-put / "(ASIA6,2)";
-Loop(T, put MIE("3","16",t,"ASIA6"));
-put / "(ASIA6,3)";
-Loop(T, put MIE("4","16",t,"ASIA6"));
-put / "(ASIA6,4)";
-Loop(T, put MIE("5","16",t,"ASIA6"));
-put / "(ASIA7,0)";
-Loop(T, put MIE("1","16",t,"ASIA7"));
-put / "(ASIA7,1)";
-Loop(T, put MIE("2","16",t,"ASIA7"));
-put / "(ASIA7,2)";
-Loop(T, put MIE("3","16",t,"ASIA7"));
-put / "(ASIA7,3)";
-Loop(T, put MIE("4","16",t,"ASIA7"));
-put / "(ASIA7,4)";
-Loop(T, put MIE("5","16",t,"ASIA7"));
-put / "(ASIA8,0)";
-Loop(T, put MIE("1","16",t,"ASIA8"));
-put / "(ASIA8,1)";
-Loop(T, put MIE("2","16",t,"ASIA8"));
-put / "(ASIA8,2)";
-Loop(T, put MIE("3","16",t,"ASIA8"));
-put / "(ASIA8,3)";
-Loop(T, put MIE("4","16",t,"ASIA8"));
-put / "(ASIA8,4)";
-Loop(T, put MIE("5","16",t,"ASIA8"));
-put / "(ASIA9,0)";
-Loop(T, put MIE("1","16",t,"ASIA9"));
-put / "(ASIA9,1)";
-Loop(T, put MIE("2","16",t,"ASIA9"));
-put / "(ASIA9,2)";
-Loop(T, put MIE("3","16",t,"ASIA9"));
-put / "(ASIA9,3)";
-Loop(T, put MIE("4","16",t,"ASIA9"));
-put / "(ASIA9,4)";
-Loop(T, put MIE("5","16",t,"ASIA9"));
 
 

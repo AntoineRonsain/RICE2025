@@ -7,7 +7,7 @@ $offtext
 $title        July 19, 2023 (dice2023.gms)
 
 set
-    t  Time periods (5 years per period)                     /1*81/
+    t  Time periods (5 years per period)                     /1*101/
     ISER    Weight searching interation index  /1*5 /
     ITER    Nash loop                          /1*5 /
     SIT     Nash loop for region1-15           /1*25/
@@ -85,6 +85,7 @@ PARAMETERS
 
         EIE(ITER,SIT,t,n)
         MIE(ITER,SIT,t,n)
+        SE(ITER,SIT,t,n)
         marginal_miu(T,n)
 
         L(t,n)           Level of population and labor

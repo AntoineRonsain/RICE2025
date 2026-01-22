@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
     results = {
         'Low Damage': calculate_damage(temperatures, **p_low),
-        'Middle Damage': calculate_damage(temperatures, **p_middle),
+        'Medium Damage': calculate_damage(temperatures, **p_middle),
         'High Damage': calculate_damage(temperatures, **p_high)
     }
 
