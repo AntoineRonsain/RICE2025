@@ -62,7 +62,7 @@ PARAMETERS
 
         Q       Utility derivative scaling factor                   /1E4 /
         Q1                                                          /1E5 /
-        Q2                                                          /1E3 /
+        Q2                                                          /1E5 /
         betaclim                                                    / 0.6  /
         elasmu    Elasticity of marginal utility of consumption     / 0.9  /
         rhof      Riskfree real rate per year                       / .001 /
@@ -421,7 +421,6 @@ option limcol = 0;
 
 * Ccntrol rate limits
 miu.up(t,n) = miuup(t,n);
-S.fx(t,n)         = optlrsav;
 *S.UP(t,n)         = 1;
 K.LO(t,n)         = 1;
 C.LO(t,n)         = 0.05;

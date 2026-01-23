@@ -421,7 +421,6 @@ option limcol = 0;
 
 * Ccntrol rate limits
 miu.up(t,n) = miuup(t,n);
-S.fx(t,n)         = optlrsav;
 *S.UP(t,n)         = 1;
 K.LO(t,n)         = 1;
 C.LO(t,n)         = 0.05;
