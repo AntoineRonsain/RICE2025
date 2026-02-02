@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
 from pathlib import Path
-
-# Assuming these exist in your project structure
 from tools.analysis_tools import plot_param_for_region
 from tools.tools import read_results
 from tools.compute_st_dev import compute_dispersion
+import string
+
 
 # --- CONFIGURATION ---
 START_YEAR = 2020
@@ -46,19 +46,18 @@ def get_miu_limit_curve(n_steps):
     return miuup
 
 
+
 def plot_emissions_grid(data, scenarios, regions, plot_params, miu_limit, scenario_labels):
     """
-    Plots the Emissions Control Rate for each scenario in a grid.
-
-    Args:
-        data (dict): The main data structure.
-        scenarios (list): List of scenario keys to plot.
-        regions (list): List of regions to plot.
-        plot_params (dict): Color and style params for regions.
-        miu_limit (np.array): The upper limit curve.
-        scenario_labels (dict): Mapping from internal keys to display names.
+    Trace les taux de contrôle des émissions en grille.
+    - Ajoute a., b., c. devant les titres.
+    - Centre les titres.
+    - Place la légende dans le 4ème emplacement vide sur 2 colonnes.
     """
     years = [START_YEAR + i * 5 for i in range(N_STEPS)]
+
+    # Liste des lettres pour les sous-titres
+    letters = string.ascii_lowercase
 
     # Setup grid
     nb_cols = 2
@@ -70,20 +69,21 @@ def plot_emissions_grid(data, scenarios, regions, plot_params, miu_limit, scenar
     fig, axs = plt.subplots(nb_rows, nb_cols, figsize=(16, 12))
     axes_flat = axs.flatten()
 
+    global_handles, global_labels = None, None
+
     for i, ax in enumerate(axes_flat):
         if i < len(scenarios):
             sce = scenarios[i]
 
-            # Compute dispersion (Epsilon)
-            # Reconstruct dict for compute_dispersion expecting {region: series}
+            # Calcul de la dispersion
             mu_dict = {r: data[sce][r]["Emissions control rate"][:90] for r in regions}
             epsilon = compute_dispersion(mu_dict)
 
-            # Plot Limit
+            # Trace de la limite
             ax.plot(years[:PLOT_STEPS], miu_limit[:PLOT_STEPS],
                     linewidth=2, color='black', label="Maximum")
 
-            # Plot Regions
+            # Trace des régions
             for r in regions:
                 series = data[sce][r]["Emissions control rate"][:PLOT_STEPS]
                 ax.plot(years[:PLOT_STEPS], series,
@@ -91,20 +91,33 @@ def plot_emissions_grid(data, scenarios, regions, plot_params, miu_limit, scenar
                         linestyle=plot_params[r]["style"],
                         label=r, linewidth=1)
 
-            # Title
-            title_text = f"{scenario_labels[sce]} ($\epsilon = {np.round(epsilon, 3)}$)"
-            ax.set_title(title_text, fontsize=STYLE['font_size_title'])
-            ax.set_ylim(0, 1.2)  # Optional: fix y-scale for consistency
+            # --- TITRE CENTRÉ AVEC LETTRE ---
+            current_letter = letters[i]
+
+            title_text = (
+                    r"$\bf{" + current_letter + ".}$ " +
+                    f"{scenario_labels[sce]} ($\epsilon = {np.round(epsilon, 3)}$)"
+            )
+
+            # Modification ici : loc='center' (ou suppression de l'argument car c'est le défaut)
+            ax.set_title(title_text, fontsize=STYLE['font_size_title'], loc='center')
+
+            ax.set_ylim(0, 1.2)
+
+            # Capture de la légende
+            if i == 0:
+                global_handles, global_labels = ax.get_legend_handles_labels()
 
         else:
-            # Hide unused subplots
+            # --- Emplacement vide pour la légende ---
             ax.set_axis_off()
 
-    # Shared Legend (placed outside the last valid plot)
-    # taking handles/labels from the last plotted axis
-    handles, labels = axes_flat[len(scenarios) - 1].get_legend_handles_labels()
-    fig.legend(handles, labels, loc='upper right', bbox_to_anchor=(1.15, 0.9),
-               fontsize=STYLE['font_size_legend'], ncol=1)
+            if global_handles and global_labels:
+                ax.legend(global_handles, global_labels,
+                          loc='center',
+                          ncol=2,
+                          fontsize=STYLE['font_size_legend'],
+                          frameon=True)
 
     plt.tight_layout()
     plt.show()
@@ -113,6 +126,7 @@ def plot_emissions_grid(data, scenarios, regions, plot_params, miu_limit, scenar
 def plot_global_indicators(data, scenarios, regions, scenario_labels):
     """
     Plots GDP per Capita and Atmospheric Temperature side-by-side.
+    Adds titles with 'a.' and 'b.' labels.
     """
     years = [START_YEAR + i * 5 for i in range(N_STEPS)]
 
@@ -135,14 +149,16 @@ def plot_global_indicators(data, scenarios, regions, scenario_labels):
         ax_gdp.plot(years[:PLOT_STEPS], gdp_capita[:PLOT_STEPS], label=label, linewidth=3)
         ax_temp.plot(years[:PLOT_STEPS], temp_world[:PLOT_STEPS], label=label, linewidth=3)
 
-    # Formatting GDP Plot
+    # --- Formatting GDP Plot (a.) ---
+    # Ajout du titre a.
+    ax_gdp.set_title(r"a. GDP per capita (000$ /hab)", fontsize=STYLE['font_size_label'], loc='center')
     ax_gdp.set_xlabel('Time', fontsize=STYLE['font_size_label'])
-    ax_gdp.set_ylabel('GDP per capita (000$ /hab)', fontsize=STYLE['font_size_label'])
     ax_gdp.legend(fontsize=STYLE['font_size_legend'])
 
-    # Formatting Temp Plot
+    # --- Formatting Temp Plot (b.) ---
+    # Ajout du titre b.
+    ax_temp.set_title(r"b. Atmospheric Temperature (°C)", fontsize=STYLE['font_size_label'], loc='center')
     ax_temp.set_xlabel('Time', fontsize=STYLE['font_size_label'])
-    ax_temp.set_ylabel('Atmospheric Temp Increase (°C)', fontsize=STYLE['font_size_label'])
 
     # Tick sizing
     for ax in [ax_gdp, ax_temp]:
@@ -158,8 +174,11 @@ if __name__ == "__main__":
     path = Path(__file__).resolve().parents[1]
     outputs_dir = path / "spatial_consistency/outputs"
 
-    data = read_results(os.path.join(outputs_dir, "rice2023_nash.csv"))
-    data_quad = read_results(os.path.join(outputs_dir, "rice2023_nash_quad.csv"))
+    data = read_results(os.path.join(outputs_dir, "rice2023_negishi.csv"))
+    data_quad = read_results(os.path.join(outputs_dir, "rice2023_negishi_quad.csv"))
+
+    # data = read_results(os.path.join(outputs_dir, "rice2023_nash.csv"))
+    # data_quad = read_results(os.path.join(outputs_dir, "rice2023_nash_quad.csv"))
 
     # Merge/Patch Data (Replacing Low Damage with Quad data as per original script)
     data["Low Damage"] = data_quad["Low Damage"]

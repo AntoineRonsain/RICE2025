@@ -113,7 +113,7 @@ def process_global_indicators(data_dict):
     records = []
     for key, content in data_dict.items():
         solver_raw, damage = key.split(' + ')
-        solver_label = 'Cooperative' if solver_raw == 'Negishi' else 'Non-cooperative'
+        solver_label = 'Cooperative' if solver_raw == 'Cooperative' else 'Non-cooperative'
 
         # 1. Temperature Difference
         delta_t = (np.array(content['10Asia']['World']["Atmospheric temperature (deg c above preind)"][:STEPS]) -
@@ -180,51 +180,81 @@ def plot_asia_comparison_side_by_side(df):
 
         # Gestion sécurisée de la légende
         if i == 0:
-            if axes[i].get_legend() is not None:
-                axes[i].get_legend().remove()
-        else:
-            axes[i].set_ylabel('')
-            # On ne force la légende que si des données ont été tracées
             if not df[df['solver'] == solver_key].empty:
                 axes[i].legend(fontsize=STYLE['legend_size'])
+        else:
+            if axes[i].get_legend() is not None:
+                axes[i].get_legend().remove()
+            axes[i].set_ylabel('')
 
     plt.tight_layout()
     plt.show()
+
 
 
 def plot_global_impacts(df):
-    """Side-by-side boxplot for Global GDP and Temperature."""
-    fig, axes = plt.subplots(1, 2, figsize=(16, 8))
+    """
+    Trace les boxplots pour le PIB et la Température côte à côte.
+    Force l'affichage de 'Cooperative' et 'Non-cooperative'.
+    """
+    sns.set_context("talk")
+    sns.set_style("ticks")
 
-    # 1. GDP Plot
+    fig, axes = plt.subplots(1, 2, figsize=(18, 12))
+
+    # --- CONFIGURATION DE L'ORDRE ---
+    # C'est ici qu'on force l'affichage des deux, dans le bon ordre
+    order_solver = ["Cooperative", "Non-cooperative"]
+    # On force aussi l'ordre des dégâts pour que les couleurs correspondent (Bleu, Orange, Vert)
+    order_damage = ["Low Damage", "Medium Damage", "Strong Damage"]
+
+
+    # 1. Graphique PIB (GDP)
     sns.boxplot(
         data=df[df['metric'] == 'GDP (Relative)'],
         x='solver', y='value', hue='damage',
-        ax=axes[0]
+        ax=axes[0],
+        order=order_solver,  # <--- Force l'ordre X
+        hue_order=order_damage,  # <--- Force l'ordre des couleurs
+        width=0.6,
+        linewidth=1.5,
+        showfliers=True
     )
-    axes[0].set_title('GDP (Relative Change)', fontsize=STYLE['title_size'])
-    axes[0].set_ylabel('Fraction of GDP', fontsize=STYLE['label_size'])
+
+    axes[0].set_title(r"$\bf{a.}$ GDP (relative change)", fontsize=26, loc='left', pad=15)
+    axes[0].set_ylabel('')
     axes[0].set_xlabel('')
     axes[0].get_legend().remove()
 
-    # 2. Temperature Plot
+    # 2. Graphique Température
     sns.boxplot(
         data=df[df['metric'] == 'Temperature'],
         x='solver', y='value', hue='damage',
-        ax=axes[1]
+        ax=axes[1],
+        order=order_solver,  # <--- Force l'ordre X ici aussi
+        hue_order=order_damage,  # <--- Force l'ordre des couleurs
+        width=0.6,
+        linewidth=1.5
     )
-    axes[1].set_title('Temperature Increase (°C)', fontsize=STYLE['title_size'])
-    axes[1].set_ylabel('Change in °C', fontsize=STYLE['label_size'])
-    axes[1].set_xlabel('')
-    axes[1].legend(fontsize=STYLE['legend_size'])
 
+    axes[1].set_title(r"$\bf{b.}$ Increase in temperature (in °C)", fontsize=26, loc='left', pad=15)
+    axes[1].set_ylabel('')
+    axes[1].set_xlabel('')
+
+    # Légende propre
+    axes[1].legend(fontsize=20, loc='upper left', title=None, frameon=True)
+
+    # Formatage final
     for ax in axes:
-        ax.tick_params(axis='both', labelsize=STYLE['tick_size'])
-        ax.grid(axis='y', linestyle='--', alpha=0.5)
+        ax.tick_params(axis='both', labelsize=22)
+        ax.grid(False)
+        # Ajout des bordures noires (spines)
+        for spine in ax.spines.values():
+            spine.set_edgecolor('black')
+            spine.set_linewidth(1.2)
 
     plt.tight_layout()
     plt.show()
-
 
 if __name__ == "__main__":
     # 1. Setup
@@ -234,12 +264,9 @@ if __name__ == "__main__":
     # 2. Regional Emissions Analysis
     df_regions = process_regional_emissions(data_dict)
 
-    # CORRECTION ICI : Utiliser 'Cooperative' au lieu de 'Negishi'
-    plot_regional_boxplot(df_regions, 'Cooperative', 'Regional Emissions Change (Cooperative)')
+    plot_regional_boxplot(df_regions, 'Cooperative', 'Regional Emissions Control Rate Change (Cooperative)')
 
-    # CORRECTION ICI : Utiliser 'Non-Cooperative' au lieu de 'Nash'
-    # Attention à bien respecter la casse définie dans load_simulation_data
-    plot_regional_boxplot(df_regions, 'Non-Cooperative', 'Regional Emissions Change (Non-cooperative)')
+    plot_regional_boxplot(df_regions, 'Non-Cooperative', 'Regional Emissions Control Rate Change (Non-cooperative)')
 
     # 3. Asia Specific Comparison
     df_asia = process_asia_comparison(data_dict)
