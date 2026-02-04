@@ -72,6 +72,7 @@ def flag_loop_nash_solver(dict):
         string_table += f'marginal_miu(T,"{r}") = MIU.m(T,"{r}");\n'
         string_table += f'marg_S(ITER, t,"{r}") = S.m(T,"{r}");\n'
         string_table += f'marg_DAM(ITER, t,"{r}") = DAMFRACEQ.m(T,"{r}");\n'
+        string_table += f'marg_ABA(ITER, t,"{r}") = abatefraceq.m(T,"{r}");\n'
         string_table += f'marg_K(ITER, t,"{r}") = KK.m(T,"{r}");\n'
         k+=1
 
@@ -143,6 +144,8 @@ def flag_solve(dict):
             string_table += f'Loop(T, put marginal_miu(T,"{r}"));\n'
             string_table += f'put / "Marginal Cost of Damages (Shadow Price)";\n'
             string_table += f'Loop(T, put marg_DAM("5", T, "{r}"));'
+            string_table += f'put / "Marginal Cost of Abatement (Shadow Price)";\n'
+            string_table += f'Loop(T, put marg_ABA("5", T, "{r}"));'
             string_table += 'put / "Population (exogenous)" ;\n'
             string_table += f'Loop (T, put L(T,"{r}"));\n'
             string_table += 'put / "Carbon price";\n'

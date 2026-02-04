@@ -9,9 +9,10 @@ MIU.FX("1",n) = ECO("MIU0",N);
 ******/////////////////////////////formula/////////////////////////////////******
 
 PARAMETERS
-    marg_S(ITER, t, n)      "Utilité marginale de la contrainte d'épargne (Shadow Price)"
-    marg_DAM(ITER, t, n)    "Coût marginal des dommages (Shadow Price de l'équation DAMEQ)"
-    marg_K(ITER, t, n)      "Valeur marginale du stock de capital"
+    marg_S(ITER, t, n)      "Shadow Price of saving"
+    marg_DAM(ITER, t, n)    "Shadow Price of damage fraction"
+    marg_K(ITER, t, n)      "Shadow Price of capital"
+    marg_ABA(ITER, t, n)    "Shadow Price of abatement fraction"
 ;
 
 

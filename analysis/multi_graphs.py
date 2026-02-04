@@ -81,7 +81,7 @@ def plot_emissions_grid(data, scenarios, regions, plot_params, miu_limit, scenar
 
             # Trace de la limite
             ax.plot(years[:PLOT_STEPS], miu_limit[:PLOT_STEPS],
-                    linewidth=2, color='black', label="Maximum")
+                    linewidth=2, color='black', label="Upper bound")
 
             # Trace des régions
             for r in regions:
