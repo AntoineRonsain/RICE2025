@@ -174,11 +174,11 @@ if __name__ == "__main__":
     path = Path(__file__).resolve().parents[1]
     outputs_dir = path / "spatial_consistency/outputs"
 
-    data = read_results(os.path.join(outputs_dir, "rice2023_negishi.csv"))
-    data_quad = read_results(os.path.join(outputs_dir, "rice2023_negishi_quad.csv"))
+    # data = read_results(os.path.join(outputs_dir, "rice2023_negishi.csv"))
+    # data_quad = read_results(os.path.join(outputs_dir, "rice2023_negishi_quad.csv"))
 
-    # data = read_results(os.path.join(outputs_dir, "rice2023_nash.csv"))
-    # data_quad = read_results(os.path.join(outputs_dir, "rice2023_nash_quad.csv"))
+    data = read_results(os.path.join(outputs_dir, "rice2023_nash.csv"))
+    data_quad = read_results(os.path.join(outputs_dir, "rice2023_nash_quad.csv"))
 
     # Merge/Patch Data (Replacing Low Damage with Quad data as per original script)
     data["Low Damage"] = data_quad["Low Damage"]

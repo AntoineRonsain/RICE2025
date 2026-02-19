@@ -94,7 +94,7 @@ def plot_emission_comparison(data_dict, limit_curve):
 
             scenario_data = data_dict[full_key]
 
-            ax.plot(TIME_STEPS, limit_curve, color="black", lw=3, label="Maximum")
+            ax.plot(TIME_STEPS, limit_curve, color="black", lw=3, label="Upper bound")
 
             # 2. Plot Global MAF (Blue solid)
             MAF_1_series = scenario_data['1MAF'].get('MAF', {}).get("Emissions control rate")

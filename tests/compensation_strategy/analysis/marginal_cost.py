@@ -44,8 +44,8 @@ def plot_sign_structure_grid(data_dict):
         "Strong": "High Damage"
     }
 
-    mpl.rc('xtick', labelsize=10)
-    mpl.rc('ytick', labelsize=10)
+    mpl.rc('xtick', labelsize=15)
+    mpl.rc('ytick', labelsize=15)
 
     # Filtrage des régions
     sample_key = damage_key_map["Medium"]
@@ -124,10 +124,10 @@ def plot_sign_structure_grid(data_dict):
                 ax.text(-0.02, 0.25, "(-)", transform=ax.transAxes, color='red', weight='bold', ha='right')
 
     for row_idx in range(4):
-        axs[row_idx, 0].set_ylabel(row_labels[row_idx], fontsize=12, weight='bold', labelpad=25)
+        axs[row_idx, 0].set_ylabel(row_labels[row_idx], fontsize=15, weight='bold', labelpad=25)
 
     for col_idx in range(3):
-        axs[3, col_idx].set_xlabel("Year", fontsize=12)
+        axs[3, col_idx].set_xlabel("Year", fontsize=15)
 
     unique_handles, unique_labels = [], []
     seen = set()
@@ -299,4 +299,4 @@ if __name__ == "__main__":
     }
 
     plot_sign_structure_grid(data_dict)
-    # plot_value_structure_grid(data_dict)
+    plot_value_structure_grid(data_dict)
