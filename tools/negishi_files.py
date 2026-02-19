@@ -36,6 +36,8 @@ def flag_solve(dict):
             string_table += f'Loop (T, put AL(T,"{r}"));\n'
             string_table += 'put / "Output, net net trill 2019$" ;\n'
             string_table += f'Loop (T, put Y.l(T,"{r}"));\n'
+            string_table += f'put / "Industrial CO2 GtCO2/yr" ;\n'
+            string_table += f'Loop (T, put EIND.l(T,"{r}"));\n'
             string_table += 'put / "Emissions control rate";\n'
             string_table += f'Loop(T, put MIU.l(T,"{r}"));\n'
             string_table += 'put / "Weight";\n'

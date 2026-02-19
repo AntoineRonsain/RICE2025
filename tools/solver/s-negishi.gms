@@ -5,6 +5,7 @@
 
 miu.lo(t,n) = 1E-6;
 miu.up(t,n) = miuup(t,n);
+LB(T,N)     = 1;
 
 
 SOLVE RICE MAXIMIZING UTILITY2 USING NLP;
