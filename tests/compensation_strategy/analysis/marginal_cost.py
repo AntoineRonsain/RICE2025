@@ -35,7 +35,7 @@ def plot_sign_structure_grid(data_dict):
         r"$\bf{MAC}$" + "\n(Non-reopt)",
         r"$\bf{MDC}$" + "\n(Non-reopt)",
         r"$\bf{Net}$" + "\n(Non-reopt)",
-        r"$\bf{\Delta Net}$" + "\n(Non-reopt. - Re-opt.)"
+        r"$\bf{\Delta Net}$" + "\n(Re-opt. - Non-reopt.)"
     ]
 
     damage_key_map = {
@@ -69,53 +69,46 @@ def plot_sign_structure_grid(data_dict):
         data_nonreopt = data_dict[key]['Non-reoptimized']
 
         for idx, region in enumerate(regions_list):
-            if region not in data_reopt:
-                continue
 
             # --- DATA RE-OPTIMIZED (Base) ---
             mac_re = np.array(data_reopt[region][VAR_ABAT])[:PLOT_LIMIT]
             mcd_re = np.array(data_reopt[region][VAR_DAM])[:PLOT_LIMIT]
             net_re = mcd_re - mac_re
 
-            y_diff_sce = np.zeros_like(net_re)
+            # --- DATA NON-REOPTIMIZED (Subi) ---
+            mac_non = np.array(data_nonreopt[region][VAR_ABAT])[:PLOT_LIMIT]
+            mcd_non = np.array(data_nonreopt[region][VAR_DAM])[:PLOT_LIMIT]
+            net_non = mcd_non - mac_non
 
-            if region in data_nonreopt:
-                # --- DATA NON-REOPTIMIZED (Subi) ---
-                mac_non = np.array(data_nonreopt[region][VAR_ABAT])[:PLOT_LIMIT]
-                mcd_non = np.array(data_nonreopt[region][VAR_DAM])[:PLOT_LIMIT]
-                net_non = mcd_non - mac_non
+            # Delta Net = Net(Re-opt) - Net(Non-reopt)
+            diff_val = net_re - net_non
 
-                # Delta Net = Net(Non-reopt) - Net(Re-opt)
-                # Si positif (vert) -> Le Net subi est "moins pire" algébriquement
-                # mais indique une pression MDC accrue par rapport au MAC fixe.
-                diff_val = net_non - net_re
+            def to_sign_offset(arr, i):
+                signs = np.sign(arr)
+                signs[np.abs(arr) < 1e-9] = 0
+                return signs * (1 + (i * OFFSET_STEP))
 
-                def to_sign_offset(arr, i):
-                    signs = np.sign(arr)
-                    signs[np.abs(arr) < 1e-9] = 0
-                    return signs * (1 + (i * OFFSET_STEP))
+            y_mac = to_sign_offset(mac_re, idx)
+            y_mcd = to_sign_offset(mcd_re, idx)
+            y_net = to_sign_offset(net_re, idx)
+            y_diff_sce = to_sign_offset(diff_val, idx)
 
-                y_mac = to_sign_offset(mac_re, idx)
-                y_mcd = to_sign_offset(mcd_re, idx)
-                y_net = to_sign_offset(net_re, idx)
-                y_diff_sce = to_sign_offset(diff_val, idx)
+            color = plot_params[region]['color']
+            style = plot_params[region]['style']
+            lw = 2.5
 
-                color = plot_params[region]['color']
-                style = plot_params[region]['style']
-                lw = 2.5
+            l1, = axs[0, col_idx].plot(TIME_STEPS[:PLOT_LIMIT], y_mac,
+                                       color=color, linestyle=style, linewidth=lw, label=region)
+            axs[1, col_idx].plot(TIME_STEPS[:PLOT_LIMIT], y_mcd,
+                                 color=color, linestyle=style, linewidth=lw)
+            axs[2, col_idx].plot(TIME_STEPS[:PLOT_LIMIT], y_net,
+                                 color=color, linestyle=style, linewidth=lw)
+            axs[3, col_idx].plot(TIME_STEPS[:PLOT_LIMIT], y_diff_sce,
+                                 color=color, linestyle=style, linewidth=lw)
 
-                l1, = axs[0, col_idx].plot(TIME_STEPS[:PLOT_LIMIT], y_mac,
-                                           color=color, linestyle=style, linewidth=lw, label=region)
-                axs[1, col_idx].plot(TIME_STEPS[:PLOT_LIMIT], y_mcd,
-                                     color=color, linestyle=style, linewidth=lw)
-                axs[2, col_idx].plot(TIME_STEPS[:PLOT_LIMIT], y_net,
-                                     color=color, linestyle=style, linewidth=lw)
-                axs[3, col_idx].plot(TIME_STEPS[:PLOT_LIMIT], y_diff_sce,
-                                     color=color, linestyle=style, linewidth=lw)
-
-                if col_idx == 0:
-                    global_handles.append(l1)
-                    global_labels.append(region)
+            if col_idx == 0:
+                global_handles.append(l1)
+                global_labels.append(region)
 
         for row in range(4):
             ax = axs[row, col_idx]
@@ -144,11 +137,23 @@ def plot_sign_structure_grid(data_dict):
             unique_labels.append(l)
             seen.add(l)
 
-    fig.legend(unique_handles, unique_labels, loc='lower center', bbox_to_anchor=(0.5, 0.01), ncol=7, title="Regions")
+
+    fig.legend(
+        unique_handles,
+        unique_labels,
+        loc='center left',
+        bbox_to_anchor=(0.01, 0.5),
+        ncol=1,
+        title=r"$\bf{Regions}$",
+        fontsize=14,
+        frameon=True,
+        shadow=True
+    )
+
     fig.suptitle("Sign Analysis: Incentives for Strategic Re-optimization", fontsize=22, weight='bold', y=0.96)
 
     plt.tight_layout()
-    plt.subplots_adjust(top=0.90, bottom=0.10, left=0.12)
+    plt.subplots_adjust(top=0.90, bottom=0.08, left=0.18, right=0.95)
     plt.show()
 
 
@@ -162,10 +167,10 @@ def plot_value_structure_grid(data_dict):
     col_titles = ["Low Damage", "Medium Damage", "High Damage"]
 
     row_labels = [
-        r"$\bf{MAC}$" + "\n(Real Value)",
-        r"$\bf{MDC}$" + "\n(Real Value)",
-        r"$\bf{Net}$" + "\n(Real Value)",
-        r"$\bf{\Delta Net}$" + "\n(Gain/Loss)"
+        r"$\bf{MAC}$" + "\n(Non-reopt)",
+        r"$\bf{MDC}$" + "\n(Non-reopt)",
+        r"$\bf{Net}$" + "\n(Non-reopt)",
+        r"$\bf{\Delta Net}$" + "\n(Re-opt. - Non-reopt.)"
     ]
 
     damage_key_map = {"Low": "Low Damage", "Medium": "Medium Damage", "Strong": "High Damage"}
@@ -204,8 +209,8 @@ def plot_value_structure_grid(data_dict):
             mcd_non = np.array(data_nonreopt[region][VAR_DAM])[:PLOT_LIMIT]
             net_non = mcd_non - mac_non
 
-            # Delta Net = Net(Non-reopt) - Net(Re-opt)
-            diff_val = net_non - net_re
+            # Delta Net =  Net(Re-opt) - Net(Non-reopt)
+            diff_val = net_re - net_non
 
             color = plot_params[region]['color']
             style = plot_params[region]['style']
@@ -247,7 +252,7 @@ def plot_value_structure_grid(data_dict):
     fig.legend(global_handles[:len(regions_list)], global_labels[:len(regions_list)],
                loc='lower center', bbox_to_anchor=(0.5, 0.02), ncol=6)
 
-    fig.suptitle("Quantitative Analysis: Marginal Costs and Re-optimization Gain", fontsize=20, weight='bold', y=0.97)
+    fig.suptitle("Quantitative Analysis: Marginal Costs", fontsize=20, weight='bold', y=0.97)
     plt.tight_layout()
     plt.subplots_adjust(top=0.92, bottom=0.12)
     plt.show()
@@ -280,16 +285,16 @@ if __name__ == "__main__":
     # Mapping sémantique des données
     data_dict = {
         'Low Damage': {
-            'Re-optimized': d_q_nash.get('Low Damage', {}),
-            'Non-reoptimized': d10_q_nash.get('Low Damage', {})
+            'Re-optimized': d10_q_nash.get('Low Damage', {}),
+            'Non-reoptimized':  d_q_nash.get('Low Damage', {})
         },
         'Medium Damage': {
-            'Re-optimized': d_nash.get('Medium Damage', {}),
-            'Non-reoptimized': d10_nash.get('Medium Damage', {})
+            'Re-optimized': d10_nash.get('Medium Damage', {}),
+            'Non-reoptimized': d_nash.get('Medium Damage', {})
         },
         'High Damage': {
-            'Re-optimized': d_nash.get('High Damage', {}),
-            'Non-reoptimized': d10_nash.get('High Damage', {})
+            'Re-optimized': d10_nash.get('High Damage', {}),
+            'Non-reoptimized': d_nash.get('High Damage', {})
         }
     }
 
