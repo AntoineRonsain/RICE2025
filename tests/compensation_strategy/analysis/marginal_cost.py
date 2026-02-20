@@ -268,8 +268,8 @@ if __name__ == "__main__":
 
 
     # Chargement d_ (Standards)
-    d_nash = load_output("rice2023_nash.csv")
-    d_q_nash = load_output("rice2023_nash_quad.csv")
+    d_nash = load_output("rice2023_nash_nonreopt.csv")
+    d_q_nash = load_output("rice2023_nash_quad_nonreopt.csv")
 
 
     BASE_DIR = Path(__file__).resolve().parents[2]
