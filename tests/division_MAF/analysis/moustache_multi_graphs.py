@@ -102,7 +102,7 @@ def process_MAF_comparison(data_dict):
 
         for val in diff:
             records.append({
-                'region': 'Mean Sub-MAF vs MAF',
+                'region': r'$\Delta\mu_{\mathrm{MAF}}$',
                 'value': val,
                 'solver': solver,
                 'damage': damage

@@ -98,7 +98,7 @@ def process_asia_comparison(data_dict):
 
         for val in diff:
             records.append({
-                'region': 'Mean Sub-Asia vs Asia',
+                'region': r'$\Delta\mu_{\mathrm{Asia}}$',
                 'value': val,
                 'solver': solver,
                 'damage': damage
@@ -221,7 +221,7 @@ def plot_global_impacts(df):
         showfliers=True
     )
 
-    axes[0].set_title(r"$\bf{a.}$ GDP (relative change)", fontsize=26, loc='left', pad=15)
+    axes[0].set_title(r"$\bf{a.}$ GDP (relative change -  $\Delta Y/Y$)", fontsize=26, loc='left', pad=15)
     axes[0].set_ylabel('')
     axes[0].set_xlabel('')
     axes[0].get_legend().remove()
@@ -237,7 +237,7 @@ def plot_global_impacts(df):
         linewidth=1.5
     )
 
-    axes[1].set_title(r"$\bf{b.}$ Increase in temperature (in °C)", fontsize=26, loc='left', pad=15)
+    axes[1].set_title(r"$\bf{b.}$ Increase in temperature (in °C -  $\Delta T$)", fontsize=26, loc='left', pad=15)
     axes[1].set_ylabel('')
     axes[1].set_xlabel('')
 
